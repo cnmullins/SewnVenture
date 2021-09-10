@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    //speed is how fast you move
     public int speed;
+    //cam is your camera
     public Camera mycam;
+    //mat are t2 temporary materials, used when swapping colors of stuff
     public Material mat;
     public Material mat2;
+    //myhit is the object your raycast hits
     public GameObject myhit;
     // Start is called before the first frame update
     void Start()
