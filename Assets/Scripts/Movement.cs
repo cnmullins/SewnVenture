@@ -41,7 +41,7 @@ public class Movement : MonoBehaviour
         RaycastHit hit;
         Ray ray = (mycam.ScreenPointToRay(Input.mousePosition));
 
-        if (Physics.Raycast(ray, out hit, laymask))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, laymask))
         {
             if (!holdblock)
             {
@@ -68,8 +68,15 @@ public class Movement : MonoBehaviour
             }
             else if (myhit != null)
             {
-                //myhit.transform.position = hit.point;
-                Debug.Log(hit.point);
+                if (hit.transform.gameObject.layer != 7)
+                {
+                    myhit.transform.position = new Vector3(Mathf.Round(hit.point.x), (hit.point.y), Mathf.Round(hit.point.z)) + (myhit.transform.localScale.y / 2 * Vector3.up);
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        myhit.layer = 7;
+                        holdblock = false;
+                    }
+                }
             }
 
 
