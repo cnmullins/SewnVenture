@@ -28,9 +28,4 @@ public class Sewing : MonoBehaviour
 
     }
 
-    public void SewObject(GameObject object)
-    {
-        
-    }
-
 }
