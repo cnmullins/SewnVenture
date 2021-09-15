@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    public const int HELD_LAYER = 6;
+    public const int GRABBABLE_LAYER = 7;
+    public const int GROUND_LAYER = 8;
+
     public int speed;
     public Camera mycam;
-    public Material mat;
-    public Material mat2;
+    public Material mat; //feedback mat
+    public Material mat2; // tempground
     public GameObject myhit;
     public bool holdblock = false;
 
@@ -29,11 +33,11 @@ public class Movement : MonoBehaviour
         {
             transform.position += Vector3.back * Time.deltaTime * speed;
         }
-        else if(Input.GetKey("a"))
+        else if (Input.GetKey("a"))
         {
             transform.position += Vector3.left * Time.deltaTime * speed;
         }
-        else if(Input.GetKey("d"))
+        else if (Input.GetKey("d"))
         {
             transform.position += Vector3.right * Time.deltaTime * speed;
         }
@@ -47,7 +51,6 @@ public class Movement : MonoBehaviour
             {
                 if (myhit != hit.transform.gameObject && myhit != null)
                 {
-
                     myhit.GetComponent<MeshRenderer>().material = mat2;
                     myhit = null;
                 }
@@ -61,24 +64,29 @@ public class Movement : MonoBehaviour
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
-                        myhit.layer = 6;
+                        myhit.layer = HELD_LAYER;
                         holdblock = true;
                     }
                 }
             }
             else if (myhit != null)
             {
-                if (hit.transform.gameObject.layer != 7)
+                if (hit.transform.gameObject.layer != GRABBABLE_LAYER)
                 {
-                    myhit.transform.position = new Vector3(Mathf.Round(hit.point.x), (hit.point.y), Mathf.Round(hit.point.z)) + (myhit.transform.localScale.y / 2 * Vector3.up);
+                    //block placement
+                    myhit.transform.position = _CalculatePlacement(hit);
+                    /*
+                    myhit.transform.position = new Vector3(Mathf.Round(hit.point.x), 
+                        (transform.position.y - 1.5f),//(hit.point.y),
+                        Mathf.Round(hit.point.z)) + (myhit.transform.localScale.y / 2 * Vector3.up);
+                        */
                     if (Input.GetMouseButtonDown(0))
                     {
-                        myhit.layer = 7;
+                        myhit.layer = GRABBABLE_LAYER;
                         holdblock = false;
                     }
                 }
             }
-
 
             // Do something with the object that was hit by the raycast.
         }
@@ -88,6 +96,14 @@ public class Movement : MonoBehaviour
             myhit = null;
         }
 
-
     }
+
+    private Vector3 _CalculatePlacement(in RaycastHit hit)
+    {
+        //float newY = go.transform.position.y;// + hit.transform.GetComponent<Collider>().bounds.size.y/2f;
+        return new Vector3(Mathf.Round(hit.point.x), 
+            (hit.transform.localPosition.y),
+            Mathf.Round(hit.point.z)) + (myhit.transform.localScale.y / 2 * Vector3.up);
+    }
+
 }
