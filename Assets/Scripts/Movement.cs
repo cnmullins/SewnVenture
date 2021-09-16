@@ -27,19 +27,20 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("w"))
+        Debug.DrawLine(transform.position,transform.forward);
+        if (Input.GetKey("w") && !Physics.Raycast(transform.position, Vector3.forward,0.6f))
         {
             transform.position += Vector3.forward * Time.deltaTime * speed;
         }
-        else if (Input.GetKey("s"))
+        else if (Input.GetKey("s") && !Physics.Raycast(transform.position, Vector3.back, 0.6f))
         {
             transform.position += Vector3.back * Time.deltaTime * speed;
         }
-        else if(Input.GetKey("a"))
+        else if(Input.GetKey("a") && !Physics.Raycast(transform.position, Vector3.left, 0.6f))
         {
             transform.position += Vector3.left * Time.deltaTime * speed;
         }
-        else if(Input.GetKey("d"))
+        else if(Input.GetKey("d") && !Physics.Raycast(transform.position, Vector3.right, 0.6f))
         {
             transform.position += Vector3.right * Time.deltaTime * speed;
         }
@@ -68,19 +69,22 @@ public class Movement : MonoBehaviour
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
-                        myhit.GetComponent<MeshRenderer>().material = mat2;
-                        savedpos = myhit.transform.position;
-                        myhit.layer = 6;
-                        holdblock = true;
+                       
                         if (myhit.transform.GetChild(0).gameObject != null)
                         {
                             detector = myhit.transform.GetChild(0).gameObject;
+                            myhit.GetComponent<MeshRenderer>().material = mat2;
+                            savedpos = myhit.transform.position;
+                            myhit.layer = 6;
+                            holdblock = true;
+                            myhit.transform.position += (myhit.transform.position - detector.transform.position);
+
                         }
                         else
                         {
-                            Debug.Log("You need to add a child to the block!"); 
+                            Debug.Log("You need to add a child to the block!");
+                           
                         }
-                        myhit.transform.position += (myhit.transform.position - detector.transform.position);
 
                     }
                 }
