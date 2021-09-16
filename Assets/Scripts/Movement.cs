@@ -28,23 +28,30 @@ public class Movement : MonoBehaviour
     void Update()
     {
         Debug.DrawLine(transform.position,transform.forward);
-        if (Input.GetKey("w") && !Physics.Raycast(transform.position, Vector3.forward,0.6f))
+        if (Input.GetKey("w") && !Physics.Raycast(transform.position, Vector3.forward,0.6f) && Physics.Raycast(transform.position+ Vector3.forward*0.25f,Vector3.down,1.5f))
         {
             transform.position += Vector3.forward * Time.deltaTime * speed;
         }
-        else if (Input.GetKey("s") && !Physics.Raycast(transform.position, Vector3.back, 0.6f))
+        else if (Input.GetKey("s") && !Physics.Raycast(transform.position, Vector3.back, 0.6f) && Physics.Raycast(transform.position + Vector3.back * 0.25f, Vector3.down, 1.5f))
         {
             transform.position += Vector3.back * Time.deltaTime * speed;
         }
-        else if(Input.GetKey("a") && !Physics.Raycast(transform.position, Vector3.left, 0.6f))
+        else if(Input.GetKey("a") && !Physics.Raycast(transform.position, Vector3.left, 0.6f) && Physics.Raycast(transform.position + Vector3.left * 0.25f, Vector3.down, 1.5f))
         {
             transform.position += Vector3.left * Time.deltaTime * speed;
         }
-        else if(Input.GetKey("d") && !Physics.Raycast(transform.position, Vector3.right, 0.6f))
+        else if(Input.GetKey("d") && !Physics.Raycast(transform.position, Vector3.right, 0.6f) && Physics.Raycast(transform.position + Vector3.right * 0.25f, Vector3.down, 1.5f))
         {
             transform.position += Vector3.right * Time.deltaTime * speed;
         }
-
+        if (Input.GetKeyDown("space"))
+        {
+            transform.tag = "Cut";
+        }
+        if (Input.GetKeyUp("space"))
+        {
+            transform.tag = "Untagged";
+        }
         RaycastHit hit;
         Ray ray = (mycam.ScreenPointToRay(Input.mousePosition));
 
