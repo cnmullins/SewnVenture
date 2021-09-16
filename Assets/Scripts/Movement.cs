@@ -11,9 +11,13 @@ public class Movement : MonoBehaviour
     public GameObject myhit;
     public bool holdblock = false;
 
-    public GameObject detecter;
+    public GameObject detector;
+    public Vector3 savedpos;
 
     public LayerMask laymask;
+    public LayerMask noground;
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,9 +68,20 @@ public class Movement : MonoBehaviour
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
+                        myhit.GetComponent<MeshRenderer>().material = mat2;
+                        savedpos = myhit.transform.position;
                         myhit.layer = 6;
                         holdblock = true;
-                        detecter = myhit.transform.GetChild(0).gameObject;
+                        if (myhit.transform.GetChild(0).gameObject != null)
+                        {
+                            detector = myhit.transform.GetChild(0).gameObject;
+                        }
+                        else
+                        {
+                            Debug.Log("You need to add a child to the block!"); 
+                        }
+                        myhit.transform.position += (myhit.transform.position - detector.transform.position);
+
                     }
                 }
             }
@@ -74,25 +89,36 @@ public class Movement : MonoBehaviour
             {
                 if (hit.transform.gameObject.layer != 7)
                 {
-                    myhit.transform.position = new Vector3(Mathf.Round(hit.point.x), (hit.point.y), Mathf.Round(hit.point.z)) + (myhit.transform.localScale.y / 2 * Vector3.up);
+                    myhit.transform.position = new Vector3(Mathf.Round(hit.point.x), (hit.point.y), Mathf.Round(hit.point.z)) + ((myhit.transform.localScale.y / 2) * Vector3.up) + (myhit.transform.position-detector.transform.position); 
                     if (Input.GetMouseButtonDown(0))
                     {
-                        myhit.layer = 7;
-                        holdblock = false;
-                       
+                        if (!Physics.BoxCast(myhit.transform.position, myhit.transform.localScale / 2.1f, Vector3.down, myhit.transform.rotation, 20, noground))
+                        {
+                            myhit.layer = 7;
+                            holdblock = false;
+                            myhit.transform.position = detector.transform.position;
+                            detector = null;
+                        }
                     }
                 }
+
             }
-
-
             // Do something with the object that was hit by the raycast.
         }
-        else if (myhit != null && !holdblock)
+        if (Input.GetMouseButtonDown(1) && myhit != null)
+        {
+            myhit.transform.position = savedpos;
+            detector = null;
+            myhit.layer = 7;
+            holdblock = false;
+        }
+        /*else if (myhit != null && !holdblock)
         {
             myhit.GetComponent<MeshRenderer>().material = mat2;
             myhit = null;
-        }
+        }*/
 
 
     }
+   
 }
