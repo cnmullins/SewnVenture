@@ -11,6 +11,8 @@ public class Movement : MonoBehaviour
     public GameObject myhit;
     public bool holdblock = false;
 
+    public GameObject detecter;
+
     public LayerMask laymask;
     // Start is called before the first frame update
     void Start()
@@ -56,6 +58,7 @@ public class Movement : MonoBehaviour
                     myhit = hit.transform.gameObject;
                     mat2 = myhit.GetComponent<MeshRenderer>().material;
                     hit.transform.gameObject.GetComponent<MeshRenderer>().material = mat;
+
                 }
                 if (myhit != null)
                 {
@@ -63,6 +66,7 @@ public class Movement : MonoBehaviour
                     {
                         myhit.layer = 6;
                         holdblock = true;
+                        detecter = myhit.transform.GetChild(0).gameObject;
                     }
                 }
             }
@@ -75,6 +79,7 @@ public class Movement : MonoBehaviour
                     {
                         myhit.layer = 7;
                         holdblock = false;
+                       
                     }
                 }
             }
