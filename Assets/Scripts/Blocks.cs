@@ -12,12 +12,12 @@ public class Blocks : MonoBehaviour
         if (stuck && sewn == 0)
         {
             stuck = false;
-            gameObject.layer = 7;
+            gameObject.tag = "Moveable";
         }
         if (!stuck && sewn > 0)
         {
             stuck = true;
-            gameObject.layer = 0;
+            gameObject.tag = "Untagged";
         }
     }
 }

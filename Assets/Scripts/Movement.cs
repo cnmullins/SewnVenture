@@ -16,6 +16,9 @@ public class Movement : MonoBehaviour
 
     public LayerMask laymask;
     public LayerMask noground;
+
+    public bool sewing;
+    public GameObject overlay;
     
 
     // Start is called before the first frame update
@@ -28,21 +31,24 @@ public class Movement : MonoBehaviour
     void Update()
     {
         Debug.DrawLine(transform.position,transform.forward);
-        if (Input.GetKey("w") && !Physics.Raycast(transform.position, Vector3.forward,0.6f) && Physics.Raycast(transform.position+ Vector3.forward*0.25f,Vector3.down,1.5f))
+        if (!sewing)
         {
-            transform.position += Vector3.forward * Time.deltaTime * speed;
-        }
-        else if (Input.GetKey("s") && !Physics.Raycast(transform.position, Vector3.back, 0.6f) && Physics.Raycast(transform.position + Vector3.back * 0.25f, Vector3.down, 1.5f))
-        {
-            transform.position += Vector3.back * Time.deltaTime * speed;
-        }
-        else if(Input.GetKey("a") && !Physics.Raycast(transform.position, Vector3.left, 0.6f) && Physics.Raycast(transform.position + Vector3.left * 0.25f, Vector3.down, 1.5f))
-        {
-            transform.position += Vector3.left * Time.deltaTime * speed;
-        }
-        else if(Input.GetKey("d") && !Physics.Raycast(transform.position, Vector3.right, 0.6f) && Physics.Raycast(transform.position + Vector3.right * 0.25f, Vector3.down, 1.5f))
-        {
-            transform.position += Vector3.right * Time.deltaTime * speed;
+            if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f))
+            {
+                transform.position += Vector3.forward * Time.deltaTime * speed;
+            }
+            else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f))
+            {
+                transform.position += Vector3.back * Time.deltaTime * speed;
+            }
+            else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f))
+            {
+                transform.position += Vector3.left * Time.deltaTime * speed;
+            }
+            else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f))
+            {
+                transform.position += Vector3.right * Time.deltaTime * speed;
+            }
         }
         if (Input.GetKeyDown("space"))
         {
@@ -52,10 +58,29 @@ public class Movement : MonoBehaviour
         {
             transform.tag = "Untagged";
         }
+
+        if (Input.GetKeyDown("r") && !sewing)
+        {
+            if (!Physics.BoxCast(transform.position, new Vector3(0.5f, 0.1f, 0.5f), Vector3.down, transform.rotation, 2f, laymask))
+            {
+                sewing = true;
+                overlay.gameObject.SetActive(true);
+            }
+        }
+        else if (Input.GetKeyDown("r") && sewing && !holdblock)
+        {
+            sewing = false;
+            overlay.gameObject.SetActive(false);
+            if (myhit != null)
+            {
+                myhit.GetComponent<MeshRenderer>().material = mat2;
+                myhit = null;
+            }    
+        }
         RaycastHit hit;
         Ray ray = (mycam.ScreenPointToRay(Input.mousePosition));
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, laymask))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, laymask) && sewing)
         {
             if (!holdblock)
             {
@@ -116,7 +141,7 @@ public class Movement : MonoBehaviour
             }
             // Do something with the object that was hit by the raycast.
         }
-        if (Input.GetMouseButtonDown(1) && myhit != null)
+        if (Input.GetMouseButtonDown(1) && myhit != null && holdblock)
         {
             myhit.transform.position = savedpos;
             detector = null;
