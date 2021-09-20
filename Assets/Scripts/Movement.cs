@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public const int HELD_LAYER = 6;
-    public const int GRABBABLE_LAYER = 7;
-    public const int GROUND_LAYER = 8;
-
     public int speed;
     public Camera mycam;
-    public Material mat; //feedback mat
-    public Material mat2; // tempground
+    public Material mat;
+    public Material mat2;
     public GameObject myhit;
     public bool holdblock = false;
 
+    public GameObject detector;
+    public Vector3 savedpos;
+
     public LayerMask laymask;
+    public LayerMask noground;
+
+    public bool sewing;
+    public GameObject overlay;
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,32 +30,63 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("w"))
+        Debug.DrawLine(transform.position,transform.forward);
+        if (!sewing)
         {
-            transform.position += Vector3.forward * Time.deltaTime * speed;
+            if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f))
+            {
+                transform.position += Vector3.forward * Time.deltaTime * speed;
+            }
+            else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f))
+            {
+                transform.position += Vector3.back * Time.deltaTime * speed;
+            }
+            else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f))
+            {
+                transform.position += Vector3.left * Time.deltaTime * speed;
+            }
+            else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f))
+            {
+                transform.position += Vector3.right * Time.deltaTime * speed;
+            }
         }
-        else if (Input.GetKey("s"))
+        if (Input.GetKeyDown("space"))
         {
-            transform.position += Vector3.back * Time.deltaTime * speed;
+            transform.tag = "Cut";
         }
-        else if (Input.GetKey("a"))
+        if (Input.GetKeyUp("space"))
         {
-            transform.position += Vector3.left * Time.deltaTime * speed;
-        }
-        else if (Input.GetKey("d"))
-        {
-            transform.position += Vector3.right * Time.deltaTime * speed;
+            transform.tag = "Untagged";
         }
 
+        if (Input.GetKeyDown("r") && !sewing)
+        {
+            if (!Physics.BoxCast(transform.position, new Vector3(0.5f, 0.1f, 0.5f), Vector3.down, transform.rotation, 2f, laymask))
+            {
+                sewing = true;
+                overlay.gameObject.SetActive(true);
+            }
+        }
+        else if (Input.GetKeyDown("r") && sewing && !holdblock)
+        {
+            sewing = false;
+            overlay.gameObject.SetActive(false);
+            if (myhit != null)
+            {
+                myhit.GetComponent<MeshRenderer>().material = mat2;
+                myhit = null;
+            }    
+        }
         RaycastHit hit;
         Ray ray = (mycam.ScreenPointToRay(Input.mousePosition));
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, laymask))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, laymask) && sewing)
         {
             if (!holdblock)
             {
                 if (myhit != hit.transform.gameObject && myhit != null)
                 {
+
                     myhit.GetComponent<MeshRenderer>().material = mat2;
                     myhit = null;
                 }
@@ -59,51 +95,66 @@ public class Movement : MonoBehaviour
                     myhit = hit.transform.gameObject;
                     mat2 = myhit.GetComponent<MeshRenderer>().material;
                     hit.transform.gameObject.GetComponent<MeshRenderer>().material = mat;
+
                 }
                 if (myhit != null)
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
-                        myhit.layer = HELD_LAYER;
-                        holdblock = true;
+                       
+                        if (myhit.transform.GetChild(0).gameObject != null)
+                        {
+                            detector = myhit.transform.GetChild(0).gameObject;
+                            myhit.GetComponent<MeshRenderer>().material = mat2;
+                            savedpos = myhit.transform.position;
+                            myhit.layer = 6;
+                            holdblock = true;
+                            myhit.transform.position += (myhit.transform.position - detector.transform.position);
+
+                        }
+                        else
+                        {
+                            Debug.Log("You need to add a child to the block!");
+                           
+                        }
+
                     }
                 }
             }
             else if (myhit != null)
             {
-                if (hit.transform.gameObject.layer != GRABBABLE_LAYER)
+                if (hit.transform.gameObject.layer != 7)
                 {
-                    //block placement
-                    myhit.transform.position = _CalculatePlacement(hit);
-                    /*
-                    myhit.transform.position = new Vector3(Mathf.Round(hit.point.x), 
-                        (transform.position.y - 1.5f),//(hit.point.y),
-                        Mathf.Round(hit.point.z)) + (myhit.transform.localScale.y / 2 * Vector3.up);
-                        */
+                    myhit.transform.position = new Vector3(Mathf.Round(hit.point.x), (hit.point.y), Mathf.Round(hit.point.z)) + ((myhit.transform.localScale.y / 2) * Vector3.up) + (myhit.transform.position-detector.transform.position); 
                     if (Input.GetMouseButtonDown(0))
                     {
-                        myhit.layer = GRABBABLE_LAYER;
-                        holdblock = false;
+                        if (!Physics.BoxCast(myhit.transform.position, myhit.transform.localScale / 2.1f, Vector3.down, myhit.transform.rotation, 20, noground))
+                        {
+                            myhit.layer = 7;
+                            holdblock = false;
+                            myhit.transform.position = detector.transform.position;
+                            detector = null;
+                        }
                     }
                 }
-            }
 
+            }
             // Do something with the object that was hit by the raycast.
         }
-        else if (myhit != null && !holdblock)
+        if (Input.GetMouseButtonDown(1) && myhit != null && holdblock)
+        {
+            myhit.transform.position = savedpos;
+            detector = null;
+            myhit.layer = 7;
+            holdblock = false;
+        }
+        /*else if (myhit != null && !holdblock)
         {
             myhit.GetComponent<MeshRenderer>().material = mat2;
             myhit = null;
-        }
+        }*/
+
 
     }
-
-    private Vector3 _CalculatePlacement(in RaycastHit hit)
-    {
-        //float newY = go.transform.position.y;// + hit.transform.GetComponent<Collider>().bounds.size.y/2f;
-        return new Vector3(Mathf.Round(hit.point.x), 
-            (hit.transform.localPosition.y),
-            Mathf.Round(hit.point.z)) + (myhit.transform.localScale.y / 2 * Vector3.up);
-    }
-
+   
 }
