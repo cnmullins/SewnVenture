@@ -6,6 +6,7 @@ public class Blocks : MonoBehaviour
 {
     public int sewn = 0;
     public bool stuck;
+    public int cost;
     
     public void Update()
     {
