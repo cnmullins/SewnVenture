@@ -13,6 +13,8 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField]
+    private GameObject _pauseOverlay;
+    [SerializeField]
     private GameObject _pauseGO;
 
     public bool paused { get; private set; }
@@ -29,7 +31,7 @@ public class PauseMenu : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!paused && Input.GetKeyDown(KeyCode.Escape))
         {
             TogglePauseMenu(!paused);
         }
@@ -43,6 +45,7 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = (activate) ? 0f : 1f;
         _pauseGO.SetActive(activate);
+        _pauseOverlay.SetActive(activate);
         paused = activate;
     }
 
@@ -51,7 +54,8 @@ public class PauseMenu : MonoBehaviour
     /// </summary>
     public void QuitGame()
     {
-        StartCoroutine("_SaveAndQuitCo");
+        MenuManager.MoveToScene("MainMenu");
+        //StartCoroutine("_SaveAndQuitCo");
     }
 
     //WIP
