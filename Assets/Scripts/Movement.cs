@@ -23,12 +23,16 @@ public class Movement : MonoBehaviour
     public GameObject overlay;
 
     public int thread;
-    
+
+    //used for casting
+
+    public bool canfall;
 
     // Start is called before the first frame update
     void Start()
     {
         currentlayermask = laymask;
+
     }
 
     // Update is called once per frame
@@ -39,19 +43,19 @@ public class Movement : MonoBehaviour
         {
             //basic movement, it checks if you can move and also checks if you will fall off.
             //if you wont then you move.
-            if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f))
+            if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f, noground))
             {
                 transform.position += Vector3.forward * Time.deltaTime * speed;
             }
-            else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f))
+            else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f, noground))
             {
                 transform.position += Vector3.back * Time.deltaTime * speed;
             }
-            else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f))
+            else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f, noground))
             {
                 transform.position += Vector3.left * Time.deltaTime * speed;
             }
-            else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f))
+            else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f, noground))
             {
                 transform.position += Vector3.right * Time.deltaTime * speed;
             }
@@ -156,6 +160,7 @@ public class Movement : MonoBehaviour
                             holdblock = true;
                             myhit.transform.position += (myhit.transform.position - detector.transform.position);
                             currentlayermask = onlyground;
+
                     }
                 }
                 //if you mouse over a shopitem it becomes red
@@ -179,14 +184,31 @@ public class Movement : MonoBehaviour
                     myhit.transform.position = new Vector3(Mathf.Round(hit.point.x), (hit.point.y), Mathf.Round(hit.point.z)) + ((myhit.transform.localScale.y / 2) * Vector3.up) + (myhit.transform.position-detector.transform.position); 
                     if (Input.GetMouseButtonDown(0))
                     {
-                        if (!Physics.BoxCast(myhit.transform.position, myhit.transform.localScale / 2.1f, Vector3.down, myhit.transform.rotation, 20, noground))
+                        canfall = true;
+                        foreach (GameObject child in myhit.GetComponent<Blocks>().children)
                         {
-                            myhit.layer = 7;
+                            if (Physics.BoxCast(child.transform.position, child.transform.lossyScale / 2.1f, Vector3.down, child.transform.rotation, 20, noground))
+                            {
+                                canfall = false;
+                                Debug.Log(child.name + " Failed");
+                            } 
+                        }
+                        if (canfall)
+                        {
+                            if (myhit.GetComponent<Blocks>().grab2 == false)
+                            {
+                                myhit.layer = 7;
+                            }
+                            else
+                            {
+                                myhit.layer = 11;
+                            }
                             holdblock = false;
                             myhit.transform.position = detector.transform.position;
                             detector = null;
                             currentlayermask = laymask;
                         }
+
                     }
                 }
 
@@ -202,7 +224,14 @@ public class Movement : MonoBehaviour
             {
                 myhit.transform.position = savedpos;
                 detector = null;
-                myhit.layer = 7;
+                if (myhit.GetComponent<Blocks>().grab2 == false)
+                {
+                    myhit.layer = 7;
+                }
+                else
+                {
+                    myhit.layer = 11;
+                }
                 holdblock = false;
             }
             else
