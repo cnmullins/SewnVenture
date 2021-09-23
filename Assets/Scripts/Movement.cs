@@ -18,6 +18,7 @@ public class Movement : MonoBehaviour
     public LayerMask onlyground;
     public LayerMask currentlayermask;
     public LayerMask noground;
+    public LayerMask sewmask;
 
     public bool sewing;
     public GameObject overlay;
@@ -74,7 +75,7 @@ public class Movement : MonoBehaviour
         //you can only enter sewing mode while on a stable surface
         if (Input.GetKeyDown("r") && !sewing)
         {
-            if (!Physics.BoxCast(transform.position, new Vector3(0.5f, 0.1f, 0.5f), Vector3.down, transform.rotation, 2f, currentlayermask))
+            if (!Physics.BoxCast(transform.position, new Vector3(0.5f, 0.1f, 0.5f), Vector3.down, transform.rotation, 2f, sewmask))
             {
                 sewing = true;
                 overlay.gameObject.SetActive(true);
