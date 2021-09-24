@@ -4,9 +4,6 @@ Author: Christian Mullins
 Date: 9/11/21
 Summary: Handles all UI logic throughout the Main Menu scene.
 */
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
