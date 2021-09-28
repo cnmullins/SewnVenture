@@ -46,8 +46,10 @@ public class MenuManager : MonoBehaviour
     /// Move to a scene and leave the previous scene to be destroyed.
     /// </summary>
     /// <param name="sceneName">Name of scene in build index.</param>
-    public static void MoveToScene(string sceneName)
+    /// <param name="additive">Defaulted off for singular scene control</param>
+    public static void MoveToScene(string sceneName, bool additive=false)
     {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        SceneManager.LoadScene(sceneName, 
+            (additive) ? LoadSceneMode.Additive : LoadSceneMode.Single);
     }
 }
