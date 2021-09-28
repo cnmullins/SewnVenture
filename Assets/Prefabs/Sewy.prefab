@@ -744,7 +744,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 8
-  Purchase: {fileID: 20312555497316218, guid: bb1a511642360e3428dcf0edbe3740ed, type: 3}
+  Purchase: {fileID: 6560705187101149746, guid: bb1a511642360e3428dcf0edbe3740ed, type: 3}
 --- !u!1 &317973704325947906
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,7 +854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 4
-  Purchase: {fileID: 20312555497316218, guid: 461fe1d0fe2784ae1afd7bb35e0549a1, type: 3}
+  Purchase: {fileID: 7645016851703299901, guid: 461fe1d0fe2784ae1afd7bb35e0549a1, type: 3}
 --- !u!1 &317973704785135295
 GameObject:
   m_ObjectHideFlags: 0
