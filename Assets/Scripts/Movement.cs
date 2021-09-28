@@ -124,7 +124,14 @@ public class Movement : MonoBehaviour
                     hit.transform.gameObject.GetComponent<MeshRenderer>().material = mat;
 
                 }
-                if (myhit != null )
+                if (hit.transform.tag == "ShopItem" && myhit == null)
+                {
+                    myhit = hit.transform.gameObject;
+                    mat2 = myhit.GetComponent<MeshRenderer>().material;
+                    hit.transform.gameObject.GetComponent<MeshRenderer>().material = mat;
+
+                }
+                if (myhit != null)
                 {
                     if (Input.GetMouseButtonDown(0) && myhit.tag == "Moveable")
                     {
@@ -146,7 +153,7 @@ public class Movement : MonoBehaviour
                         else
                         {
                             Debug.Log("You need to add a child to the block!");
-                           
+
                         }
 
                     }
@@ -158,27 +165,22 @@ public class Movement : MonoBehaviour
                     //it then changes the layermask for easier movement.
                     if ((Input.GetMouseButtonDown(0) && myhit.tag == "ShopItem") && thread >= myhit.GetComponent<ShopItem>().cost)
                     {
-                            thread -= myhit.GetComponent<ShopItem>().cost;
-                            myhit.GetComponent<MeshRenderer>().material = mat2;
-                            myhit = Instantiate(myhit.GetComponent<ShopItem>().Purchase,transform.position,transform.rotation);
-                            detector = myhit.transform.GetChild(0).gameObject;
-                            myhit.GetComponent<MeshRenderer>().material = mat2;
-                            savedpos = myhit.transform.position;
-                            myhit.layer = 6;
-                            holdblock = true;
-                            myhit.transform.position += (myhit.transform.position - detector.transform.position);
-                            currentlayermask = onlyground;
+                        thread -= myhit.GetComponent<ShopItem>().cost;
+                        myhit.GetComponent<MeshRenderer>().material = mat2;
+                        myhit = Instantiate(myhit.GetComponent<ShopItem>().Purchase, transform.position, transform.rotation);
+                        detector = myhit.transform.GetChild(0).gameObject;
+                        myhit.GetComponent<MeshRenderer>().material = mat2;
+                        savedpos = myhit.transform.position;
+                        myhit.layer = 6;
+                        holdblock = true;
+                        myhit.transform.position += (myhit.transform.position - detector.transform.position);
+                        currentlayermask = onlyground;
 
                     }
-                }
-                //if you mouse over a shopitem it becomes red
-                //it also sets it up as "myhit" so clicking will work.
-                if (hit.transform.tag == "ShopItem" && myhit == null)
-                {
-                    myhit = hit.transform.gameObject;
-                    mat2 = myhit.GetComponent<MeshRenderer>().material;
-                    hit.transform.gameObject.GetComponent<MeshRenderer>().material = mat;
 
+                    //if you mouse over a shopitem it becomes red
+                    //it also sets it up as "myhit" so clicking will work.
+                   
                 }
             }
             //if your holding an object, clicking will try to put it down
