@@ -100,6 +100,13 @@ public class Movement : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, currentlayermask) && sewing)
         {
+            if (holdblock)
+            {
+                if (Input.GetKeyDown("q"))
+                {
+                    myhit.transform.localEulerAngles += transform.up * 90;
+                }
+            }
             if (!holdblock)
             {
                 //mousing on or off of a block will make it red and set it up as myhit

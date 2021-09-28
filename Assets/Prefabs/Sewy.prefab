@@ -218,12 +218,23 @@ MonoBehaviour:
   savedpos: {x: 0, y: 0, z: 0}
   laymask:
     serializedVersion: 2
-    m_Bits: 384
+    m_Bits: 2432
+  onlyground:
+    serializedVersion: 2
+    m_Bits: 256
+  currentlayermask:
+    serializedVersion: 2
+    m_Bits: 0
   noground:
     serializedVersion: 2
     m_Bits: 243
+  sewmask:
+    serializedVersion: 2
+    m_Bits: 4224
   sewing: 0
   overlay: {fileID: 6015806851277013142}
+  thread: 0
+  canfall: 0
 --- !u!54 &1664690412717008192
 Rigidbody:
   m_ObjectHideFlags: 0
