@@ -588,7 +588,7 @@ MonoBehaviour:
   sewn: 0
   stuck: 0
   cost: 12
-  grab2: 0
+  grab2: 1
   children: []
 --- !u!33 &2691999398502666818
 MeshFilter:
