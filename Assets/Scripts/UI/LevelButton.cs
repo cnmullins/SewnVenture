@@ -48,8 +48,8 @@ public class LevelButton : MonoBehaviour
         }
     }
 
-    public LevelData GetLevelData()
-    {
-        return new LevelData();
-    }
+    //public LevelData GetLevelData()
+    //{
+    //    return new LevelData();
+    //}
 }
