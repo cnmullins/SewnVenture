@@ -347,6 +347,7 @@ GameObject:
   - component: {fileID: 317973704152679563}
   - component: {fileID: 317973704152679564}
   - component: {fileID: 317973704152679565}
+  - component: {fileID: 6453893845469411184}
   m_Layer: 7
   m_Name: Cube (3)
   m_TagString: ShopItem
@@ -445,6 +446,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 12
   Purchase: {fileID: 6326207009852460436, guid: c8576af8481ba5d4b8b0f2e9827e92a8, type: 3}
+--- !u!54 &6453893845469411184
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317973704152679567}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &317973704208612985
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,6 +665,7 @@ GameObject:
   - component: {fileID: 317973704280248543}
   - component: {fileID: 317973704280248512}
   - component: {fileID: 317973704280248513}
+  - component: {fileID: 977522131926537284}
   m_Layer: 7
   m_Name: shop (1)
   m_TagString: ShopItem
@@ -745,6 +763,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 8
   Purchase: {fileID: 6560705187101149746, guid: bb1a511642360e3428dcf0edbe3740ed, type: 3}
+--- !u!54 &977522131926537284
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317973704280248515}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &317973704325947906
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,6 +792,7 @@ GameObject:
   - component: {fileID: 317973704325947935}
   - component: {fileID: 317973704325947904}
   - component: {fileID: 317973704325947905}
+  - component: {fileID: 508607429251647222}
   m_Layer: 7
   m_Name: shop
   m_TagString: ShopItem
@@ -855,6 +890,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 4
   Purchase: {fileID: 7645016851703299901, guid: 461fe1d0fe2784ae1afd7bb35e0549a1, type: 3}
+--- !u!54 &508607429251647222
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317973704325947906}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &317973704785135295
 GameObject:
   m_ObjectHideFlags: 0
