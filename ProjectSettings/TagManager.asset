@@ -9,6 +9,7 @@ TagManager:
   - Token
   - ShopItem
   - Block
+  - Enemy
   layers:
   - Default
   - TransparentFX

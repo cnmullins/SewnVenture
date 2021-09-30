@@ -29,6 +29,9 @@ public class Movement : MonoBehaviour
 
     public bool canfall;
 
+    //current scene used for reloads;
+    //public Scene reloadscene;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -274,6 +277,15 @@ public class Movement : MonoBehaviour
         {
             SceneManager.LoadScene(other.GetComponent<NextLevel>().level);
         }
+        if (other.tag == "Enemy")
+        {
+            Die();
+        }
+    }
+    public void Die()
+    {
+        Scene reloadscene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(reloadscene.name);
     }
 
 }
