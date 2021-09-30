@@ -12,6 +12,7 @@ public class Movement : MonoBehaviour
     public bool holdblock = false;
 
     public GameObject detector;
+  
     public Vector3 savedpos;
 
     public LayerMask laymask;
@@ -24,6 +25,8 @@ public class Movement : MonoBehaviour
     public GameObject overlay;
 
     public int thread;
+
+    public Vector3 aimpoint;
 
     //used for casting
 
@@ -42,6 +45,16 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.UpArrow) && mycam.orthographicSize < 10f)
+            {
+            mycam.orthographicSize += 0.05f;
+            overlay.transform.localScale += new Vector3(0.01f,0.01f,0.01f);
+            }
+        if (Input.GetKey(KeyCode.DownArrow) && mycam.orthographicSize > 2.5f)
+        {
+            mycam.orthographicSize -= 0.05f;
+            overlay.transform.localScale -= new Vector3(0.01f, 0.01f, 0.01f);
+        }
         Debug.DrawLine(transform.position,transform.forward);
         if (!sewing)
         {
@@ -193,8 +206,19 @@ public class Movement : MonoBehaviour
             {
                 if (hit.transform.gameObject.layer != 7)
                 {
-
-                    myhit.transform.position = new Vector3(Mathf.Round(hit.point.x), (hit.point.y), Mathf.Round(hit.point.z)) + ((myhit.transform.localScale.y / 2) * Vector3.up) + (myhit.transform.position-detector.transform.position); 
+                    aimpoint = hit.point;
+                    aimpoint.x = Mathf.Round(aimpoint.x);
+                    aimpoint.z = Mathf.Round(aimpoint.z);
+                    //Debug.Log(hit.transform.localScale);
+                    if (myhit.transform.localScale.x % 2 >= 1)
+                    {
+                        aimpoint.x += 0.5f;
+                    }
+                    if (myhit.transform.localScale.z % 2 >= 1)
+                    {
+                        aimpoint.z += 0.5f;
+                    }
+                    myhit.transform.position = new Vector3(aimpoint.x, (aimpoint.y), aimpoint.z) + ((myhit.transform.localScale.y / 2) * Vector3.up) + (myhit.transform.position-detector.transform.position); 
                     if (Input.GetMouseButtonDown(0))
                     {
                         canfall = true;
