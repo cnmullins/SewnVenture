@@ -52,4 +52,13 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene(sceneName, 
             (additive) ? LoadSceneMode.Additive : LoadSceneMode.Single);
     }
+    /// <summary>
+    /// Non-static version of MoveToScene so that it can be used for UI.
+    /// </summary>
+    /// <param name="sceneName">Name of scene in build index.</param>
+    /// <param name="additive">Defaulted off for singular scene control</param>
+    public void MoveToScene_NS(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+    }
 }
