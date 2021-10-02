@@ -17,14 +17,27 @@ public enum Room
 
 public class LevelSelectManager : MonoBehaviour
 {
+    [Header("Customize color of level UI.")]
+    public Color levelCompleteColor;
+    public Color levelInCompleteColor;
+    [Header("Assign GameObjects to List")]
     [Tooltip("Menu order:\n-SewingRoom\n-LivingRoom\n-Porch\n-Kitchen\n-Outdoor")]
     [SerializeField]
-    private GameObject[] _roomMenus;
+    private List<GameObject> _roomMenus;
     public GameObject curMenu { get; private set; }
 
     private void Start()
     {
 
+    }
+
+    /// <summary>
+    /// Getter for the current room as an enum.
+    /// </summary>
+    /// <returns>Current room.</returns>
+    public Room GetCurrentRoom()
+    {
+        return (Room)_roomMenus.FindIndex(0, menu => menu.Equals(curMenu));
     }
 
     /// <summary>
@@ -38,6 +51,7 @@ public class LevelSelectManager : MonoBehaviour
             TODO
                 When loading a given menu find all LevelButtons and update values
                 based on save data.
+                -Gather all LevelButtons in children and button.RefreshValues
         */
         curMenu.SetActive(false);
         menuGO.SetActive(true);
@@ -50,7 +64,19 @@ public class LevelSelectManager : MonoBehaviour
     public void ReturnToMainMenu()
     {
         //save data here if necessary
+        //TODO: Look for changes and apply if changes found.
         MenuManager.MoveToScene("MainMenu");
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="newData"></param>
+    /// <returns></returns>
+    public bool UpdateLevelData(LevelData newData)
+    {
+        //find if parameter data exists in 
+        return false;
     }
 
     /// <summary>
