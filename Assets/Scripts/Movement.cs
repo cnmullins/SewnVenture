@@ -49,12 +49,12 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.UpArrow) && mycam.orthographicSize < 10f)
             {
-            mycam.orthographicSize += 0.05f;
+            mycam.orthographicSize += 0.05f * Time.deltaTime * 60;
             overlay.transform.localScale += new Vector3(0.01f,0.01f,0.01f);
             }
         if (Input.GetKey(KeyCode.DownArrow) && mycam.orthographicSize > 2.5f)
         {
-            mycam.orthographicSize -= 0.05f;
+            mycam.orthographicSize -= 0.05f * Time.deltaTime*60;
             overlay.transform.localScale -= new Vector3(0.01f, 0.01f, 0.01f);
         }
         Debug.DrawLine(transform.position,transform.forward);
