@@ -437,15 +437,19 @@ MonoBehaviour:
     m_Bits: 0
   noground:
     serializedVersion: 2
-    m_Bits: 4339
+    m_Bits: 28915
   sewmask:
     serializedVersion: 2
-    m_Bits: 4224
+    m_Bits: 12416
+  blockmask:
+    serializedVersion: 2
+    m_Bits: 4097
   sewing: 0
   overlay: {fileID: 317973704810845177}
   thread: 0
   aimpoint: {x: 0, y: 0, z: 0}
   canfall: 0
+  canconnect: 0
 --- !u!54 &317973703643508706
 Rigidbody:
   m_ObjectHideFlags: 0
