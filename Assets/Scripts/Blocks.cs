@@ -8,7 +8,10 @@ public class Blocks : MonoBehaviour
     public bool stuck;
     public int cost;
     public bool grab2;
+    public bool rotated;
     public List<GameObject> children;
+    
+    public GameObject lockthis;
 
     public void Start()
     {

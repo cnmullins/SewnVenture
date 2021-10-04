@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7393150036568707764}
   - component: {fileID: 60818013630819822}
   - component: {fileID: 7614598081807752879}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Block (1)
   m_TagString: Block
   m_Icon: {fileID: 0}
@@ -113,7 +113,10 @@ MonoBehaviour:
   stuck: 0
   cost: 0
   grab2: 0
+  rotated: 0
   children: []
+  connects: 0
+  lockthis: {fileID: 0}
 --- !u!54 &7614598081807752879
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -239,7 +242,7 @@ GameObject:
   - component: {fileID: 55175824897139352}
   - component: {fileID: 6682240867322012744}
   - component: {fileID: 1155068482331191824}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Block
   m_TagString: Block
   m_Icon: {fileID: 0}
@@ -338,7 +341,10 @@ MonoBehaviour:
   stuck: 0
   cost: 0
   grab2: 0
+  rotated: 0
   children: []
+  connects: 0
+  lockthis: {fileID: 0}
 --- !u!54 &1155068482331191824
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -588,8 +594,11 @@ MonoBehaviour:
   sewn: 0
   stuck: 0
   cost: 12
-  grab2: 0
+  grab2: 1
+  rotated: 0
   children: []
+  connects: 0
+  lockthis: {fileID: 0}
 --- !u!33 &2691999398502666818
 MeshFilter:
   m_ObjectHideFlags: 0
