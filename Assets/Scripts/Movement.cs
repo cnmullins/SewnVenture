@@ -20,6 +20,7 @@ public class Movement : MonoBehaviour
     public LayerMask currentlayermask;
     public LayerMask noground;
     public LayerMask sewmask;
+    public LayerMask blockmask;
 
     public bool sewing;
     public GameObject overlay;
@@ -31,6 +32,7 @@ public class Movement : MonoBehaviour
     //used for casting
 
     public bool canfall;
+    public bool canconnect;
 
     //current scene used for reloads;
     //public Scene reloadscene;
@@ -120,6 +122,14 @@ public class Movement : MonoBehaviour
             {
                 if (Input.GetKeyDown("q"))
                 {
+                    if (myhit.GetComponent<Blocks>().rotated == false)
+                    {
+                        myhit.GetComponent<Blocks>().rotated = true;
+                    }
+                    else
+                    {
+                        myhit.GetComponent<Blocks>().rotated = false;
+                    }
                     myhit.transform.localEulerAngles += transform.up * 90;
                 }
             }
@@ -165,13 +175,21 @@ public class Movement : MonoBehaviour
                             holdblock = true;
                             myhit.transform.position += (myhit.transform.position - detector.transform.position);
                             currentlayermask = onlyground;
+                            //if this item is currently sewing something down (as its a shop item)
+                            //free the object.
+                            if (myhit.GetComponent<Blocks>().lockthis != null)
+                            {
+                                myhit.GetComponent<Blocks>().lockthis.GetComponent<Blocks>().sewn -= 1;
+                                myhit.GetComponent<Blocks>().lockthis = null;
+                            }
                         }
                         else
                         {
                             Debug.Log("You need to add a child to the block!");
 
                         }
-
+                        //this line is for shop item connection.
+                        
                     }
                     //clicking a shopitem you can afford is interesting
                     //it removes the currency then just set the object to the one being held
@@ -210,11 +228,11 @@ public class Movement : MonoBehaviour
                     aimpoint.x = Mathf.Round(aimpoint.x);
                     aimpoint.z = Mathf.Round(aimpoint.z);
                     //Debug.Log(hit.transform.localScale);
-                    if (myhit.transform.localScale.x % 2 >= 1)
+                    if ((myhit.transform.localScale.x % 2 >= 1 && myhit.GetComponent<Blocks>().rotated == false) || (myhit.transform.localScale.z % 2 >= 1 && myhit.GetComponent<Blocks>().rotated == true))
                     {
                         aimpoint.x += 0.5f;
                     }
-                    if (myhit.transform.localScale.z % 2 >= 1)
+                    if ((myhit.transform.localScale.z % 2 >= 1 && myhit.GetComponent<Blocks>().rotated == false) || (myhit.transform.localScale.x % 2 >= 1 && myhit.GetComponent<Blocks>().rotated == true))
                     {
                         aimpoint.z += 0.5f;
                     }
@@ -222,15 +240,57 @@ public class Movement : MonoBehaviour
                     if (Input.GetMouseButtonDown(0))
                     {
                         canfall = true;
+                        if (myhit.GetComponent<Blocks>().cost != 0)
+                        {
+                            canconnect = false;
+                        }
+                        else
+                        {
+                            canconnect = true;
+                        }
                         foreach (GameObject child in myhit.GetComponent<Blocks>().children)
                         {
                             if (Physics.BoxCast(child.transform.position, child.transform.lossyScale / 2.1f, Vector3.down, child.transform.rotation, 20, noground))
                             {
                                 canfall = false;
                                 Debug.Log(child.name + " Failed");
-                            } 
+                            }
+                            if (myhit.GetComponent<Blocks>().cost != 0)
+                            {
+                                //a shopitem will sew a block down as it must be connected to something stable
+                                //shop items need to be connected if not, they wont place.
+                                //shop items cannot be attached to other shopitems.
+                                RaycastHit hit2;
+                                if (Physics.BoxCast(child.transform.position, child.transform.lossyScale / 1.9f,  Vector3.down, out hit2, child.transform.rotation, 20, blockmask))
+                                {
+                                    canconnect = true;
+
+                                    //when a shoptem lands next to another block, it will lock it down.
+                                    if (hit2.transform.parent != null)
+                                    {
+                                        if (hit2.transform.parent.GetComponent<Blocks>() != null)
+                                        {
+                                            hit2.transform.parent.GetComponent<Blocks>().sewn += 1;
+                                            myhit.GetComponent<Blocks>().lockthis = hit2.transform.parent.gameObject;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (hit2.transform.GetComponent<Blocks>() != null)
+                                        {
+                                            hit2.transform.GetComponent<Blocks>().sewn += 1;
+                                            myhit.GetComponent<Blocks>().lockthis = hit2.transform.gameObject;
+                                        }
+                                    }
+                                }
+                            }
                         }
-                        if (canfall)
+                        if (!canconnect)
+                        {
+                            Debug.Log("The shop item couldnt connect!");
+                        }
+
+                        if (canfall && canconnect)
                         {
                             if (myhit.GetComponent<Blocks>().grab2 == false)
                             {
