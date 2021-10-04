@@ -628,6 +628,7 @@ MonoBehaviour:
   grab2: 0
   rotated: 0
   children: []
+  lockthis: {fileID: 0}
 --- !u!65 &200939419
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1047,6 +1048,7 @@ MonoBehaviour:
   grab2: 0
   rotated: 0
   children: []
+  lockthis: {fileID: 0}
 --- !u!1 &501798449
 GameObject:
   m_ObjectHideFlags: 0
@@ -1280,7 +1282,7 @@ GameObject:
   - component: {fileID: 621186983}
   - component: {fileID: 621186982}
   - component: {fileID: 621186981}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Win
   m_TagString: Finish
   m_Icon: {fileID: 0}
@@ -3406,6 +3408,7 @@ MonoBehaviour:
   grab2: 0
   rotated: 0
   children: []
+  lockthis: {fileID: 0}
 --- !u!23 &8581128140568102353
 MeshRenderer:
   m_ObjectHideFlags: 0
