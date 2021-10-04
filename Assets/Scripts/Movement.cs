@@ -50,12 +50,12 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.UpArrow) && mycam.orthographicSize < 10f)
             {
             mycam.orthographicSize += 0.05f * Time.deltaTime * 60;
-            overlay.transform.localScale += new Vector3(0.01f,0.01f,0.01f);
+            overlay.transform.localScale += new Vector3(0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60);
             }
         if (Input.GetKey(KeyCode.DownArrow) && mycam.orthographicSize > 2.5f)
         {
             mycam.orthographicSize -= 0.05f * Time.deltaTime*60;
-            overlay.transform.localScale -= new Vector3(0.01f, 0.01f, 0.01f);
+            overlay.transform.localScale -= new Vector3(0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60);
         }
         Debug.DrawLine(transform.position,transform.forward);
         if (!sewing)
@@ -264,22 +264,24 @@ public class Movement : MonoBehaviour
                                 if (Physics.BoxCast(child.transform.position, child.transform.lossyScale / 1.9f,  Vector3.down, out hit2, child.transform.rotation, 20, blockmask))
                                 {
                                     canconnect = true;
-
-                                    //when a shoptem lands next to another block, it will lock it down.
-                                    if (hit2.transform.parent != null)
+                                    if (canfall)
                                     {
-                                        if (hit2.transform.parent.GetComponent<Blocks>() != null)
+                                        //when a shoptem lands next to another block, it will lock it down.
+                                        if (hit2.transform.parent != null)
                                         {
-                                            hit2.transform.parent.GetComponent<Blocks>().sewn += 1;
-                                            myhit.GetComponent<Blocks>().lockthis = hit2.transform.parent.gameObject;
+                                            if (hit2.transform.parent.GetComponent<Blocks>() != null)
+                                            {
+                                                hit2.transform.parent.GetComponent<Blocks>().sewn += 1;
+                                                myhit.GetComponent<Blocks>().lockthis = hit2.transform.parent.gameObject;
+                                            }
                                         }
-                                    }
-                                    else
-                                    {
-                                        if (hit2.transform.GetComponent<Blocks>() != null)
+                                        else
                                         {
-                                            hit2.transform.GetComponent<Blocks>().sewn += 1;
-                                            myhit.GetComponent<Blocks>().lockthis = hit2.transform.gameObject;
+                                            if (hit2.transform.GetComponent<Blocks>() != null)
+                                            {
+                                                hit2.transform.GetComponent<Blocks>().sewn += 1;
+                                                myhit.GetComponent<Blocks>().lockthis = hit2.transform.gameObject;
+                                            }
                                         }
                                     }
                                 }

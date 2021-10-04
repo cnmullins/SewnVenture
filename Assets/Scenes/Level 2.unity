@@ -350,18 +350,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 317973703643508707, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
-      propertyPath: sewmask.m_Bits
-      value: 12416
-      objectReference: {fileID: 0}
-    - target: {fileID: 317973703643508707, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
-      propertyPath: noground.m_Bits
-      value: 28915
-      objectReference: {fileID: 0}
-    - target: {fileID: 317973703643508707, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
-      propertyPath: blockmask.m_Bits
-      value: 4097
-      objectReference: {fileID: 0}
     - target: {fileID: 317973703643508708, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
       propertyPath: m_RootOrder
       value: 2
