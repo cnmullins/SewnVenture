@@ -359,6 +359,11 @@ public class Movement : MonoBehaviour
             thread += other.GetComponent<Token>().worth;
             Destroy(other.gameObject);
         }
+        if (other.tag == "Star")
+        {
+            //star
+            Destroy(other.gameObject);
+        }
         if (other.tag == "Finish")
         {
             SceneManager.LoadScene(other.GetComponent<NextLevel>().level);
