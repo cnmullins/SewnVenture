@@ -10,6 +10,7 @@ TagManager:
   - ShopItem
   - Block
   - Enemy
+  - Star
   layers:
   - Default
   - TransparentFX
