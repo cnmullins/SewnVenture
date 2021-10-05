@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -523,6 +523,7 @@ MonoBehaviour:
   grab2: 0
   rotated: 0
   children: []
+  lockthis: {fileID: 0}
 --- !u!65 &200939419
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -813,6 +814,7 @@ MonoBehaviour:
   grab2: 0
   rotated: 0
   children: []
+  lockthis: {fileID: 0}
 --- !u!1 &520006614
 GameObject:
   m_ObjectHideFlags: 0
@@ -2176,7 +2178,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7655603286001905972, guid: 3114a42d6717943c6b3943c6cb34c949, type: 3}
       propertyPath: level
-      value: Level 1
+      value: Shop Tutorial
       objectReference: {fileID: 0}
     - target: {fileID: 7655603286001905973, guid: 3114a42d6717943c6b3943c6cb34c949, type: 3}
       propertyPath: m_Name
