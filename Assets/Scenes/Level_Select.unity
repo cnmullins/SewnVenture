@@ -558,6 +558,10 @@ PrefabInstance:
       value: Tutorial
       objectReference: {fileID: 0}
     - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
+      propertyPath: levelSceneName
+      value: Tutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
       propertyPath: nextLevel.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1268,6 +1272,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
+      propertyPath: levelSceneName
+      value: Shop Tutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
       propertyPath: nextLevel.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1760,6 +1768,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
       propertyPath: sceneName
+      value: Level 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
+      propertyPath: levelSceneName
       value: Level 2
       objectReference: {fileID: 0}
     - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
@@ -2291,6 +2303,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
       propertyPath: sceneName
+      value: Level 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
+      propertyPath: levelSceneName
       value: Level 3
       objectReference: {fileID: 0}
     - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
@@ -2865,6 +2881,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
       propertyPath: sceneName
+      value: Level 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
+      propertyPath: levelSceneName
       value: Level 1
       objectReference: {fileID: 0}
     - target: {fileID: 1565514990211321529, guid: 75a69cae466480a44809c099464b256c, type: 3}
