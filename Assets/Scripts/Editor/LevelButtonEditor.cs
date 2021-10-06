@@ -25,6 +25,10 @@ public class LevelButtonEditor : Editor
 
     public override void OnInspectorGUI() 
     {
+        
+        /*
+            Create drop down menu of the scene list
+        */
         if (GUILayout.Button("Update All Buttons"))
         {
             foreach (var t in GameObject.FindObjectsOfType<LevelButton>())

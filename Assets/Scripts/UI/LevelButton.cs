@@ -5,6 +5,7 @@ Date: 9/28/21
 Summary: Button 
 */
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,10 +15,9 @@ using UnityEngine.SceneManagement;
 public class LevelButton : MonoBehaviour
 {
     public const float inactiveAlpha = 0.3f;
-
-    public string sceneName;
-
-    [Header("Values that will manipulate visuals.")]
+    public Utilities.SceneField sceneAsset;
+    
+    [Header("Values that will manipulate visuals")]
     public string levelName;
     [Range(0, 3)]
     public int stars = 0;
@@ -36,9 +36,14 @@ public class LevelButton : MonoBehaviour
     [SerializeField] private GameObject _redThreadGroup;
     [SerializeField] private GameObject _goldThreadObject;
 
+    //properties
+    public Room room { get {
+        return transform.root.GetComponent<LevelSelectManager>().GetCurrentRoom();
+    } }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return new WaitForSeconds(0.1f);
         RefreshValues();
     }
 
@@ -59,10 +64,13 @@ public class LevelButton : MonoBehaviour
         /* Update Canvas Values from SaveData */
         //get save data or if not found
         var levelManager = transform.root.GetComponent<LevelSelectManager>();
-        Room thisRoom = levelManager.GetCurrentRoom();
-        LevelData levelProgress = SaveManager.RetrieveProgress().levelDatas[
-            (int)thisRoom].Find(level => level.name.Equals(_titleText));
-        levelProgress ??= new LevelData();
+        Room thisRoom = room;
+        //check if level contains
+        var roomLevels = SaveManager.RetrieveProgress().levelHashTables[(int)thisRoom];
+        //print("fooooooop: " + roomLevels.ContainsKey(sceneAsset.sceneHash));
+        LevelData levelProgress = (roomLevels.ContainsKey(sceneAsset.sceneHash)) 
+            ? roomLevels[sceneAsset.sceneHash]
+            : new LevelData(thisRoom, sceneAsset.sceneHash);
         //apply them
         for (int i = 0; i < starImages.Length; ++i)
         {
@@ -70,7 +78,7 @@ public class LevelButton : MonoBehaviour
             starImages[i].enabled = (i < stars);
             //set collected stars
             Color tempColor = starImages[i].color;
-            tempColor.a = (i < levelProgress.starsCollected.Item1) ? 1f : inactiveAlpha;
+            tempColor.a = (i < levelProgress.starsCollected[0]) ? 1f : inactiveAlpha;
             starImages[i].color = tempColor;
         }
         for (int i = 0; i < rThreadImages.Length; ++i)
@@ -79,7 +87,9 @@ public class LevelButton : MonoBehaviour
             rThreadImages[i].enabled = (i < redThread);
             //set collected thread
             Color tempColor = rThreadImages[i].color;
-            tempColor.a = (i < levelProgress.redThreadCollected.Item1) ? 1f : inactiveAlpha;
+            //print("redThread: " + levelProgress.redThreadCollected[0]
+                //+ " / " + levelProgress.redThreadCollected[1]);
+            tempColor.a = (i < levelProgress.redThreadCollected[0]) ? 1f : inactiveAlpha;
             rThreadImages[i].color = tempColor;
         }
         //SetActive(false) if these achievments are not in the level
@@ -89,18 +99,18 @@ public class LevelButton : MonoBehaviour
         /* UPDATE COLOR IF COMPLETED */
         Color notComplete = levelManager.levelInCompleteColor;
         Color complete = levelManager.levelCompleteColor;
-        transform.GetChild(0).GetComponent<Image>().color = (isCompleted) ? complete : notComplete;
+        transform.GetChild(0).GetComponent<Image>().color = (levelProgress.completed) ? complete : notComplete;
     }
 
     /// <summary>
-    /// 
+    /// Updates Line Renderer to new values that have been input in the inspector.
     /// </summary>
     public void UpdateLevelPath()
     {
         var levelPath = GetComponent<LineRenderer>();
         levelPath.alignment = LineAlignment.View;
         int positions = nextLevels.Length * 2;
-        levelPath.positionCount = positions;// * 2;
+        levelPath.positionCount = positions;
 
         //make all paths
         var levelStack = new Stack<RectTransform>(nextLevels);
@@ -115,27 +125,32 @@ public class LevelButton : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Loads level and maintains DataObserver for saving progress.
     /// </summary>
     public void LoadLevel()
     {
-        SceneManager.LoadScene(sceneName);
+        //set up DataObserver
+        DontDestroyOnLoad(DataObserver.instance.gameObject);
+        //Start migrating
+        var myData = GetLevelData();
+        SceneManager.LoadSceneAsync((string)sceneAsset).completed += delegate 
+        {
+            DataObserver.instance.MigrateToLevel(myData);
+        };
     }
 
     //getters
-
     /// <summary>
     /// Pack button as Level Data struct
     /// </summary>
     /// <returns>Class as a data struct.</returns>
     public LevelData GetLevelData()
     {
-        var data = new LevelData();
+        var data = new LevelData(room, sceneAsset.sceneHash);
         data.name = levelName;
-        //data.buildIndex =  // figure this shit out.
-        data.starsCollected = new Tuple<int, int>(0, stars);
-        data.redThreadCollected = new Tuple<int, int>(0, redThread);
-        data.goldThreadCollected = new Tuple<bool, bool>(false, hasGoldThread);
+        data.starsCollected = new int[2] { 0, stars };
+        data.redThreadCollected = new int[2] { 0, redThread };
+        data.goldThreadCollected = new bool[2] { false, hasGoldThread };
         return data;
     }
 }

@@ -83,6 +83,8 @@ public class Movement : MonoBehaviour
         if (Input.GetKeyDown("space"))
         {
             transform.tag = "Cut";
+            print("collected red thread");
+            DataObserver.instance.IncrementRedThread();
         }
         if (Input.GetKeyUp("space"))
         {
@@ -363,10 +365,19 @@ public class Movement : MonoBehaviour
         {
             //star
             Destroy(other.gameObject);
+            DataObserver.instance.IncrementStar();
         }
         if (other.tag == "Finish")
         {
-            SceneManager.LoadScene(other.GetComponent<NextLevel>().level);
+            other.tag = "Untagged"; //force functions to be called once
+            DontDestroyOnLoad(DataObserver.instance.gameObject);
+            SceneManager.LoadSceneAsync("Level_Select", LoadSceneMode.Additive).completed += delegate
+            {
+                SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name).completed += delegate
+                {
+                    DataObserver.instance.SetCompletion(true);
+                };
+            };
         }
         if (other.tag == "Enemy")
         {
