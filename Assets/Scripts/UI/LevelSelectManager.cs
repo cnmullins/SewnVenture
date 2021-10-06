@@ -9,10 +9,11 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum Room
 {
-    Sewing, Living, Porch, Kitchen, Outdoor
+    NULL = -1, Sewing, Living, Porch, Kitchen, Outdoor
 }
 
 public class LevelSelectManager : MonoBehaviour
@@ -23,12 +24,12 @@ public class LevelSelectManager : MonoBehaviour
     [Header("Assign GameObjects to List")]
     [Tooltip("Menu order:\n-SewingRoom\n-LivingRoom\n-Porch\n-Kitchen\n-Outdoor")]
     [SerializeField]
-    private List<GameObject> _roomMenus;
+    private GameObject[] _roomMenus;
     public GameObject curMenu { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
-
+        curMenu = _roomMenus[0];
     }
 
     /// <summary>
@@ -37,7 +38,10 @@ public class LevelSelectManager : MonoBehaviour
     /// <returns>Current room.</returns>
     public Room GetCurrentRoom()
     {
-        return (Room)_roomMenus.FindIndex(0, menu => menu.Equals(curMenu));
+        for (int i = 0; i < _roomMenus.Length; ++i) 
+            if (_roomMenus[i] == curMenu)
+                return (Room)i;
+        return Room.NULL;
     }
 
     /// <summary>
@@ -47,15 +51,10 @@ public class LevelSelectManager : MonoBehaviour
     public void FocusMenu(GameObject menuGO)
     {
         if (curMenu.Equals(menuGO)) return;
-        /*
-            TODO
-                When loading a given menu find all LevelButtons and update values
-                based on save data.
-                -Gather all LevelButtons in children and button.RefreshValues
-        */
         curMenu.SetActive(false);
         menuGO.SetActive(true);
         curMenu = menuGO;
+        _UpdateRoomValues();
     }
 
     /// <summary>
@@ -65,7 +64,7 @@ public class LevelSelectManager : MonoBehaviour
     {
         //save data here if necessary
         //TODO: Look for changes and apply if changes found.
-        MenuManager.MoveToScene("MainMenu");
+        SceneManager.LoadScene("MainMenu");
     }
 
     /// <summary>
@@ -79,17 +78,30 @@ public class LevelSelectManager : MonoBehaviour
         return false;
     }
 
+    private void _UpdateRoomValues()
+    {
+        var curRoom = GetCurrentRoom();
+        //grab current save data for the current room
+        var roomHashTable = SaveManager.SavedRoomData(curRoom);
+        var buttons = _roomMenus[(int)curRoom].GetComponentsInChildren<LevelButton>();
+        foreach(var b in buttons)
+        {
+            b.RefreshValues();
+        }
+    }
+
     /// <summary>
     /// Check if the player should logically be able to move to the next room.
     /// </summary>
     /// <param name="newRoomGO">GameObject of room in question.</param>
     /// <returns>True if the player can access room.</returns>
-    private bool _CanPlayerProgressTo(in GameObject newRoomGO) 
+    private bool _CanPlayerProgressTo(in GameObject newRoomGO)
     {
         var foundIndex = new List<GameObject>(_roomMenus).IndexOf(newRoomGO);
         switch ((Room)foundIndex) 
         {
-            case Room.Sewing: break;
+            case Room.Sewing: 
+                break;
             case Room.Living:
                 break;
             case Room.Porch:
