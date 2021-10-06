@@ -21,7 +21,7 @@ public class UIListener : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player").GetComponent<Movement>();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         _threadText.text = "Thread: " + _player.thread;
     }
