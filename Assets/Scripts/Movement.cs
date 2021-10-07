@@ -34,6 +34,7 @@ public class Movement : MonoBehaviour
     public bool canfall;
     public bool canconnect;
     public float vertdisplace;
+    public bool hassew;
 
     //current scene used for reloads;
     //public Scene reloadscene;
@@ -63,19 +64,19 @@ public class Movement : MonoBehaviour
         {
             //basic movement, it checks if you can move and also checks if you will fall off.
             //if you wont then you move.
-            if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f, noground))
+            if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f, noground))
             {
                 transform.position += Vector3.forward * Time.deltaTime * speed;
             }
-            else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f, noground))
+            else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f, noground))
             {
                 transform.position += Vector3.back * Time.deltaTime * speed;
             }
-            else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f, noground))
+            else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f, noground))
             {
                 transform.position += Vector3.left * Time.deltaTime * speed;
             }
-            else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f, noground))
+            else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f, noground))
             {
                 transform.position += Vector3.right * Time.deltaTime * speed;
             }
@@ -227,6 +228,7 @@ public class Movement : MonoBehaviour
                     //it then changes the layermask for easier movement.
                     if ((Input.GetMouseButtonDown(0) && myhit.tag == "ShopItem") && thread >= myhit.GetComponent<ShopItem>().cost)
                     {
+
                         thread -= myhit.GetComponent<ShopItem>().cost;
                         myhit.GetComponent<MeshRenderer>().material = mat2;
                         myhit = Instantiate(myhit.GetComponent<ShopItem>().Purchase, transform.position, transform.rotation);
@@ -234,6 +236,7 @@ public class Movement : MonoBehaviour
                         myhit.GetComponent<MeshRenderer>().material = mat2;
                         savedpos = myhit.transform.position;
                         myhit.layer = 6;
+                        vertdisplace = myhit.transform.localScale.y;
                         holdblock = true;
                         myhit.transform.position += (myhit.transform.position - detector.transform.position);
                         currentlayermask = onlyground;
@@ -265,7 +268,7 @@ public class Movement : MonoBehaviour
                         aimpoint.z += 0.5f;
                     }
 
-                    myhit.transform.position = new Vector3(aimpoint.x, (aimpoint.y), aimpoint.z) + ((vertdisplace / 2) * Vector3.up) + (myhit.transform.position-detector.transform.position); 
+                    myhit.transform.position = new Vector3(aimpoint.x, (aimpoint.y) + (vertdisplace / 2), aimpoint.z)  + (myhit.transform.position-detector.transform.position); 
                     if (Input.GetMouseButtonDown(0))
                     {
                         canfall = true;
@@ -277,6 +280,7 @@ public class Movement : MonoBehaviour
                         {
                             canconnect = true;
                         }
+                        hassew = true;
                         foreach (GameObject child in myhit.GetComponent<Blocks>().children)
                         {
                             if (Physics.BoxCast(child.transform.position-(new Vector3(0, 3, 0)), child.transform.lossyScale / 2.1f, Vector3.down, child.transform.rotation, (myhit.GetComponent<Blocks>().displace - 3f), noground))
@@ -293,7 +297,7 @@ public class Movement : MonoBehaviour
                                 if (Physics.BoxCast(child.transform.position, child.transform.lossyScale / 1.9f,  Vector3.down, out hit2, child.transform.rotation, 20, blockmask))
                                 {
                                     canconnect = true;
-                                    if (canfall)
+                                    if (canfall && hassew)
                                     {
                                         //when a shoptem lands next to another block, it will lock it down.
                                         if (hit2.transform.parent != null)
@@ -312,6 +316,7 @@ public class Movement : MonoBehaviour
                                                 myhit.GetComponent<Blocks>().lockthis = hit2.transform.gameObject;
                                             }
                                         }
+                                        hassew = false;
                                     }
                                 }
                             }
@@ -335,6 +340,7 @@ public class Movement : MonoBehaviour
                             myhit.transform.position = detector.transform.position;
                             detector = null;
                             currentlayermask = laymask;
+                            myhit = null;
                         }
 
                     }
