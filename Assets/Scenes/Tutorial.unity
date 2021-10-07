@@ -2272,6 +2272,10 @@ PrefabInstance:
       propertyPath: thread
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 317973703643508707, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
+      propertyPath: noground.m_Bits
+      value: 29427
+      objectReference: {fileID: 0}
     - target: {fileID: 317973703643508708, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
       propertyPath: m_RootOrder
       value: 1
