@@ -33,6 +33,7 @@ public class Movement : MonoBehaviour
 
     public bool canfall;
     public bool canconnect;
+    public float vertdisplace;
 
     //current scene used for reloads;
     //public Scene reloadscene;
@@ -132,7 +133,26 @@ public class Movement : MonoBehaviour
                     {
                         myhit.GetComponent<Blocks>().rotated = false;
                     }
-                    myhit.transform.localEulerAngles += transform.up * 90;
+
+                    myhit.transform.localEulerAngles += new Vector3(0, 90, 0);
+                }
+                if (Input.GetKeyDown("e"))
+                {
+                    if (myhit.GetComponent<Blocks>().rotated2 == false)
+                    {
+                        myhit.GetComponent<Blocks>().rotated2 = true;
+                        vertdisplace = myhit.transform.localScale.x;
+                    }
+                    else
+                    {
+                        myhit.GetComponent<Blocks>().rotated2 = false;
+                        vertdisplace = myhit.transform.localScale.y;
+                    }
+
+
+                    myhit.transform.localEulerAngles += new Vector3 (0,0,90);
+                    myhit.transform.GetChild(0).transform.position = myhit.transform.position - Vector3.up * myhit.GetComponent<Blocks>().displace;
+
                 }
             }
             if (!holdblock)
@@ -170,6 +190,14 @@ public class Movement : MonoBehaviour
                         //it then sets the layermask for easier movement
                         if (myhit.transform.GetChild(0).gameObject != null)
                         {
+                            if (myhit.GetComponent<Blocks>().rotated2 == true)
+                            {
+                                vertdisplace = myhit.transform.localScale.x;
+                            }
+                            else
+                            {
+                                vertdisplace = myhit.transform.localScale.y;
+                            }
                             detector = myhit.transform.GetChild(0).gameObject;
                             myhit.GetComponent<MeshRenderer>().material = mat2;
                             savedpos = myhit.transform.position;
@@ -238,7 +266,8 @@ public class Movement : MonoBehaviour
                     {
                         aimpoint.z += 0.5f;
                     }
-                    myhit.transform.position = new Vector3(aimpoint.x, (aimpoint.y), aimpoint.z) + ((myhit.transform.localScale.y / 2) * Vector3.up) + (myhit.transform.position-detector.transform.position); 
+
+                    myhit.transform.position = new Vector3(aimpoint.x, (aimpoint.y), aimpoint.z) + ((vertdisplace / 2) * Vector3.up) + (myhit.transform.position-detector.transform.position); 
                     if (Input.GetMouseButtonDown(0))
                     {
                         canfall = true;
@@ -252,7 +281,7 @@ public class Movement : MonoBehaviour
                         }
                         foreach (GameObject child in myhit.GetComponent<Blocks>().children)
                         {
-                            if (Physics.BoxCast(child.transform.position, child.transform.lossyScale / 2.1f, Vector3.down, child.transform.rotation, 20, noground))
+                            if (Physics.BoxCast(child.transform.position-(new Vector3(0, 3, 0)), child.transform.lossyScale / 2.1f, Vector3.down, child.transform.rotation, (myhit.GetComponent<Blocks>().displace - 3f), noground))
                             {
                                 canfall = false;
                                 Debug.Log(child.name + " Failed");

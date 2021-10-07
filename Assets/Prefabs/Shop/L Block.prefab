@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2213450816157600653}
   - component: {fileID: 5511591434593017426}
   - component: {fileID: 7393150036568707764}
-  - component: {fileID: 60818013630819822}
   - component: {fileID: 7614598081807752879}
   m_Layer: 13
   m_Name: Block (1)
@@ -97,26 +96,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &60818013630819822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 589095717796079558}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sewn: 0
-  stuck: 0
-  cost: 0
-  grab2: 0
-  rotated: 0
-  children: []
-  connects: 0
-  lockthis: {fileID: 0}
 --- !u!54 &7614598081807752879
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -240,7 +219,6 @@ GameObject:
   - component: {fileID: 534850735160415699}
   - component: {fileID: 684779848556692047}
   - component: {fileID: 55175824897139352}
-  - component: {fileID: 6682240867322012744}
   - component: {fileID: 1155068482331191824}
   m_Layer: 13
   m_Name: Block
@@ -325,26 +303,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6682240867322012744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1396321212101863353}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sewn: 0
-  stuck: 0
-  cost: 0
-  grab2: 0
-  rotated: 0
-  children: []
-  connects: 0
-  lockthis: {fileID: 0}
 --- !u!54 &1155068482331191824
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -596,8 +554,9 @@ MonoBehaviour:
   cost: 12
   grab2: 1
   rotated: 0
+  rotated2: 0
+  displace: 0
   children: []
-  connects: 0
   lockthis: {fileID: 0}
 --- !u!33 &2691999398502666818
 MeshFilter:

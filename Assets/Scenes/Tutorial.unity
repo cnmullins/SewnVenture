@@ -522,6 +522,8 @@ MonoBehaviour:
   cost: 0
   grab2: 0
   rotated: 0
+  rotated2: 0
+  displace: 0
   children: []
   lockthis: {fileID: 0}
 --- !u!65 &200939419
@@ -813,6 +815,8 @@ MonoBehaviour:
   cost: 0
   grab2: 0
   rotated: 0
+  rotated2: 0
+  displace: 0
   children: []
   lockthis: {fileID: 0}
 --- !u!1 &520006614
@@ -2264,6 +2268,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 317973703643508707, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
+      propertyPath: thread
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 317973703643508708, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
       propertyPath: m_RootOrder
       value: 1

@@ -9,12 +9,15 @@ public class Blocks : MonoBehaviour
     public int cost;
     public bool grab2;
     public bool rotated;
+    public bool rotated2;
+    public float displace;
     public List<GameObject> children;
     
     public GameObject lockthis;
 
     public void Start()
     {
+        displace = Vector3.Distance(transform.position, transform.GetChild(0).transform.position);
         if (transform.gameObject.layer == 11)
         {
             grab2 = true;
