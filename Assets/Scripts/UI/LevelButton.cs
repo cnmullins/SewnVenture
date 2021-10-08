@@ -16,6 +16,7 @@ public class LevelButton : MonoBehaviour
 {
     public const float inactiveAlpha = 0.3f;
     public Utilities.SceneField sceneAsset;
+    public string levelSceneName;
     
     [Header("Values that will manipulate visuals")]
     public string levelName;
@@ -43,7 +44,7 @@ public class LevelButton : MonoBehaviour
 
     private IEnumerator Start()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1f);
         RefreshValues();
     }
 
@@ -68,9 +69,13 @@ public class LevelButton : MonoBehaviour
         //check if level contains
         var roomLevels = SaveManager.RetrieveProgress().levelHashTables[(int)thisRoom];
         //print("fooooooop: " + roomLevels.ContainsKey(sceneAsset.sceneHash));
-        LevelData levelProgress = (roomLevels.ContainsKey(sceneAsset.sceneHash)) 
-            ? roomLevels[sceneAsset.sceneHash]
-            : new LevelData(thisRoom, sceneAsset.sceneHash);
+        LevelData levelProgress;// = (roomLevels.ContainsKey(sceneAsset.sceneHash)) 
+            //? roomLevels[sceneAsset.sceneHash]
+            //: new LevelData(thisRoom, sceneAsset.sceneHash);
+        if (roomLevels.ContainsKey(sceneAsset.sceneHash))
+            levelProgress = roomLevels[sceneAsset.sceneHash];
+        else 
+            levelProgress = new LevelData(thisRoom, sceneAsset.sceneHash);
         //apply them
         for (int i = 0; i < starImages.Length; ++i)
         {
@@ -130,10 +135,11 @@ public class LevelButton : MonoBehaviour
     public void LoadLevel()
     {
         //set up DataObserver
-        DontDestroyOnLoad(DataObserver.instance.gameObject);
         //Start migrating
         var myData = GetLevelData();
-        SceneManager.LoadSceneAsync((string)sceneAsset).completed += delegate 
+        //Debug.LogWarning("ferp: " + (string)sceneAsset);
+        DontDestroyOnLoad(DataObserver.instance.gameObject);
+        SceneManager.LoadSceneAsync((string)sceneAsset, LoadSceneMode.Single).completed += delegate 
         {
             DataObserver.instance.MigrateToLevel(myData);
         };
@@ -147,6 +153,7 @@ public class LevelButton : MonoBehaviour
     public LevelData GetLevelData()
     {
         var data = new LevelData(room, sceneAsset.sceneHash);
+        data.levelRoom = room;
         data.name = levelName;
         data.starsCollected = new int[2] { 0, stars };
         data.redThreadCollected = new int[2] { 0, redThread };

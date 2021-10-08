@@ -19,7 +19,8 @@ using System;
         [SerializeField] private string _sceneName = "";
 
         public string sceneName => _sceneName;
-        public int sceneHash => _sceneAsset.GetInstanceID();
+
+        public int sceneHash => _sceneName.GetHashCode();
 
         // makes it work with the existing Unity methods (LoadLevel/LoadScene)
         public static implicit operator string(SceneField sceneField)

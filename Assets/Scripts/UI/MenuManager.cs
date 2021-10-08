@@ -52,6 +52,7 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene(sceneName, 
             (additive) ? LoadSceneMode.Additive : LoadSceneMode.Single);
     }
+
     /// <summary>
     /// Non-static version of MoveToScene so that it can be used for UI.
     /// </summary>
@@ -60,5 +61,10 @@ public class MenuManager : MonoBehaviour
     public void MoveToScene_NS(string sceneName)
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+    }
+
+    public void OpenLink(string link)
+    {
+        Application.OpenURL(link);
     }
 }
