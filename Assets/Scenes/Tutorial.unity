@@ -522,7 +522,7 @@ MonoBehaviour:
   cost: 0
   grab2: 0
   rotated: 0
-  rotated2: 0
+  Upwards: 
   displace: 0
   children: []
   lockthis: {fileID: 0}
@@ -815,7 +815,7 @@ MonoBehaviour:
   cost: 0
   grab2: 0
   rotated: 0
-  rotated2: 0
+  Upwards: y
   displace: 0
   children: []
   lockthis: {fileID: 0}
@@ -2275,6 +2275,10 @@ PrefabInstance:
     - target: {fileID: 317973703643508707, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
       propertyPath: noground.m_Bits
       value: 29427
+      objectReference: {fileID: 0}
+    - target: {fileID: 317973703643508707, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
+      propertyPath: blockmask.m_Bits
+      value: 12289
       objectReference: {fileID: 0}
     - target: {fileID: 317973703643508708, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
       propertyPath: m_RootOrder
