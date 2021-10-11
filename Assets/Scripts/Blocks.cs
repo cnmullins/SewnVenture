@@ -9,7 +9,7 @@ public class Blocks : MonoBehaviour
     public int cost;
     public bool grab2;
     public bool rotated;
-    public bool rotated2;
+    public string Upwards;
     public float displace;
     public List<GameObject> children;
     
