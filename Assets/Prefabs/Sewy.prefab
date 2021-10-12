@@ -513,17 +513,22 @@ MonoBehaviour:
     m_Bits: 0
   noground:
     serializedVersion: 2
-    m_Bits: 28915
+    m_Bits: 94451
   sewmask:
     serializedVersion: 2
     m_Bits: 12416
   blockmask:
     serializedVersion: 2
-    m_Bits: 4097
+    m_Bits: 70145
+  walkmask:
+    serializedVersion: 2
+    m_Bits: 12289
   sewing: 0
   overlay: {fileID: 317973704810845177}
   thread: 0
   aimpoint: {x: 0, y: 0, z: 0}
+  savedeulers: {x: 0, y: 0, z: 0}
+  savedup: 
   canfall: 0
   canconnect: 0
   vertdisplace: 0

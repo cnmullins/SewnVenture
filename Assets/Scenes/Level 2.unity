@@ -564,7 +564,6 @@ GameObject:
   - component: {fileID: 200939421}
   - component: {fileID: 200939420}
   - component: {fileID: 200939419}
-  - component: {fileID: 200939418}
   m_Layer: 12
   m_Name: Block (1)
   m_TagString: Block
@@ -572,25 +571,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &200939418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200939417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sewn: 0
-  stuck: 0
-  cost: 0
-  grab2: 0
-  rotated: 0
-  children: []
-  lockthis: {fileID: 0}
 --- !u!65 &200939419
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1262,6 +1242,8 @@ MonoBehaviour:
   cost: 0
   grab2: 0
   rotated: 0
+  Upwards: 
+  displace: 0
   children: []
   lockthis: {fileID: 0}
 --- !u!1 &501798449
@@ -3336,6 +3318,8 @@ MonoBehaviour:
   cost: 0
   grab2: 0
   rotated: 0
+  Upwards: 
+  displace: 0
   children: []
   lockthis: {fileID: 0}
 --- !u!23 &8581128140568102353

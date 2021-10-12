@@ -21,6 +21,7 @@ public class Movement : MonoBehaviour
     public LayerMask noground;
     public LayerMask sewmask;
     public LayerMask blockmask;
+    public LayerMask walkmask;
 
     public bool sewing;
     public GameObject overlay;
@@ -30,12 +31,13 @@ public class Movement : MonoBehaviour
     public Vector3 aimpoint;
 
     public Vector3 savedeulers;
-    
-    //used for casting
+    public string savedup;
+    //used for casting 
 
     public bool canfall;
     public bool canconnect;
     public float vertdisplace;
+
     public bool hassew;
 
     //current scene used for reloads;
@@ -75,19 +77,19 @@ public class Movement : MonoBehaviour
             {
                 //basic movement, it checks if you can move and also checks if you will fall off.
                 //if you wont then you move.
-                if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f, noground))
+                if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f, walkmask))
                 {
                     transform.position += Vector3.forward * Time.deltaTime * speed;
                 }
-                else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f, noground))
+                else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f, walkmask))
                 {
                     transform.position += Vector3.back * Time.deltaTime * speed;
                 }
-                else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f, noground))
+                else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f, walkmask))
                 {
                     transform.position += Vector3.left * Time.deltaTime * speed;
                 }
-                else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f, noground))
+                else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f, walkmask))
                 {
                     transform.position += Vector3.right * Time.deltaTime * speed;
                 }
@@ -176,7 +178,6 @@ public class Movement : MonoBehaviour
                     else
                     {
                         myhit.GetComponent<Blocks>().rotated = false;
-                        
                     }
                     
 
@@ -299,6 +300,7 @@ public class Movement : MonoBehaviour
                             detector = myhit.transform.GetChild(0).gameObject;
                             myhit.GetComponent<MeshRenderer>().material = mat2;
                             savedpos = myhit.transform.position;
+                            savedup = myhit.GetComponent<Blocks>().Upwards;
                             myhit.layer = 6;
                             holdblock = true;
                             myhit.transform.position += (myhit.transform.position - detector.transform.position);
@@ -396,7 +398,7 @@ public class Movement : MonoBehaviour
                                 //shop items need to be connected if not, they wont place.
                                 //shop items cannot be attached to other shopitems.
                                 RaycastHit hit2;
-                                if (Physics.BoxCast(child.transform.position, child.transform.lossyScale / 1.9f,  Vector3.down, out hit2, child.transform.rotation, 20, blockmask))
+                                if (Physics.BoxCast(child.transform.position, child.transform.lossyScale / 1.9f,  Vector3.down, out hit2, child.transform.rotation, 20, walkmask))
                                 {
                                     canconnect = true;
                                     if (canfall && hassew)
@@ -460,6 +462,8 @@ public class Movement : MonoBehaviour
             {
                 myhit.transform.position = savedpos;
                 myhit.transform.eulerAngles = savedeulers;
+                myhit.GetComponent<Blocks>().Upwards = savedup;
+                myhit.transform.GetChild(0).transform.position = myhit.transform.position - Vector3.up * myhit.GetComponent<Blocks>().displace;
                 detector = null;
                 if (myhit.GetComponent<Blocks>().grab2 == false)
                 {
