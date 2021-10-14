@@ -12,6 +12,8 @@ public class Blocks : MonoBehaviour
     public string Upwards;
     public float displace;
     public List<GameObject> children;
+    public List<GameObject> sewnToMe;
+    public List<Material> mats;
     
     public GameObject lockthis;
 
@@ -47,7 +49,7 @@ public class Blocks : MonoBehaviour
         if (!stuck && sewn > 0)
         {
             stuck = true;
-            gameObject.tag = "Untagged";
+            gameObject.tag = "SewnDown";
         }
     }
 }
