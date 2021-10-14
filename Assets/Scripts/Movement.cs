@@ -50,6 +50,9 @@ public class Movement : MonoBehaviour
     public float swingduration;
     public Vector3 mydest;
 
+    public GameObject highlight;
+    public int counthighlight;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -268,6 +271,26 @@ public class Movement : MonoBehaviour
                 }
                 if (myhit != null)
                 {
+                    /*if (myhit.tag != "SewnDown" && highlight != null)
+                    {
+                        counthighlight = 0;
+                        foreach (GameObject Sewer in myhit.GetComponent<Blocks>().sewnToMe)
+                        {
+                            highlight = null;
+                            myhit.GetComponent<Blocks>().mats.Add(Sewer.GetComponent<MeshRenderer>().material);
+                            myhit.GetComponent<MeshRenderer>().material = mat;
+                            counthighlight += 1;
+                        }
+                    }
+                    if (myhit.tag == "SewnDown" && highlight != myhit) 
+                    {
+                        foreach (GameObject Sewer in myhit.GetComponent<Blocks>().sewnToMe)
+                        {
+                            highlight = myhit;
+                            myhit.GetComponent<Blocks>().mats.Add(Sewer.GetComponent<MeshRenderer>().material);
+                            myhit.GetComponent<MeshRenderer>().material = mat;
+                        }
+                    }*/
                     if (Input.GetMouseButtonDown(0) && myhit.tag == "Moveable")
                     {
                         //when you click on a movable object in sewing mode
@@ -277,6 +300,10 @@ public class Movement : MonoBehaviour
                         //it then sets the layermask for easier movement
                         if (myhit.transform.GetChild(0).gameObject != null)
                         {
+                            if (myhit.GetComponent<Blocks>().Upwards == "")
+                            {
+                                myhit.GetComponent<Blocks>().Upwards = "y";
+                            }
                             savedeulers = myhit.transform.eulerAngles;
                             if (myhit.GetComponent<Blocks>().Upwards == "x")
                             {
@@ -293,10 +320,7 @@ public class Movement : MonoBehaviour
                                 }
                             }
                             //if an upwards hasnt been set, set it to Y.
-                            if (myhit.GetComponent<Blocks>().Upwards == null)
-                            {
-                                myhit.GetComponent<Blocks>().Upwards = "y";
-                            }
+                           
                             detector = myhit.transform.GetChild(0).gameObject;
                             myhit.GetComponent<MeshRenderer>().material = mat2;
                             savedpos = myhit.transform.position;
@@ -309,6 +333,7 @@ public class Movement : MonoBehaviour
                             //free the object.
                             if (myhit.GetComponent<Blocks>().lockthis != null)
                             {
+                                myhit.GetComponent<Blocks>().lockthis.GetComponent<Blocks>().sewnToMe.Remove(myhit.gameObject);
                                 myhit.GetComponent<Blocks>().lockthis.GetComponent<Blocks>().sewn -= 1;
                                 myhit.GetComponent<Blocks>().lockthis = null;
                             }
@@ -398,7 +423,7 @@ public class Movement : MonoBehaviour
                                 //shop items need to be connected if not, they wont place.
                                 //shop items cannot be attached to other shopitems.
                                 RaycastHit hit2;
-                                if (Physics.BoxCast(child.transform.position, child.transform.lossyScale / 1.9f,  Vector3.down, out hit2, child.transform.rotation, 20, walkmask))
+                                if (Physics.BoxCast(child.transform.position, child.transform.lossyScale / 1.9f,  Vector3.down, out hit2, child.transform.rotation, 20, blockmask))
                                 {
                                     canconnect = true;
                                     if (canfall && hassew)
@@ -409,6 +434,7 @@ public class Movement : MonoBehaviour
                                             if (hit2.transform.parent.GetComponent<Blocks>() != null)
                                             {
                                                 hit2.transform.parent.GetComponent<Blocks>().sewn += 1;
+                                                hit2.transform.parent.GetComponent<Blocks>().sewnToMe.Add(myhit.gameObject);
                                                 myhit.GetComponent<Blocks>().lockthis = hit2.transform.parent.gameObject;
                                             }
                                         }
@@ -416,6 +442,7 @@ public class Movement : MonoBehaviour
                                         {
                                             if (hit2.transform.GetComponent<Blocks>() != null)
                                             {
+                                                hit2.transform.GetComponent<Blocks>().sewnToMe.Add(myhit.gameObject);
                                                 hit2.transform.GetComponent<Blocks>().sewn += 1;
                                                 myhit.GetComponent<Blocks>().lockthis = hit2.transform.gameObject;
                                             }
