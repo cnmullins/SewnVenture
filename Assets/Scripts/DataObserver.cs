@@ -65,6 +65,12 @@ public class DataObserver : MonoBehaviour
     }
     #endregion
 
+    public void RefreshLevelSession()
+    {
+        _playerGO = GameObject.FindGameObjectWithTag("Player");
+        currentPlayData.ClearCollectedValues();
+    }
+
     public void SetCompletion(in bool complete)
     {
         currentPlayData.completed = complete;

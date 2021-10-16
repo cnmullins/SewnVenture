@@ -50,6 +50,15 @@ public class PauseMenu : MonoBehaviour
     }
 
     /// <summary>
+    /// Restarts the level and sets the timeScale back.
+    /// </summary>
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Time.timeScale = 1f;
+    }
+
+    /// <summary>
     /// 
     /// </summary>
     public void QuitGame()

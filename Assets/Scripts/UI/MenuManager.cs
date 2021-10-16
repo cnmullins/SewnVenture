@@ -63,6 +63,9 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
+    //TODO:
+        //Make an async function so that you can read the data and then display progress.
+
     public void OpenLink(string link)
     {
         Application.OpenURL(link);
