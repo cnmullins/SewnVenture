@@ -23,6 +23,6 @@ public class UIListener : MonoBehaviour
 
     private void LateUpdate()
     {
-        _threadText.text = "Thread: " + _player.thread;
+        _threadText.text = "x " + _player.thread;
     }
 }
