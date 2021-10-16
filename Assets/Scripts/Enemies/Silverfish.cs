@@ -12,7 +12,7 @@ public class Silverfish : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        Physics.Raycast(transform.position + transform.forward * (Time.deltaTime * speed + 0.5f), transform.up * -1, out hit, 1f, walkmask);
+        Physics.Raycast(transform.position, transform.up * -1, out hit, 1f, walkmask);
         if (hit.transform != null)
         {
             transform.parent = hit.transform;
