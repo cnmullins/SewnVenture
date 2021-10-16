@@ -41,17 +41,16 @@ public class Movement : MonoBehaviour
     void Start()
     {
         currentlayermask = laymask;
-
     }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKey(KeyCode.UpArrow) && mycam.orthographicSize < 10f)
-            {
+        {
             mycam.orthographicSize += 0.05f * Time.deltaTime * 60;
             overlay.transform.localScale += new Vector3(0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60);
-            }
+        }
         if (Input.GetKey(KeyCode.DownArrow) && mycam.orthographicSize > 2.5f)
         {
             mycam.orthographicSize -= 0.05f * Time.deltaTime*60;
@@ -384,10 +383,12 @@ public class Movement : MonoBehaviour
             Die();
         }
     }
+
     public void Die()
     {
         Scene reloadscene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(reloadscene.name);
+        DataObserver.instance?.RefreshLevelSession();
     }
 
 }
