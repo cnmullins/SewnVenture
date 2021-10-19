@@ -485,7 +485,7 @@ public class Movement : MonoBehaviour
         //if its a non-shop item it will be put back where it used to be.
         if (Input.GetMouseButtonDown(1) && myhit != null && holdblock)
         {
-            if (myhit.GetComponent<Blocks>().cost == 0)
+            if (myhit.GetComponent<Blocks>().cost == 0 || myhit.GetComponent<Blocks>().bugs != 0)
             {
                 myhit.transform.position = savedpos;
                 myhit.transform.eulerAngles = savedeulers;
