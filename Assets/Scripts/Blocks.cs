@@ -16,6 +16,7 @@ public class Blocks : MonoBehaviour
     public List<Material> mats;
     
     public GameObject lockthis;
+    public int bugs;
 
     public void Start()
     {
