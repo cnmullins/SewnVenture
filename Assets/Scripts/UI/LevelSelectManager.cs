@@ -37,16 +37,13 @@ public class LevelSelectManager : MonoBehaviour
     {
         curMenu = _roomMenus[0];
         _nextRoomGO = new List<GameObject>(GameObject.FindGameObjectsWithTag("MoveRoom"));
-        print("0");
-        //_UpdateRoomValues();
         yield return new WaitWhile(delegate 
         {
             if (SaveManager.doesSaveFileExist)
                 return SaveManager.IsSaveFileOpen();
             return false;
         });
-        //yield return new WaitForSeconds(1f);
-        print("1");
+        //TODO: create edit mode that will omit this so that all buttons are shown for testing
         _UpdateRoomValues();
     }
 
@@ -76,15 +73,10 @@ public class LevelSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Go back to Main Menu and save necessary data.
+    /// Go back to Main Menu.
     /// </summary>
     public void ReturnToMainMenu()
     {
-        //save data here if necessary
-        //TODO: Look for changes and apply if changes found.
-        //var roomLevels = GameObject.FindObjectsOfType<LevelButton>(false);
-        //SaveManager.RetrieveProgress()
-        //SaveManager.SaveProgress(progress);
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -118,28 +110,11 @@ public class LevelSelectManager : MonoBehaviour
         //check SaveData and refresh "completed" levels
         var levelHT = SaveManager.RetrieveProgress().levelHashTables[(int)GetCurrentRoom()];
         var completedLevels = new List<LevelButton>();
-        bool levelCompleted = false;
         foreach (LevelButton l in roomLevels)
         {
             if (l.sceneAsset.sceneHash == -1) continue;
             if (levelHT.TryGetValue(l.sceneAsset.sceneHash, out var data))
-            {
-                //l.RefreshValues(data); //try
                 completedLevels.Add(l);
-                levelCompleted = true;
-            }
-        }
-        //if SaveData is empty for said room, find LevelButton with NO nextLevel
-        LevelButton noNext;
-        if (!levelCompleted)
-        {
-            foreach (var l in roomLevels)
-                if (l.nextLevels.Length == 0)
-                {
-                    print("ferp---------------------");
-                    noNext = l;
-                    break;
-                }
         }
 
         bool roomStarted = false;
@@ -150,7 +125,6 @@ public class LevelSelectManager : MonoBehaviour
             if (completedLevels.Contains(level))
             {
                 level.RefreshValues(levelHT[level.sceneAsset.sceneHash]);
-                //print(level.levelName+ " has remained ACTIVE.");
                 //display appropriate next levels
                 for (int i = 0; i < level.nextLevels.Length; ++i)
                 {
@@ -158,13 +132,11 @@ public class LevelSelectManager : MonoBehaviour
                         lb.RefreshValues(new LevelData());
                     else if (level.nextLevels[i].TryGetComponent<LevelButton>(out var b))
                         b.gameObject.SetActive(false);
-                    //print("refreshing: " + level.nextLevels[i].name);
                 }
             }
             else if (!completedLevels.Find(l => l.nextLevels.Contains(level.GetComponent<RectTransform>())))
             {
                 level.gameObject.SetActive(false);
-                //print(level.levelName + " has be DEACTIVATED.");
             }
             //hide access to new rooms if appropriate
             if (!level.isCompleted)
@@ -176,14 +148,13 @@ public class LevelSelectManager : MonoBehaviour
             else 
                 roomStarted = true;
         }
-        //completely new to room
+        //completely new to room reactivate new level if necessary
         if (!roomStarted)
         {
             foreach (var path in levelPaths)
             {
                 path.First.Value.gameObject.SetActive(true);
             }
-            //print(levelPaths[0].First.Value.name + " is first in the levPath");
         }
     }//end _UpdateRoomValues()
 }

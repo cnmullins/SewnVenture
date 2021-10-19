@@ -58,6 +58,11 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public void OpenLink(string url)
+    {
+        Application.OpenURL(url);
+    }
+
     /// <summary>
     /// 
     /// </summary>
