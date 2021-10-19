@@ -27,6 +27,10 @@ public enum InputAction
 
 public static class SaveManager
 {
+    public static bool doesSaveFileExist { get {
+        return File.Exists(_savePath);
+    } }
+    
     private const string _saveKey = "SaveData";
     private const string _saveFile = "SaveData";
     private static string _savePath { get { 
@@ -60,10 +64,26 @@ public static class SaveManager
             //Debug.Log("ferp: " + Application.persistentDataPath);
             
             //return JsonUtility.FromJson<SaveData>(File.ReadAllText(_savePath));
-            Debug.Log("File found!");
+            //Debug.Log("File found!");
             return JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(_savePath));
         }
         return new SaveData();
+    }
+
+    public static bool IsSaveFileOpen()
+    {
+        try
+        {
+            using (var fStream = File.Open(_savePath, FileMode.Open, FileAccess.Read, FileShare.None))
+            {
+                fStream.Close();
+            }
+        }
+        catch (IOException)
+        {
+            return true;
+        }
+        return false;
     }
 
     /// <summary>
@@ -155,6 +175,15 @@ public class LevelData
         starsCollected = new int[2] { 0, 3 };
         redThreadCollected = new int[2] { 0, 5 };
         goldThreadCollected = new bool[2] { false, false };
+    }
+
+    /// <summary>
+    /// Take two argument data and return whichever object is calculated to be more complete.
+    /// </summary>
+    /// <returns>Most complete object of the two parameter datas.</returns>
+    public static LevelData ReturnMoreComplete(LevelData data1, LevelData data2)
+    {
+        return null;
     }
 
     /// <summary>
