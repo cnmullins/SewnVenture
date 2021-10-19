@@ -31,20 +31,24 @@ public class LevelButtonEditor : Editor
         */
         if (GUILayout.Button("Update All Buttons"))
         {
+            /*
             foreach (var t in GameObject.FindObjectsOfType<LevelButton>())
             {
                 t.RefreshValues();
                 t.UpdateLevelPath();
             }
+            */
+            Debug.LogWarning("Umm, this button is broken bud.");
         }
 
         base.OnInspectorGUI();
-
+        /*
         if (GUI.changed)
         {
+            //TODO: create new function to replace the parameterless version of RefreshValues()
             thisInstance.RefreshValues();
         }
-
+        */
         serializedObject.ApplyModifiedProperties();
     }
 }

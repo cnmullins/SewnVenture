@@ -42,17 +42,14 @@ public class LevelButton : MonoBehaviour
         return transform.root.GetComponent<LevelSelectManager>().GetCurrentRoom();
     } }
 
-    private IEnumerator Start()
-    {
-        yield return new WaitForSeconds(1f);
-        RefreshValues();
-    }
-
     /// <summary>
     /// Update UI to correspond with inspector and save data.
     /// </summary>
-    public void RefreshValues()
+    public void RefreshValues(in LevelData data)
     {
+        //empty level data, don't bother initializing
+        if (data.levelHash == -1) return;
+
         /* Initialize Canvas */
         //update level text
         _titleText.text = levelName;
@@ -66,6 +63,7 @@ public class LevelButton : MonoBehaviour
         //get save data or if not found
         var levelManager = transform.root.GetComponent<LevelSelectManager>();
         Room thisRoom = room;
+        /*
         //check if level contains
         var roomLevels = SaveManager.RetrieveProgress().levelHashTables[(int)thisRoom];
         //print("fooooooop: " + roomLevels.ContainsKey(sceneAsset.sceneHash));
@@ -76,6 +74,7 @@ public class LevelButton : MonoBehaviour
             levelProgress = roomLevels[sceneAsset.sceneHash];
         else 
             levelProgress = new LevelData(thisRoom, sceneAsset.sceneHash);
+        */
         //apply them
         for (int i = 0; i < starImages.Length; ++i)
         {
@@ -83,7 +82,7 @@ public class LevelButton : MonoBehaviour
             starImages[i].enabled = (i < stars);
             //set collected stars
             Color tempColor = starImages[i].color;
-            tempColor.a = (i < levelProgress.starsCollected[0]) ? 1f : inactiveAlpha;
+            tempColor.a = (i < data.starsCollected[0]) ? 1f : inactiveAlpha;
             starImages[i].color = tempColor;
         }
         for (int i = 0; i < rThreadImages.Length; ++i)
@@ -92,9 +91,7 @@ public class LevelButton : MonoBehaviour
             rThreadImages[i].enabled = (i < redThread);
             //set collected thread
             Color tempColor = rThreadImages[i].color;
-            //print("redThread: " + levelProgress.redThreadCollected[0]
-                //+ " / " + levelProgress.redThreadCollected[1]);
-            tempColor.a = (i < levelProgress.redThreadCollected[0]) ? 1f : inactiveAlpha;
+            tempColor.a = (i < data.redThreadCollected[0]) ? 1f : inactiveAlpha;
             rThreadImages[i].color = tempColor;
         }
         //SetActive(false) if these achievments are not in the level
@@ -104,7 +101,10 @@ public class LevelButton : MonoBehaviour
         /* UPDATE COLOR IF COMPLETED */
         Color notComplete = levelManager.levelInCompleteColor;
         Color complete = levelManager.levelCompleteColor;
-        transform.GetChild(0).GetComponent<Image>().color = (levelProgress.completed) ? complete : notComplete;
+        transform.GetChild(0).GetComponent<Image>().color = (data.completed) ? complete : notComplete;
+        isCompleted = data.completed;
+
+        UpdateLevelPath();
     }
 
     /// <summary>
@@ -112,21 +112,46 @@ public class LevelButton : MonoBehaviour
     /// </summary>
     public void UpdateLevelPath()
     {
+        print(name + " CALLLED UpdateLevelPath()");
         var levelPath = GetComponent<LineRenderer>();
         levelPath.alignment = LineAlignment.View;
         int positions = nextLevels.Length * 2;
         levelPath.positionCount = positions;
 
-        //make all paths
+        //make all available paths
         var levelStack = new Stack<RectTransform>(nextLevels);
         for (int i = 0; i < positions; ++i)
         {
             //set every other position as self and the other as the next level
             if (i % 2 == 1)
-                levelPath.SetPosition(i, levelStack.Pop().position);
+            {
+                //if this "nextLevel" is just a button to the next room skip drawing it
+                var nextButton = levelStack.Peek().GetComponentInChildren<Button>();
+                if (!nextButton.onClick.GetPersistentMethodName(0).Equals("LoadLevel"))
+                    ++i;
+                else
+                    levelPath.SetPosition(i, levelStack.Pop().position);
+            }
             else
                 levelPath.SetPosition(i, transform.position);
         }
+        
+    }
+
+    /// <summary>
+    /// Get the next levels from this current level as a LevelButton type.
+    /// </summary>
+    /// <returns>The next levels as a LevelButton array.</returns>
+    public LevelButton[] GetNextLevelButtons()
+    {
+        var nlButtons = new List<LevelButton>();
+        foreach (var l in nextLevels)
+        {
+            var lButton = l.GetComponentInChildren<Button>();
+            if (lButton.onClick.GetPersistentMethodName(0).Equals("LoadLevel"))
+                nlButtons.Add(l.GetComponent<LevelButton>());
+        }
+        return nlButtons.ToArray();
     }
 
     /// <summary>
@@ -137,7 +162,6 @@ public class LevelButton : MonoBehaviour
         //set up DataObserver
         //Start migrating
         var myData = GetLevelData();
-        //Debug.LogWarning("ferp: " + (string)sceneAsset);
         DontDestroyOnLoad(DataObserver.instance.gameObject);
         SceneManager.LoadSceneAsync((string)sceneAsset, LoadSceneMode.Single).completed += delegate 
         {
@@ -159,5 +183,11 @@ public class LevelButton : MonoBehaviour
         data.redThreadCollected = new int[2] { 0, redThread };
         data.goldThreadCollected = new bool[2] { false, hasGoldThread };
         return data;
+    }
+
+    private static Material _ForceOpacity(Material origMat, in float newOpacity)
+    {
+        //origMat.shader = Shader.FindPassTagValue("Transparent/Diffuse");
+        return origMat;
     }
 }
