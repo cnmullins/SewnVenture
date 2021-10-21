@@ -11,7 +11,8 @@ TagManager:
   - Block
   - Enemy
   - Star
-  - MoveRoom
+  - SewnDown
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -28,8 +29,8 @@ TagManager:
   - Unstable
   - Unstable2
   - NoPlace
-  - 
-  - 
+  - Swing
+  - Wreck
   - 
   - 
   - 

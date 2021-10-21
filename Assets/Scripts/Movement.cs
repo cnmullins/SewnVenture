@@ -21,6 +21,7 @@ public class Movement : MonoBehaviour
     public LayerMask noground;
     public LayerMask sewmask;
     public LayerMask blockmask;
+    public LayerMask walkmask;
 
     public bool sewing;
     public GameObject overlay;
@@ -29,93 +30,142 @@ public class Movement : MonoBehaviour
 
     public Vector3 aimpoint;
 
-    //used for casting
+    public Vector3 savedeulers;
+    public string savedup;
+    //used for casting 
 
     public bool canfall;
     public bool canconnect;
+    public float vertdisplace;
+
+    public bool hassew;
 
     //current scene used for reloads;
     //public Scene reloadscene;
+
+    //swinging below
+    public bool swinging;
+    public bool swingX;
+    public Animator swinganim;
+    public float swingduration;
+    public Vector3 mydest;
+
+    public GameObject highlight;
+    public int counthighlight;
 
     // Start is called before the first frame update
     void Start()
     {
         currentlayermask = laymask;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.UpArrow) && mycam.orthographicSize < 10f)
+        if (!swinging)
         {
-            mycam.orthographicSize += 0.05f * Time.deltaTime * 60;
-            overlay.transform.localScale += new Vector3(0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60);
-        }
-        if (Input.GetKey(KeyCode.DownArrow) && mycam.orthographicSize > 2.5f)
-        {
-            mycam.orthographicSize -= 0.05f * Time.deltaTime*60;
-            overlay.transform.localScale -= new Vector3(0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60);
-        }
-        Debug.DrawLine(transform.position,transform.forward);
-        if (!sewing)
-        {
-            //basic movement, it checks if you can move and also checks if you will fall off.
-            //if you wont then you move.
-            if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f, noground))
+            if (Input.GetKey(KeyCode.UpArrow) && mycam.orthographicSize < 10f)
             {
-                transform.position += Vector3.forward * Time.deltaTime * speed;
+                mycam.orthographicSize += 0.05f * Time.deltaTime * 60;
+                overlay.transform.localScale += new Vector3(0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60);
             }
-            else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f, noground))
+            if (Input.GetKey(KeyCode.DownArrow) && mycam.orthographicSize > 2.5f)
             {
-                transform.position += Vector3.back * Time.deltaTime * speed;
+                mycam.orthographicSize -= 0.05f * Time.deltaTime * 60;
+                overlay.transform.localScale -= new Vector3(0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60, 0.01f * Time.deltaTime * 60);
             }
-            else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f, noground))
+            Debug.DrawLine(transform.position, transform.forward);
+            if (!sewing)
             {
-                transform.position += Vector3.left * Time.deltaTime * speed;
+                //basic movement, it checks if you can move and also checks if you will fall off.
+                //if you wont then you move.
+                if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f, walkmask))
+                {
+                    transform.position += Vector3.forward * Time.deltaTime * speed;
+                }
+                else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f, walkmask))
+                {
+                    transform.position += Vector3.back * Time.deltaTime * speed;
+                }
+                else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f, walkmask))
+                {
+                    transform.position += Vector3.left * Time.deltaTime * speed;
+                }
+                else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f, walkmask))
+                {
+                    transform.position += Vector3.right * Time.deltaTime * speed;
+                }
             }
-            else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f, noground))
+            //holding space lets you cut red strings.
+            if (Input.GetKeyDown("space"))
             {
-                transform.position += Vector3.right * Time.deltaTime * speed;
+                transform.tag = "Cut";
             }
-        }
-        //holding space lets you cut red strings.
-        if (Input.GetKeyDown("space"))
-        {
-            transform.tag = "Cut";
-            print("collected red thread");
-            DataObserver.instance.IncrementRedThread();
-        }
-        if (Input.GetKeyUp("space"))
-        {
-            transform.tag = "Untagged";
-        }
-        //presing R toggles sewing mode.
-        //you can only exit sewing mode if you arent holding any blocks.
-        //you can only enter sewing mode while on a stable surface
-        if (Input.GetKeyDown("r") && !sewing)
-        {
-            if (!Physics.BoxCast(transform.position, new Vector3(0.5f, 0.1f, 0.5f), Vector3.down, transform.rotation, 2f, sewmask))
+            if (Input.GetKeyUp("space"))
             {
-                sewing = true;
-                overlay.gameObject.SetActive(true);
+                transform.tag = "Untagged";
             }
-        }
-        else if (Input.GetKeyDown("r") && sewing && !holdblock)
-        {
-            sewing = false;
-            overlay.gameObject.SetActive(false);
-            if (myhit != null)
+            //presing R toggles sewing mode.
+            //you can only exit sewing mode if you arent holding any blocks.
+            //you can only enter sewing mode while on a stable surface
+            if (Input.GetKeyDown("r") && !sewing)
             {
-                myhit.GetComponent<MeshRenderer>().material = mat2;
-                myhit = null;
-            }    
+                if (!Physics.BoxCast(transform.position, new Vector3(0.5f, 0.1f, 0.5f), Vector3.down, transform.rotation, 2f, sewmask))
+                {
+                    sewing = true;
+                    overlay.gameObject.SetActive(true);
+                }
+            }
+            else if (Input.GetKeyDown("r") && sewing && !holdblock)
+            {
+                sewing = false;
+                overlay.gameObject.SetActive(false);
+                if (myhit != null)
+                {
+                    myhit.GetComponent<MeshRenderer>().material = mat2;
+                    myhit = null;
+                }
+            }
         }
         //this is the main raycast, it goes towards the mouse.
         //it detects what blocks are being hit and lets you move them
         //the layermask will swap when a block is being held for better movement.
-
         RaycastHit hit;
         Ray ray = (mycam.ScreenPointToRay(Input.mousePosition));
+        if (!sewing && !swinging)
+        {
+            RaycastHit Sew;
+            Physics.Raycast(ray, out Sew, Mathf.Infinity);
+            if (Sew.transform != null && Input.GetMouseButtonDown(0))
+            {
+                if (Sew.transform.gameObject.layer == 15 && Vector3.Distance(transform.position,new Vector3(Sew.transform.position.x,transform.position.y,Sew.transform.position.z)) < 10)
+                {
+                    swinging = true;
+                    mydest = (new Vector3(((Sew.transform.position.x - transform.position.x) * 2) + transform.position.x, transform.position.y, ((Sew.transform.position.z - transform.position.z) * 2) + transform.position.z));
+                    mydest -= transform.position;
+                    GetComponent<Rigidbody>().useGravity = false;
+                    //animateholder.transform.position = transform.position;
+                    //transform.SetParent(animateholder.transform);
+                    swinganim.SetTrigger("Swing");
+                    swingduration = 50;
+                }
+            }
+        }
+        if (swinging)
+        {
+            //transform.position += (mydest / 100);
+            swingduration -= Time.deltaTime * 50;
+            if (swingduration > 10 && swingduration < 40)
+            {
+                transform.position += mydest / 30 * Time.deltaTime * 50;
+            }
+            if (swingduration <= 0)
+            {
+                swinging = false;
+                GetComponent<Rigidbody>().useGravity = true;
+            }
+        }
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, currentlayermask) && sewing)
         {
@@ -126,12 +176,73 @@ public class Movement : MonoBehaviour
                     if (myhit.GetComponent<Blocks>().rotated == false)
                     {
                         myhit.GetComponent<Blocks>().rotated = true;
+                        
                     }
                     else
                     {
                         myhit.GetComponent<Blocks>().rotated = false;
                     }
-                    myhit.transform.localEulerAngles += transform.up * 90;
+                    
+
+                    //myhit.transform.eulerAngles += new Vector3(0, 90, 0);
+                    myhit.transform.RotateAround(myhit.transform.position, Vector3.up, 90);
+                    myhit.transform.GetChild(0).transform.position = myhit.transform.position - Vector3.up * myhit.GetComponent<Blocks>().displace;
+                }
+                //the secondary rotation is very confusing, essentially it rotates the block on the X axis rather than the Y
+                //the main point of confusion is keeping the block's height logged so it can snap back into place correctly.
+                //it uses both the fact if the block has been rotated normally as WELL as editing it when an X->Z or a Z->X rotation is done 
+                //with all of this it works correctly.
+                if (Input.GetKeyDown("e"))
+                {
+                    if (myhit.GetComponent<Blocks>().Upwards == "x")
+                    {
+                        //myhit.GetComponent<Blocks>().Upwards = "y";
+                        if (myhit.GetComponent<Blocks>().rotated == false)
+                        {
+                            vertdisplace = myhit.transform.localScale.z;
+                            myhit.GetComponent<Blocks>().Upwards = "z";
+                            myhit.GetComponent<Blocks>().rotated = true;
+                        }
+                        else
+                        {
+                            vertdisplace = myhit.transform.localScale.y;
+                            myhit.GetComponent<Blocks>().Upwards = "y";
+                        }
+                    }
+                    else if (myhit.GetComponent<Blocks>().Upwards == "y")
+                    {
+                        //myhit.GetComponent<Blocks>().Upwards = "y";
+                        if (myhit.GetComponent<Blocks>().rotated == false)
+                        {
+                            vertdisplace = myhit.transform.localScale.z;
+                            myhit.GetComponent<Blocks>().Upwards = "z";
+                        }
+                        else
+                        {
+                            vertdisplace = myhit.transform.localScale.x;
+                            myhit.GetComponent<Blocks>().Upwards = "x";
+                        }
+                    }
+                    else
+                    {
+                        //myhit.GetComponent<Blocks>().Upwards = "y";
+                        if (myhit.GetComponent<Blocks>().rotated == false)
+                        {
+                            vertdisplace = myhit.transform.localScale.y;
+                            myhit.GetComponent<Blocks>().Upwards = "y";
+                        }
+                        else
+                        {
+                            vertdisplace = myhit.transform.localScale.x;
+                            myhit.GetComponent<Blocks>().Upwards = "x";
+                            myhit.GetComponent<Blocks>().rotated = false;
+                        }
+                    }
+
+
+                    myhit.transform.RotateAround( myhit.transform.position,Vector3.right, 90);
+                    myhit.transform.GetChild(0).transform.position = myhit.transform.position - Vector3.up * myhit.GetComponent<Blocks>().displace;
+
                 }
             }
             if (!holdblock)
@@ -160,6 +271,26 @@ public class Movement : MonoBehaviour
                 }
                 if (myhit != null)
                 {
+                    /*if (myhit.tag != "SewnDown" && highlight != null)
+                    {
+                        counthighlight = 0;
+                        foreach (GameObject Sewer in myhit.GetComponent<Blocks>().sewnToMe)
+                        {
+                            highlight = null;
+                            myhit.GetComponent<Blocks>().mats.Add(Sewer.GetComponent<MeshRenderer>().material);
+                            myhit.GetComponent<MeshRenderer>().material = mat;
+                            counthighlight += 1;
+                        }
+                    }
+                    if (myhit.tag == "SewnDown" && highlight != myhit) 
+                    {
+                        foreach (GameObject Sewer in myhit.GetComponent<Blocks>().sewnToMe)
+                        {
+                            highlight = myhit;
+                            myhit.GetComponent<Blocks>().mats.Add(Sewer.GetComponent<MeshRenderer>().material);
+                            myhit.GetComponent<MeshRenderer>().material = mat;
+                        }
+                    }*/
                     if (Input.GetMouseButtonDown(0) && myhit.tag == "Moveable")
                     {
                         //when you click on a movable object in sewing mode
@@ -169,9 +300,31 @@ public class Movement : MonoBehaviour
                         //it then sets the layermask for easier movement
                         if (myhit.transform.GetChild(0).gameObject != null)
                         {
+                            if (myhit.GetComponent<Blocks>().Upwards == "")
+                            {
+                                myhit.GetComponent<Blocks>().Upwards = "y";
+                            }
+                            savedeulers = myhit.transform.eulerAngles;
+                            if (myhit.GetComponent<Blocks>().Upwards == "x")
+                            {
+                                vertdisplace = myhit.transform.localScale.x;
+                            }
+                            else if (myhit.GetComponent<Blocks>().Upwards == "y")
+                            {
+                                vertdisplace = myhit.transform.localScale.y;
+                            }
+                            else
+                            {
+                                {
+                                    vertdisplace = myhit.transform.localScale.z;
+                                }
+                            }
+                            //if an upwards hasnt been set, set it to Y.
+                           
                             detector = myhit.transform.GetChild(0).gameObject;
                             myhit.GetComponent<MeshRenderer>().material = mat2;
                             savedpos = myhit.transform.position;
+                            savedup = myhit.GetComponent<Blocks>().Upwards;
                             myhit.layer = 6;
                             holdblock = true;
                             myhit.transform.position += (myhit.transform.position - detector.transform.position);
@@ -180,6 +333,7 @@ public class Movement : MonoBehaviour
                             //free the object.
                             if (myhit.GetComponent<Blocks>().lockthis != null)
                             {
+                                myhit.GetComponent<Blocks>().lockthis.GetComponent<Blocks>().sewnToMe.Remove(myhit.gameObject);
                                 myhit.GetComponent<Blocks>().lockthis.GetComponent<Blocks>().sewn -= 1;
                                 myhit.GetComponent<Blocks>().lockthis = null;
                             }
@@ -200,13 +354,16 @@ public class Movement : MonoBehaviour
                     //it then changes the layermask for easier movement.
                     if ((Input.GetMouseButtonDown(0) && myhit.tag == "ShopItem") && thread >= myhit.GetComponent<ShopItem>().cost)
                     {
+
                         thread -= myhit.GetComponent<ShopItem>().cost;
                         myhit.GetComponent<MeshRenderer>().material = mat2;
                         myhit = Instantiate(myhit.GetComponent<ShopItem>().Purchase, transform.position, transform.rotation);
+                        myhit.GetComponent<Blocks>().Upwards = "y"; //this specific line is for rotation
                         detector = myhit.transform.GetChild(0).gameObject;
                         myhit.GetComponent<MeshRenderer>().material = mat2;
                         savedpos = myhit.transform.position;
                         myhit.layer = 6;
+                        vertdisplace = myhit.transform.localScale.y;
                         holdblock = true;
                         myhit.transform.position += (myhit.transform.position - detector.transform.position);
                         currentlayermask = onlyground;
@@ -226,18 +383,21 @@ public class Movement : MonoBehaviour
                 if (hit.transform.gameObject.layer != 7)
                 {
                     aimpoint = hit.point;
-                    aimpoint.x = Mathf.Round(aimpoint.x);
-                    aimpoint.z = Mathf.Round(aimpoint.z);
+                    aimpoint.x = Mathf.Round(aimpoint.x*2);
+                    aimpoint.z = Mathf.Round(aimpoint.z*2);
+                    aimpoint.x /= 2;
+                    aimpoint.z /= 2;
                     //Debug.Log(hit.transform.localScale);
-                    if ((myhit.transform.localScale.x % 2 >= 1 && myhit.GetComponent<Blocks>().rotated == false) || (myhit.transform.localScale.z % 2 >= 1 && myhit.GetComponent<Blocks>().rotated == true))
+                    /*if ((myhit.transform.localScale.x % 2 >= 1 && myhit.GetComponent<Blocks>().rotated == false) || (myhit.transform.localScale.z % 2 >= 1 && myhit.GetComponent<Blocks>().rotated == true))
                     {
                         aimpoint.x += 0.5f;
                     }
                     if ((myhit.transform.localScale.z % 2 >= 1 && myhit.GetComponent<Blocks>().rotated == false) || (myhit.transform.localScale.x % 2 >= 1 && myhit.GetComponent<Blocks>().rotated == true))
                     {
                         aimpoint.z += 0.5f;
-                    }
-                    myhit.transform.position = new Vector3(aimpoint.x, (aimpoint.y), aimpoint.z) + ((myhit.transform.localScale.y / 2) * Vector3.up) + (myhit.transform.position-detector.transform.position); 
+                    }*/
+
+                    myhit.transform.position = new Vector3(aimpoint.x, (aimpoint.y) + (vertdisplace / 2), aimpoint.z)  + (myhit.transform.position-detector.transform.position); 
                     if (Input.GetMouseButtonDown(0))
                     {
                         canfall = true;
@@ -249,9 +409,10 @@ public class Movement : MonoBehaviour
                         {
                             canconnect = true;
                         }
+                        hassew = true;
                         foreach (GameObject child in myhit.GetComponent<Blocks>().children)
                         {
-                            if (Physics.BoxCast(child.transform.position, child.transform.lossyScale / 2.1f, Vector3.down, child.transform.rotation, 20, noground))
+                            if (Physics.BoxCast(child.transform.position-(new Vector3(0, 3, 0)), child.transform.lossyScale / 2.1f, Vector3.down, child.transform.rotation, (myhit.GetComponent<Blocks>().displace - 3f), noground))
                             {
                                 canfall = false;
                                 Debug.Log(child.name + " Failed");
@@ -265,7 +426,7 @@ public class Movement : MonoBehaviour
                                 if (Physics.BoxCast(child.transform.position, child.transform.lossyScale / 1.9f,  Vector3.down, out hit2, child.transform.rotation, 20, blockmask))
                                 {
                                     canconnect = true;
-                                    if (canfall)
+                                    if (canfall && hassew)
                                     {
                                         //when a shoptem lands next to another block, it will lock it down.
                                         if (hit2.transform.parent != null)
@@ -273,6 +434,7 @@ public class Movement : MonoBehaviour
                                             if (hit2.transform.parent.GetComponent<Blocks>() != null)
                                             {
                                                 hit2.transform.parent.GetComponent<Blocks>().sewn += 1;
+                                                hit2.transform.parent.GetComponent<Blocks>().sewnToMe.Add(myhit.gameObject);
                                                 myhit.GetComponent<Blocks>().lockthis = hit2.transform.parent.gameObject;
                                             }
                                         }
@@ -280,10 +442,12 @@ public class Movement : MonoBehaviour
                                         {
                                             if (hit2.transform.GetComponent<Blocks>() != null)
                                             {
+                                                hit2.transform.GetComponent<Blocks>().sewnToMe.Add(myhit.gameObject);
                                                 hit2.transform.GetComponent<Blocks>().sewn += 1;
                                                 myhit.GetComponent<Blocks>().lockthis = hit2.transform.gameObject;
                                             }
                                         }
+                                        hassew = false;
                                     }
                                 }
                             }
@@ -307,6 +471,7 @@ public class Movement : MonoBehaviour
                             myhit.transform.position = detector.transform.position;
                             detector = null;
                             currentlayermask = laymask;
+                            myhit = null;
                         }
 
                     }
@@ -320,9 +485,12 @@ public class Movement : MonoBehaviour
         //if its a non-shop item it will be put back where it used to be.
         if (Input.GetMouseButtonDown(1) && myhit != null && holdblock)
         {
-            if (myhit.GetComponent<Blocks>().cost == 0)
+            if (myhit.GetComponent<Blocks>().cost == 0 || myhit.GetComponent<Blocks>().bugs != 0)
             {
                 myhit.transform.position = savedpos;
+                myhit.transform.eulerAngles = savedeulers;
+                myhit.GetComponent<Blocks>().Upwards = savedup;
+                myhit.transform.GetChild(0).transform.position = myhit.transform.position - Vector3.up * myhit.GetComponent<Blocks>().displace;
                 detector = null;
                 if (myhit.GetComponent<Blocks>().grab2 == false)
                 {
@@ -364,31 +532,20 @@ public class Movement : MonoBehaviour
         {
             //star
             Destroy(other.gameObject);
-            DataObserver.instance.IncrementStar();
         }
         if (other.tag == "Finish")
         {
-            other.tag = "Untagged"; //force functions to be called once
-            DontDestroyOnLoad(DataObserver.instance.gameObject);
-            SceneManager.LoadSceneAsync("Level_Select", LoadSceneMode.Additive).completed += delegate
-            {
-                SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name).completed += delegate
-                {
-                    DataObserver.instance.SetCompletion(true);
-                };
-            };
+            SceneManager.LoadScene(other.GetComponent<NextLevel>().level);
         }
         if (other.tag == "Enemy")
         {
             Die();
         }
     }
-
     public void Die()
     {
         Scene reloadscene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(reloadscene.name);
-        DataObserver.instance?.RefreshLevelSession();
     }
 
 }
