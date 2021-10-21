@@ -53,6 +53,9 @@ public class Movement : MonoBehaviour
     public GameObject highlight;
     public int counthighlight;
 
+    public GameObject tempparticles;
+    public GameObject collectstar;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -535,6 +538,8 @@ public class Movement : MonoBehaviour
         if (other.tag == "Star")
         {
             //star
+            tempparticles = Instantiate(collectstar, transform.position, transform.rotation);
+            tempparticles.transform.SetParent(this.transform);
             Destroy(other.gameObject);
         }
         if (other.tag == "Finish")
