@@ -9,22 +9,54 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum Room
 {
-    Sewing, Living, Porch, Kitchen, Outdoor
+    NULL = -1, Sewing, Living, Porch, Kitchen, Outdoor
 }
 
 public class LevelSelectManager : MonoBehaviour
 {
+    [Header("Customize color of level UI.")]
+    public Color levelCompleteColor;
+    public Color levelInCompleteColor;
+    [Header("Assign GameObjects to List")]
     [Tooltip("Menu order:\n-SewingRoom\n-LivingRoom\n-Porch\n-Kitchen\n-Outdoor")]
     [SerializeField]
     private GameObject[] _roomMenus;
     public GameObject curMenu { get; private set; }
 
-    private void Start()
-    {
+    private List<GameObject> _nextRoomGO;
 
+    /*
+        Below acts as the main driver to initialize all visual feedback for the level select menu.
+    */
+    private IEnumerator Start()
+    {
+        curMenu = _roomMenus[0];
+        _nextRoomGO = new List<GameObject>(GameObject.FindGameObjectsWithTag("MoveRoom"));
+        yield return new WaitWhile(delegate 
+        {
+            if (SaveManager.doesSaveFileExist)
+                return SaveManager.IsSaveFileOpen();
+            return false;
+        });
+        //TODO: create edit mode that will omit this so that all buttons are shown for testing
+        _UpdateRoomValues();
+    }
+
+    /// <summary>
+    /// Getter for the current room as an enum.
+    /// </summary>
+    /// <returns>Current room.</returns>
+    public Room GetCurrentRoom()
+    {
+        for (int i = 0; i < _roomMenus.Length; ++i) 
+            if (_roomMenus[i] == curMenu)
+                return (Room)i;
+        return Room.NULL;
     }
 
     /// <summary>
@@ -34,46 +66,95 @@ public class LevelSelectManager : MonoBehaviour
     public void FocusMenu(GameObject menuGO)
     {
         if (curMenu.Equals(menuGO)) return;
-        /*
-            TODO
-                When loading a given menu find all LevelButtons and update values
-                based on save data.
-        */
         curMenu.SetActive(false);
         menuGO.SetActive(true);
         curMenu = menuGO;
+        _UpdateRoomValues();
     }
 
     /// <summary>
-    /// Go back to Main Menu and save necessary data.
+    /// Go back to Main Menu.
     /// </summary>
     public void ReturnToMainMenu()
     {
-        //save data here if necessary
-        MenuManager.MoveToScene("MainMenu");
+        SceneManager.LoadScene("MainMenu");
     }
 
     /// <summary>
-    /// Check if the player should logically be able to move to the next room.
+    /// Refresh values of all the UI buttons in this room by checking SaveData.
     /// </summary>
-    /// <param name="newRoomGO">GameObject of room in question.</param>
-    /// <returns>True if the player can access room.</returns>
-    private bool _CanPlayerProgressTo(in GameObject newRoomGO) 
+    private void _UpdateRoomValues()
     {
-        var foundIndex = new List<GameObject>(_roomMenus).IndexOf(newRoomGO);
-        switch ((Room)foundIndex) 
+        var roomLevels = GameObject.FindObjectsOfType<LevelButton>(false);
+        print("rrromLev: " + roomLevels.Length);
+        //construct level paths as LinkedLists (start with "NoNextLevelers")
+        var noNextLevels = Array.FindAll(roomLevels, level => level.GetNextLevelButtons().Length == 0);
+        var levelPaths = new List<LinkedList<LevelButton>>();
+        int pathCounter = 0;
+        foreach (LevelButton nnl in noNextLevels)
         {
-            case Room.Sewing: break;
-            case Room.Living:
-                break;
-            case Room.Porch:
-                break;
-            case Room.Outdoor:
-                break;
-            default: 
-                Debug.LogError("GameObject: " + newRoomGO.name + " is not a valid menu.");
-                return false;
+
+            levelPaths.Add(new LinkedList<LevelButton>());
+            levelPaths[pathCounter].AddFirst(nnl); 
+            LevelButton prevLevel = nnl;
+            while (prevLevel != null)
+            {
+                levelPaths[pathCounter].AddFirst(prevLevel);
+                prevLevel = Array.Find(
+                    roomLevels, level => Array.Find(
+                        level.GetNextLevelButtons(), l => l.Equals(prevLevel)));
+            }
+            ++pathCounter;
         }
-        return true;
-    }
+
+        //check SaveData and refresh "completed" levels
+        var levelHT = SaveManager.RetrieveProgress().levelHashTables[(int)GetCurrentRoom()];
+        var completedLevels = new List<LevelButton>();
+        foreach (LevelButton l in roomLevels)
+        {
+            if (l.sceneAsset.sceneHash == -1) continue;
+            if (levelHT.TryGetValue(l.sceneAsset.sceneHash, out var data))
+                completedLevels.Add(l);
+        }
+
+        bool roomStarted = false;
+        //construct a list of completed and next levels and refresh all values
+            //else if level is NOT in list, SetActive(false)/deactivate them from reach
+        foreach (LevelButton level in roomLevels)
+        {
+            if (completedLevels.Contains(level))
+            {
+                level.RefreshValues(levelHT[level.sceneAsset.sceneHash]);
+                //display appropriate next levels
+                for (int i = 0; i < level.nextLevels.Length; ++i)
+                {
+                    if (level.nextLevels[i].TryGetComponent<LevelButton>(out var lb))
+                        lb.RefreshValues(new LevelData());
+                    else if (level.nextLevels[i].TryGetComponent<LevelButton>(out var b))
+                        b.gameObject.SetActive(false);
+                }
+            }
+            else if (!completedLevels.Find(l => l.nextLevels.Contains(level.GetComponent<RectTransform>())))
+            {
+                level.gameObject.SetActive(false);
+            }
+            //hide access to new rooms if appropriate
+            if (!level.isCompleted)
+            {
+                foreach (var nLevel in level.nextLevels)
+                    if (nLevel.CompareTag("MoveRoom"))
+                        nLevel.gameObject.SetActive(false);
+            }
+            else 
+                roomStarted = true;
+        }
+        //completely new to room reactivate new level if necessary
+        if (!roomStarted)
+        {
+            foreach (var path in levelPaths)
+            {
+                path.First.Value.gameObject.SetActive(true);
+            }
+        }
+    }//end _UpdateRoomValues()
 }

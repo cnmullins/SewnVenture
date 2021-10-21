@@ -50,3 +50,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: UI
+    uniqueID: 556785485
+    locked: 0
+  - name: Path
+    uniqueID: 2528502145
+    locked: 0
