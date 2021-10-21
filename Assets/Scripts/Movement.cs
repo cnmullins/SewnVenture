@@ -80,19 +80,19 @@ public class Movement : MonoBehaviour
             {
                 //basic movement, it checks if you can move and also checks if you will fall off.
                 //if you wont then you move.
-                if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f, walkmask))
+                if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.7f, walkmask))
                 {
                     transform.position += Vector3.forward * Time.deltaTime * speed;
                 }
-                else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f, walkmask))
+                else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.7f, walkmask))
                 {
                     transform.position += Vector3.back * Time.deltaTime * speed;
                 }
-                else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f, walkmask))
+                else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.7f, walkmask))
                 {
                     transform.position += Vector3.left * Time.deltaTime * speed;
                 }
-                else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f, walkmask))
+                else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.7f, walkmask))
                 {
                     transform.position += Vector3.right * Time.deltaTime * speed;
                 }
@@ -141,14 +141,18 @@ public class Movement : MonoBehaviour
             {
                 if (Sew.transform.gameObject.layer == 15 && Vector3.Distance(transform.position,new Vector3(Sew.transform.position.x,transform.position.y,Sew.transform.position.z)) < 10)
                 {
-                    swinging = true;
+                    
                     mydest = (new Vector3(((Sew.transform.position.x - transform.position.x) * 2) + transform.position.x, transform.position.y, ((Sew.transform.position.z - transform.position.z) * 2) + transform.position.z));
                     mydest -= transform.position;
-                    GetComponent<Rigidbody>().useGravity = false;
-                    //animateholder.transform.position = transform.position;
-                    //transform.SetParent(animateholder.transform);
-                    swinganim.SetTrigger("Swing");
-                    swingduration = 50;
+                    if (!Physics.Raycast(transform.position, (mydest).normalized, Vector3.Distance(Vector3.zero,mydest), blockmask))
+                    {
+                        GetComponent<Rigidbody>().useGravity = false;
+                        //animateholder.transform.position = transform.position;
+                        //transform.SetParent(animateholder.transform);
+                        swinganim.SetTrigger("Swing");
+                        swingduration = 50;
+                        swinging = true;
+                    }
                 }
             }
         }
