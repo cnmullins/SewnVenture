@@ -78,11 +78,7 @@ public static class SaveManager
             {
                 fStream.Close();
             }
-        }
-        catch (IOException)
-        {
-            return true;
-        }
+        } catch (IOException){ return true; }
         return false;
     }
 
@@ -103,13 +99,12 @@ public static class SaveManager
         if (curProg.levelHashTables[roomIndex].ContainsKey(hash))
         {
             curProg.levelHashTables[roomIndex][hash] = levelData;
-            Debug.Log("overwritting level data at: " + hash);
+            //Debug.Log("overwritting level data at: " + hash);
         }
         else
         {
-            
             curProg.levelHashTables[roomIndex].Add(hash, levelData);
-            Debug.Log("creating new save data at: " + hash);
+            //Debug.Log("creating new save data at: " + hash);
         }
         SaveProgress(curProg);
     }
@@ -119,15 +114,12 @@ public static class SaveManager
 [Serializable]
 public class SaveData
 {
-    public string[] customInput;
+    public OptionsData options;
     public Dictionary<int, LevelData>[] levelHashTables;
 
     public SaveData()
     {
-        customInput = new string[]
-        {//input corresponds to InputAction enum
-            "w", "s", "d", "a", "space", "r", "q", "up", "down"
-        };
+        options = new OptionsData();
         var numOfRooms = 5;
         levelHashTables = new Dictionary<int, LevelData>[numOfRooms];
         for(int i = 0; i < numOfRooms; ++i)
@@ -198,3 +190,20 @@ public class LevelData
     }
 }
 
+[Serializable]
+public class OptionsData {
+    public string[] customInput;
+    public Resolution currentResolution;
+    public float musicVol;
+    public float soundFXVol;
+
+    public OptionsData() {
+        customInput = new string[]
+        {//input index corresponds to InputAction enum
+            "w", "s", "d", "a", "space", "r", "q", "up", "down"
+        };
+        currentResolution = Screen.currentResolution;
+        musicVol = 1f;
+        soundFXVol = 1f;
+    }
+}
