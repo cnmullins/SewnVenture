@@ -53,9 +53,15 @@ public class Movement : MonoBehaviour
     public GameObject highlight;
     public int counthighlight;
 
+    public GameObject modelGO;
+    public GameObject deathPaticles;
+
+    private bool _isDead;
+
     // Start is called before the first frame update
     void Start()
     {
+        _isDead = false;
         currentlayermask = laymask;
         
     }
@@ -63,6 +69,9 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //don't update if the player is dead
+        if (_isDead) return;
+
         if (!swinging)
         {
             if (Input.GetKey(KeyCode.UpArrow) && mycam.orthographicSize < 10f)
@@ -532,6 +541,7 @@ public class Movement : MonoBehaviour
         {
             //star
             Destroy(other.gameObject);
+            DataObserver.instance.IncrementStar();
         }
         if (other.tag == "Finish")
         {
@@ -539,11 +549,21 @@ public class Movement : MonoBehaviour
         }
         if (other.tag == "Enemy")
         {
-            Die();
+            StartCoroutine(Die());
         }
     }
-    public void Die()
+
+    public IEnumerator Die()
     {
+        _isDead = true;
+        deathPaticles.SetActive(true);
+        //yield return new WaitForSeconds(0.5f);
+        //modelGO.GetComponent<Renderer>().material.color
+        modelGO.SetActive(false);
+        yield return new WaitForSeconds(1.5f);
+        deathPaticles.GetComponentInChildren<ParticleSystem>().Stop();
+        yield return UIListener.FadeScreen();
+        deathPaticles.SetActive(false);
         Scene reloadscene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(reloadscene.name);
     }
