@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class Movement : MonoBehaviour
 {
-    public int speed;
+    [Range(4f, 6f)]
+    public float speed;
     public Camera mycam;
     public Material mat;
     public Material mat2;
@@ -53,6 +54,9 @@ public class Movement : MonoBehaviour
     public GameObject highlight;
     public int counthighlight;
 
+    [Tooltip("Transform of the model GameObject")]
+    public Transform modelTrans;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -80,21 +84,28 @@ public class Movement : MonoBehaviour
             {
                 //basic movement, it checks if you can move and also checks if you will fall off.
                 //if you wont then you move.
+                var outDir = Vector3.zero;
                 if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f, walkmask))
                 {
-                    transform.position += Vector3.forward * Time.deltaTime * speed;
+                    outDir += Vector3.forward;
                 }
-                else if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f, walkmask))
+                if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f, walkmask))
                 {
-                    transform.position += Vector3.back * Time.deltaTime * speed;
+                    outDir += Vector3.back;
                 }
-                else if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f, walkmask))
+                if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f, walkmask))
                 {
-                    transform.position += Vector3.left * Time.deltaTime * speed;
+                    outDir += Vector3.left;
                 }
-                else if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f, walkmask))
+                if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f, walkmask))
                 {
-                    transform.position += Vector3.right * Time.deltaTime * speed;
+                    outDir += Vector3.right;
+                }
+                transform.position += outDir.normalized * speed * Time.deltaTime;
+                //rotate to movement direction
+                if (outDir != Vector3.zero)
+                {
+                    modelTrans.LookAt(modelTrans.position + outDir, Vector3.up);
                 }
             }
             //holding space lets you cut red strings.
