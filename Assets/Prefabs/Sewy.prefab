@@ -519,7 +519,7 @@ MonoBehaviour:
     m_Bits: 12416
   blockmask:
     serializedVersion: 2
-    m_Bits: 70145
+    m_Bits: 78337
   walkmask:
     serializedVersion: 2
     m_Bits: 12289
@@ -538,6 +538,10 @@ MonoBehaviour:
   swinganim: {fileID: 1813235382687902796}
   swingduration: 0
   mydest: {x: 0, y: 0, z: 0}
+  highlight: {fileID: 0}
+  counthighlight: 0
+  tempparticles: {fileID: 0}
+  collectstar: {fileID: 5720867386725287343, guid: 5f9ed601b40ec764c8c8d291ece4a55e, type: 3}
 --- !u!54 &317973703643508706
 Rigidbody:
   m_ObjectHideFlags: 0
