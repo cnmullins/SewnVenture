@@ -519,7 +519,7 @@ MonoBehaviour:
     m_Bits: 12416
   blockmask:
     serializedVersion: 2
-    m_Bits: 70145
+    m_Bits: 78337
   walkmask:
     serializedVersion: 2
     m_Bits: 12289
@@ -535,7 +535,7 @@ MonoBehaviour:
   hassew: 0
   swinging: 0
   swingX: 0
-  swinganim: {fileID: 0}
+  swinganim: {fileID: 8142613147071084954}
   swingduration: 0
   mydest: {x: 0, y: 0, z: 0}
   highlight: {fileID: 0}
@@ -1647,6 +1647,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5646135772073149735}
+  - component: {fileID: 8142613147071084954}
   m_Layer: 0
   m_Name: spherehold
   m_TagString: Untagged
@@ -1669,6 +1670,25 @@ Transform:
   m_Father: {fileID: 317973703643508708}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &8142613147071084954
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7410063866412731991}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 47f5940ca206b8e47bb64f288a56c778, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8865634567823663498
 GameObject:
   m_ObjectHideFlags: 0
