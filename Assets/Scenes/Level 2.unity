@@ -455,6 +455,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sewy
       objectReference: {fileID: 0}
+    - target: {fileID: 8054096976676808068, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1bb544e9e93c46908c9c97f6cffae7d, type: 3}
 --- !u!1 &178495810
@@ -1237,6 +1241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugDraw: 0
   sewn: 0
   stuck: 0
   cost: 0
@@ -1246,7 +1251,8 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  mats: []
+  detectorMeshRends:
+  - {fileID: 178495813}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!1 &501798449
@@ -3505,6 +3511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugDraw: 0
   sewn: 0
   stuck: 0
   cost: 0
@@ -3514,7 +3521,8 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  mats: []
+  detectorMeshRends:
+  - {fileID: 1239557211}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!23 &8581128140568102353

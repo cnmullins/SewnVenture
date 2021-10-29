@@ -1195,6 +1195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugDraw: 1
   sewn: 0
   stuck: 0
   cost: 0
@@ -1204,7 +1205,8 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  mats: []
+  detectorMeshRends:
+  - {fileID: 178495813}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!1 &501798449
@@ -3119,6 +3121,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8958558325651342962, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8958558325651342962, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8958558325651342962, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
 --- !u!1 &1953665761
@@ -3589,6 +3603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugDraw: 0
   sewn: 0
   stuck: 0
   cost: 0
@@ -3598,7 +3613,8 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  mats: []
+  detectorMeshRends:
+  - {fileID: 1239557211}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!23 &8581128140568102353
