@@ -1715,6 +1715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugDraw: 0
   sewn: 0
   stuck: 0
   cost: 0
@@ -1724,7 +1725,8 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  mats: []
+  detectorMeshRends:
+  - {fileID: 178495813}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!1 &501798449
@@ -2264,6 +2266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugDraw: 0
   sewn: 0
   stuck: 0
   cost: 0
@@ -2273,7 +2276,8 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  mats: []
+  detectorMeshRends:
+  - {fileID: 1282670431}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!65 &620253336
@@ -4779,6 +4783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugDraw: 0
   sewn: 0
   stuck: 0
   cost: 0
@@ -4788,7 +4793,8 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  mats: []
+  detectorMeshRends:
+  - {fileID: 1239557211}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!23 &8581128140568102353

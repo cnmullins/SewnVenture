@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour
     public Material mat2;
     public GameObject myhit;
     public bool holdblock = false;
-
+    [Tooltip("Feedback object for block placement.")]
     public GameObject detector;
   
     public Vector3 savedpos;
@@ -54,19 +54,28 @@ public class Movement : MonoBehaviour
     public GameObject highlight;
     public int counthighlight;
 
+    [Tooltip("Parent of object that holds the particle system.")]
+    public GameObject deathParticles;
     [Tooltip("Transform of the model GameObject")]
     public Transform modelTrans;
+    [Header("Block color material feedback")]
+    public Material greenTransMat;
+    public Material redTransMat;
+    private bool _isDead;
+    private MeshRenderer _detectorMeshRend;
 
     // Start is called before the first frame update
     void Start()
     {
         currentlayermask = laymask;
-        
+        _isDead = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //don't execute Update if dead
+        if (_isDead) return;
         if (!swinging)
         {
             if (Input.GetKey(KeyCode.UpArrow) && mycam.orthographicSize < 10f)
@@ -85,19 +94,19 @@ public class Movement : MonoBehaviour
                 //basic movement, it checks if you can move and also checks if you will fall off.
                 //if you wont then you move.
                 var outDir = Vector3.zero;
-                if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f, walkmask))
+                if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.9f, walkmask))
                 {
                     outDir += Vector3.forward;
                 }
-                if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f, walkmask))
+                if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.9f, walkmask))
                 {
                     outDir += Vector3.back;
                 }
-                if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f, walkmask))
+                if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.9f, walkmask))
                 {
                     outDir += Vector3.left;
                 }
-                if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f, walkmask))
+                if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.9f, walkmask))
                 {
                     outDir += Vector3.right;
                 }
@@ -182,6 +191,16 @@ public class Movement : MonoBehaviour
         {
             if (holdblock)
             {
+                //Set color feedback of projected block
+                print("holding!!!!!!!!");
+                Blocks detectBlock = detector.transform.root.GetComponentInChildren<Blocks>();
+                var outMat = (detectBlock.IsPlacementValid()) ? greenTransMat : redTransMat;
+                if (detectBlock.curMat != outMat)
+                {
+                    detectBlock.SetMaterialFeedback(outMat);
+                }
+                
+
                 if (Input.GetKeyDown("q"))
                 {
                     if (myhit.GetComponent<Blocks>().rotated == false)
@@ -250,10 +269,8 @@ public class Movement : MonoBehaviour
                         }
                     }
 
-
                     myhit.transform.RotateAround( myhit.transform.position,Vector3.right, 90);
                     myhit.transform.GetChild(0).transform.position = myhit.transform.position - Vector3.up * myhit.GetComponent<Blocks>().displace;
-
                 }
             }
             if (!holdblock)
@@ -326,13 +343,12 @@ public class Movement : MonoBehaviour
                             }
                             else
                             {
-                                {
-                                    vertdisplace = myhit.transform.localScale.z;
-                                }
+                                vertdisplace = myhit.transform.localScale.z;
                             }
                             //if an upwards hasnt been set, set it to Y.
                            
                             detector = myhit.transform.GetChild(0).gameObject;
+                            _detectorMeshRend = detector.GetComponent<MeshRenderer>();
                             myhit.GetComponent<MeshRenderer>().material = mat2;
                             savedpos = myhit.transform.position;
                             savedup = myhit.GetComponent<Blocks>().Upwards;
@@ -371,6 +387,7 @@ public class Movement : MonoBehaviour
                         myhit = Instantiate(myhit.GetComponent<ShopItem>().Purchase, transform.position, transform.rotation);
                         myhit.GetComponent<Blocks>().Upwards = "y"; //this specific line is for rotation
                         detector = myhit.transform.GetChild(0).gameObject;
+                        _detectorMeshRend = detector.GetComponent<MeshRenderer>();
                         myhit.GetComponent<MeshRenderer>().material = mat2;
                         savedpos = myhit.transform.position;
                         myhit.layer = 6;
@@ -427,6 +444,7 @@ public class Movement : MonoBehaviour
                             {
                                 canfall = false;
                                 Debug.Log(child.name + " Failed");
+                                //StartCoroutine(child.GetComponentInParent<Blocks>().FeedbackUntilButtonUp(greenTransMat));
                             }
                             if (myhit.GetComponent<Blocks>().cost != 0)
                             {
@@ -543,6 +561,7 @@ public class Movement : MonoBehaviour
         {
             //star
             Destroy(other.gameObject);
+            DataObserver.instance.IncrementStar();
         }
         if (other.tag == "Finish")
         {
@@ -550,11 +569,19 @@ public class Movement : MonoBehaviour
         }
         if (other.tag == "Enemy")
         {
-            Die();
+            StartCoroutine(Die());
         }
     }
-    public void Die()
+    
+    public IEnumerator Die()
     {
+        _isDead = true;
+        deathParticles.SetActive(true);
+        modelTrans.gameObject.SetActive(false);
+        yield return new WaitForSeconds(1.5f);
+        deathParticles.GetComponentInChildren<ParticleSystem>().Stop();
+        yield return UIListener.FadeScreen();
+        deathParticles.SetActive(false);
         Scene reloadscene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(reloadscene.name);
     }

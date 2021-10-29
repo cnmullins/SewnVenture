@@ -37,7 +37,7 @@ public class DataObserver : MonoBehaviour
 
     #region Incrementor_Functions
     /// <summary>
-    /// Increment the Red Thread value while maintaining it as a Tuple.
+    /// Increment the Red Thread value.
     /// </summary>
     public void IncrementRedThread() 
     {
@@ -45,7 +45,7 @@ public class DataObserver : MonoBehaviour
     }
 
     /// <summary>
-    /// Increment the Star value while maintaining it as a Tuple.
+    /// Increment the Star value.
     /// </summary>
     public void IncrementStar() 
     {

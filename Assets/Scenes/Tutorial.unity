@@ -797,7 +797,7 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  mats: []
+  detectorMeshRend: {fileID: 178495813}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!1 &520006614
@@ -1422,6 +1422,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3533761296363961001, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8958558325651342962, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8958558325651342962, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8958558325651342962, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
