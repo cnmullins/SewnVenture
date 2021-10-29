@@ -214,7 +214,10 @@ MonoBehaviour:
   Upwards: y
   displace: 0
   children: []
+  sewnToMe: []
+  mats: []
   lockthis: {fileID: 0}
+  bugs: 0
 --- !u!1 &5768154200645415514
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +278,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0c44e1ee82474473292b616e05cd0e90, type: 2}
+  - {fileID: 2100000, guid: 6bf095919ba44964baf5bc42bc7280b8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -1723,7 +1723,10 @@ MonoBehaviour:
   Upwards: 
   displace: 0
   children: []
+  sewnToMe: []
+  mats: []
   lockthis: {fileID: 0}
+  bugs: 0
 --- !u!1 &501798449
 GameObject:
   m_ObjectHideFlags: 0
@@ -2269,7 +2272,10 @@ MonoBehaviour:
   Upwards: 
   displace: 0
   children: []
+  sewnToMe: []
+  mats: []
   lockthis: {fileID: 0}
+  bugs: 0
 --- !u!65 &620253336
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4433,7 +4439,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8638901766302582584, guid: b554dec1484355e4e8e3de5512eb2e95, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b554dec1484355e4e8e3de5512eb2e95, type: 3}
@@ -4781,7 +4787,10 @@ MonoBehaviour:
   Upwards: 
   displace: 0
   children: []
+  sewnToMe: []
+  mats: []
   lockthis: {fileID: 0}
+  bugs: 0
 --- !u!23 &8581128140568102353
 MeshRenderer:
   m_ObjectHideFlags: 0
