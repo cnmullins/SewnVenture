@@ -1874,6 +1874,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ParticleParent
       objectReference: {fileID: 0}
+    - target: {fileID: 2439298711232535767, guid: 3bdfaf37d55371142a837a6b932bd9f3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8096325915986886713, guid: 3bdfaf37d55371142a837a6b932bd9f3, type: 3}
       propertyPath: m_RootOrder
       value: 1
