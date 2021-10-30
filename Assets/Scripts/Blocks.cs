@@ -86,7 +86,7 @@ public class Blocks : MonoBehaviour
         bool valid = false;
         foreach (var mRend in detectorMeshRends)
         {
-            Vector3 extents = GetComponent<BoxCollider>().bounds.extents * 0.99f;
+            Vector3 extents = GetComponent<Collider>().bounds.extents * 0.99f;
             //swap axis if rotated
             if (rotated) extents = new Vector3(extents.z, extents.y, extents.x);
             print("extents: " + extents);
