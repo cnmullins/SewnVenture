@@ -107,7 +107,6 @@ public static class SaveManager
         }
         else
         {
-            
             curProg.levelHashTables[roomIndex].Add(hash, levelData);
             Debug.Log("creating new save data at: " + hash);
         }
@@ -152,8 +151,8 @@ public class LevelData
     /// </summary>
     public bool[] goldThreadCollected;
     public bool completed;
-    public int levelHash;// { get; private set; }
-    public Room levelRoom;// { get; private set; }
+    public int levelHash;
+    public Room levelRoom;
 
     public LevelData()
     {
@@ -183,6 +182,7 @@ public class LevelData
     /// <returns>Most complete object of the two parameter datas.</returns>
     public static LevelData ReturnMoreComplete(LevelData data1, LevelData data2)
     {
+        //not implemented
         return null;
     }
 

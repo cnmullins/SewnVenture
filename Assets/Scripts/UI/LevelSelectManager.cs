@@ -19,6 +19,9 @@ public enum Room
 
 public class LevelSelectManager : MonoBehaviour
 {
+#if UNITY_EDITOR
+    public bool debugMode = false;
+#endif    
     [Header("Customize color of level UI.")]
     public Color levelCompleteColor;
     public Color levelInCompleteColor;
@@ -37,6 +40,9 @@ public class LevelSelectManager : MonoBehaviour
     {
         curMenu = _roomMenus[0];
         _nextRoomGO = new List<GameObject>(GameObject.FindGameObjectsWithTag("MoveRoom"));
+#if UNITY_EDITOR
+        if (debugMode) yield return null;
+#endif
         yield return new WaitWhile(delegate 
         {
             if (SaveManager.doesSaveFileExist)
