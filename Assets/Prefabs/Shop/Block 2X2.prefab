@@ -300,6 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugDraw: 0
   sewn: 0
   stuck: 0
   cost: 4
@@ -308,4 +309,8 @@ MonoBehaviour:
   Upwards: 
   displace: 0
   children: []
+  sewnToMe: []
+  detectorMeshRends:
+  - {fileID: 7477827441313647609}
   lockthis: {fileID: 0}
+  bugs: 0
