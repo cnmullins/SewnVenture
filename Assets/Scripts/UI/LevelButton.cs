@@ -141,7 +141,6 @@ public class LevelButton : MonoBehaviour
     /// </summary>
     public void UpdateLevelPath()
     {
-        print(name + " CALLLED UpdateLevelPath()");
         var levelPath = GetComponent<LineRenderer>();
         levelPath.alignment = LineAlignment.View;
         int positions = nextLevels.Length * 2;
@@ -151,18 +150,15 @@ public class LevelButton : MonoBehaviour
         var levelStack = new Stack<RectTransform>(nextLevels);
         for (int i = 0; i < positions; ++i)
         {
-            /*
-                TODO:
-                    -DEBUG THIS
-            */
             //set every other position as self and the other as the next level
             if (i % 2 == 1)
             {
                 //if this "nextLevel" is just a button to the next room skip drawing it
                 var nextButton = levelStack.Peek().GetComponentInChildren<Button>();
-                if (!nextButton.onClick.GetPersistentMethodName(0).Equals("LoadLevel"))
+                if (!nextButton.onClick.GetPersistentMethodName(0).Equals("LoadLevel") 
+                && !nextButton.onClick.GetPersistentMethodName(0).Equals("FocusMenu"))
                     ++i;
-                else //if (!nextButton.onClick.GetPersistentMethodName(0).Equals("FocusMenu"))
+                else
                     levelPath.SetPosition(i, levelStack.Pop().position);
             }
             else
@@ -216,5 +212,11 @@ public class LevelButton : MonoBehaviour
         data.redThreadCollected = new int[2] { 0, redThread };
         data.goldThreadCollected = new bool[2] { false, hasGoldThread };
         return data;
+    }
+
+    private void _IfThisPrint(string thisName, string msg)
+    {
+        if (name.Equals(thisName))
+            print(msg);
     }
 }

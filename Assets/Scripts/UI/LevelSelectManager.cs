@@ -38,11 +38,11 @@ public class LevelSelectManager : MonoBehaviour
     */
     private IEnumerator Start()
     {
-        curMenu = _roomMenus[0];
-        _nextRoomGO = new List<GameObject>(GameObject.FindGameObjectsWithTag("MoveRoom"));
 #if UNITY_EDITOR
         if (debugMode) yield return null;
 #endif
+        curMenu = _roomMenus[0];
+        _nextRoomGO = new List<GameObject>(GameObject.FindGameObjectsWithTag("MoveRoom"));
         yield return new WaitWhile(delegate 
         {
             if (SaveManager.doesSaveFileExist)

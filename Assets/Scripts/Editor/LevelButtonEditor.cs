@@ -25,16 +25,18 @@ public class LevelButtonEditor : Editor
 
     public override void OnInspectorGUI() 
     {
+        bool updated = false;
         if (GUILayout.Button("Update All Buttons"))
         {
             foreach (var t in GameObject.FindObjectsOfType<LevelButton>())
             {
                 t.EditorRefresh();
             }
+            updated = true;
         }
 
         base.OnInspectorGUI();
-        if (GUI.changed)
+        if (GUI.changed && !updated)
         {
             thisInstance.EditorRefresh();
         }

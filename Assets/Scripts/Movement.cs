@@ -71,6 +71,7 @@ public class Movement : MonoBehaviour
         currentlayermask = laymask;
         _isDead = false;
         _gridGO = GameObject.FindGameObjectWithTag("Grid");
+        _gridGO.SetActive(false);
     }
 
     // Update is called once per frame
