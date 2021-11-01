@@ -4,13 +4,20 @@ Author: Christian Mullins
 Date: 9/11/21
 Summary: Handles all UI logic throughout the Main Menu scene.
 */
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject _mainMenuUI;
+    [SerializeField]
+    private Dropdown _aspectRatioDD;
+    [SerializeField]
+    private Text _windowButtonText;
 
     private GameObject _curMenu;
 
@@ -30,6 +37,12 @@ public class MenuManager : MonoBehaviour
         _curMenu.SetActive(false);
         menuGO.SetActive(true);
         _curMenu = menuGO;
+        
+        if (_curMenu.name.StartsWith("Options"))
+        {
+            _windowButtonText.text = (Screen.fullScreen) ? "Window" : "Fullscreen";
+            _SetAspectRatioDropDown();
+        }
     }
 
     /// <summary>
@@ -70,4 +83,52 @@ public class MenuManager : MonoBehaviour
     {
         Application.OpenURL(link);
     }
+        #region OptionsFunctions
+
+    /// <summary>
+    /// Any saveable data that has been changed in the options, apply them here
+    /// </summary>
+    public void ApplyOptions()
+    {
+        //resolution
+        string setResStr = _aspectRatioDD.captionText.text;
+        //parse string to ints so you can actually set the resolution
+        var oldRes = Screen.currentResolution;
+        if (!setResStr.Equals(oldRes.width + " x "  + oldRes.height))
+        {
+            int xIndex, width, height;
+            xIndex = setResStr.IndexOf('x');
+            width = Convert.ToInt32(setResStr.Substring(0, xIndex).Trim());
+            height = Convert.ToInt32(setResStr.Substring(xIndex + 1).Trim());
+            Screen.SetResolution(width, height, FullScreenMode.Windowed, Screen.currentResolution.refreshRate);
+        }
+        //sound
+        //possible button remapping
+        //etc.
+        //TODO:
+            //Pack options into object and submit to SaveManager
+        
+    }
+
+    public void ToggleFullscreen()
+    {
+        Screen.fullScreen = !Screen.fullScreen;
+        //change font text
+        _windowButtonText.text = (Screen.fullScreen) ? "Window" : "Fullscreen";
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void _SetAspectRatioDropDown()
+    {
+        _aspectRatioDD.ClearOptions();
+        var arList = new List<string>();
+        foreach (var res in Screen.resolutions)
+        {
+            arList.Add(res.width + " x " + res.height);
+        }
+        _aspectRatioDD.AddOptions(arList);
+    }
+    #endregion
 }
