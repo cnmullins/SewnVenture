@@ -40,6 +40,7 @@ public class Moriwing : MonoBehaviour
                 if (windleft == 0)
                 {
                     flapping = false;
+                    mori.GetComponent<MoriBody>().canflap -= 1;
                 }
                 if (Random.Range(0, 20) == 0)
                 {

@@ -28,35 +28,34 @@ public class MoriHead : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (peck)
+        if (returning)
+        {
+            transform.position -= targetdist / 100;
+            distance += 1;
+            if (distance == 100)
+            {
+                returning = false;
+                Mori.GetComponent<MoriBody>().canpeck = true;
+            }
+        }
+        else if (pecking)
+        {
+            transform.position += targetdist / 100;
+            distance -= 1;
+            if (distance == 0)
+            {
+                Instantiate(Spawner, transform.position - Vector3.up, Quaternion.identity);
+                pecking = false;
+                returning = true;
+            }
+        }
+        else if (peck)
         {
             pecking = true;
             peck = false;
             targetpos = player.transform.position;
             targetdist = player.transform.position - transform.position;
             distance = 100;
-        }
-        if (pecking)
-        {
-            transform.position += targetdist/100;
-            distance -= 1;
-            if (distance == 0)
-            {
-                Instantiate(Spawner, transform.position-Vector3.up, Quaternion.identity);
-                pecking = false;
-                returning = true;
-            }
-        }
-        else if (returning)
-        {
-            transform.position -= targetdist / 100;
-            distance += 1;
-            if (distance == 100)
-            {
-                
-                
-                returning = false;
-            }
         }
     }
 }

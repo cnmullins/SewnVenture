@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3065453987944386536}
   - component: {fileID: 3065453987944386543}
   - component: {fileID: 3065453987944386542}
-  m_Layer: 2
+  m_Layer: 17
   m_Name: Silverfish
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ MonoBehaviour:
   speed: 1
   blockmask:
     serializedVersion: 2
-    m_Bits: 78081
+    m_Bits: 209153
   walkmask:
     serializedVersion: 2
     m_Bits: 12289
