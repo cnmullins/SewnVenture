@@ -17,6 +17,10 @@ public class MoriBody : MonoBehaviour
     public GameObject footR;
     public GameObject wingL;
     public GameObject wingR;
+    // stat for hp of mori
+    public int health = 3;
+    // stat for mori's special threads
+    public int Phealth = 3;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,20 +32,25 @@ public class MoriBody : MonoBehaviour
     {
         if (canpeck && canflap == 0)
         {
-            if (Random.Range(0, peckchance) == 0)
+            if ((Random.Range(0, peckchance-(peckchance*((-freefeet*2+4+ ((6 - (health + Phealth))/2)) /10)))) < 1)
             {
                 canpeck = false;
                 head.GetComponent<MoriHead>().peck = true;
+                Debug.Log("peck");
             }
-            else if (Random.Range(0, flapchance) == 0)
+            else if (Random.Range(0, flapchance- (flapchance * ((6-(health+Phealth)) / 10))) < 1)
             {
                 canflap = 2;
                 wingL.GetComponent<Moriwing>().doflap = true;
                 wingR.GetComponent<Moriwing>().doflap = true;
+                Debug.Log("flap");
             }
         }
-       
-            
-       
+       if (freefeet == 0)
+        {
+            head.GetComponent<MoriHead>().sewable = true;
+        }
+
+
     }
 }
