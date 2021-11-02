@@ -13,6 +13,7 @@ TagManager:
   - Star
   - SewnDown
   - Ground
+  - Wind
   layers:
   - Default
   - TransparentFX
