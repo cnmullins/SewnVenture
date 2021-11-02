@@ -108,10 +108,9 @@ public class Silverfish : MonoBehaviour
     {
         if (other.tag == "Wind")
         {
-            if (Physics.Raycast(transform.position + other.transform.forward * other.transform.eulerAngles.z/2, transform.up * -0.1f, 0.3f, walkmask))
-            {
-                transform.position += other.transform.forward * other.transform.eulerAngles.z/2;
-            }
+
+                transform.position += other.transform.forward * other.transform.eulerAngles.z;
+
         }
     }
 }
