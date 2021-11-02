@@ -17,12 +17,13 @@ public class Morifeet : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "HeldDown")
+        if (other.tag == "HeldDown" && !sewn)
         {
             Debug.Log("ow");
             other.transform.parent.gameObject.layer = 2;
             sewn = true;
             mori.GetComponent<MoriBody>().freefeet -= 1;
+            gameObject.layer = 0;
         }
 
     }

@@ -22,6 +22,7 @@ public class MoriWind : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        strength += (Time.deltaTime * 0.003f);
         transform.position += transform.forward * strength * (Time.deltaTime * 50);
     }
     private void OnTriggerStay(Collider other)

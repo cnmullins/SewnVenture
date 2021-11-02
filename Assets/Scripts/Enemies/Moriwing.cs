@@ -42,7 +42,7 @@ public class Moriwing : MonoBehaviour
                     flapping = false;
                     mori.GetComponent<MoriBody>().canflap -= 1;
                 }
-                if (Random.Range(0, 20) == 0)
+                if (Random.Range(0, 7) == 0)
                 {
                     Instantiate(feather, new Vector3(transform.position.x, 4.5f, transform.position.z), transform.rotation);
                 }
