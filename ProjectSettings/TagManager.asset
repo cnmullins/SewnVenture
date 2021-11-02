@@ -13,8 +13,7 @@ TagManager:
   - Star
   - SewnDown
   - Ground
-  - MoveRoom
-  - Grid
+  - Wind
   layers:
   - Default
   - TransparentFX
