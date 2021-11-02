@@ -39,9 +39,8 @@ public class LevelSelectManager : MonoBehaviour
     private IEnumerator Start()
     {
 #if UNITY_EDITOR
-        if (debugMode) yield return null;
+        if (debugMode) goto skipLoad;
 #endif
-        curMenu = _roomMenus[0];
         _nextRoomGO = new List<GameObject>(GameObject.FindGameObjectsWithTag("MoveRoom"));
         yield return new WaitWhile(delegate 
         {
@@ -49,8 +48,11 @@ public class LevelSelectManager : MonoBehaviour
                 return SaveManager.IsSaveFileOpen();
             return false;
         });
-        //TODO: create edit mode that will omit this so that all buttons are shown for testing
         _UpdateRoomValues();
+#if UNITY_EDITOR
+        skipLoad:{}
+#endif
+        curMenu = _roomMenus[0];
     }
 
     /// <summary>
@@ -75,6 +77,9 @@ public class LevelSelectManager : MonoBehaviour
         curMenu.SetActive(false);
         menuGO.SetActive(true);
         curMenu = menuGO;
+#if UNITY_EDITOR        
+        if (debugMode) return;
+#endif
         _UpdateRoomValues();
     }
 

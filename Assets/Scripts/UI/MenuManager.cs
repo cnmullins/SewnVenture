@@ -5,8 +5,6 @@ Date: 9/11/21
 Summary: Handles all UI logic throughout the Main Menu scene.
 */
 using System;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,8 +14,6 @@ public class MenuManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject _mainMenuUI;
-    [SerializeField]
-    private GameObject _optionsUI;
     [SerializeField]
     private Dropdown _aspectRatioDD;
     [SerializeField]
@@ -41,11 +37,11 @@ public class MenuManager : MonoBehaviour
         _curMenu.SetActive(false);
         menuGO.SetActive(true);
         _curMenu = menuGO;
-
-        if (_curMenu == _optionsUI)
+        
+        if (_curMenu.name.StartsWith("Options"))
         {
-            _SetAspectRatioDropDown();
             _windowButtonText.text = (Screen.fullScreen) ? "Window" : "Fullscreen";
+            _SetAspectRatioDropDown();
         }
     }
 
@@ -80,12 +76,14 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
+    //TODO:
+        //Make an async function so that you can read the data and then display progress.
+
     public void OpenLink(string link)
     {
         Application.OpenURL(link);
     }
-
-    #region OptionsFunctions
+        #region OptionsFunctions
 
     /// <summary>
     /// Any saveable data that has been changed in the options, apply them here
