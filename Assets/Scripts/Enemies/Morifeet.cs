@@ -8,7 +8,7 @@ public class Morifeet : MonoBehaviour
     public GameObject mori;
     //if the foot is sewn down
     public bool sewn;
-
+    public GameObject sewme;
 
     // Update is called once per frame
     void Update()
@@ -24,6 +24,7 @@ public class Morifeet : MonoBehaviour
             sewn = true;
             mori.GetComponent<MoriBody>().freefeet -= 1;
             gameObject.layer = 0;
+            sewme = other.gameObject;
         }
 
     }

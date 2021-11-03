@@ -5,7 +5,7 @@ using UnityEngine;
 public class MoriHead : MonoBehaviour
 {
     //reference to mori's body
-    public GameObject Mori;
+    public GameObject mori;
     //prefab for a silverfish hole
     public GameObject Spawner;
     // player ref
@@ -25,7 +25,9 @@ public class MoriHead : MonoBehaviour
     public GameObject warn;
     public float waittime = 1.5f;
     public bool sewn;
-    public bool sewable; 
+    public bool sewable;
+    public GameObject sewme;
+    public GameObject moriblock;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,7 +44,7 @@ public class MoriHead : MonoBehaviour
             if (distance == 100)
             {
                 returning = false;
-                Mori.GetComponent<MoriBody>().canpeck = true;
+                mori.GetComponent<MoriBody>().canpeck = true;
 
             }
         }
@@ -55,10 +57,10 @@ public class MoriHead : MonoBehaviour
                 waiting = false;
                 returning = true;
                 Instantiate(Spawner, transform.position - Vector3.up, Quaternion.identity);
-                if (sewable)
-                {
+                
                     gameObject.layer = 0;
-                }
+                
+                gameObject.tag = "Untagged";
             }
         }
         else if (pecking)
@@ -74,6 +76,10 @@ public class MoriHead : MonoBehaviour
                 {
                     gameObject.layer = 8;
                 }
+                else
+                {
+                    gameObject.tag = "Enemy";
+                }
             }
         }
         else if (peck)
@@ -84,20 +90,38 @@ public class MoriHead : MonoBehaviour
             targetpos = player.transform.position;
             targetdist = player.transform.position - transform.position;
             distance = 100;
-
+            
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "HeldDown" && this.gameObject.layer == 8)
+        if (sewn && other.tag == "HeldDown" && this.gameObject.layer == 8)
+        {
+            Destroy(other.gameObject);
+        }
+        else if (other.tag == "HeldDown" && this.gameObject.layer == 8)
         {
             Debug.Log("ow");
             other.transform.parent.gameObject.layer = 2;
             other.transform.parent.position = transform.position + Vector3.forward + Vector3.left;
             sewn = true;
-            Mori.GetComponent<MoriBody>().freefeet -= 1;
+            sewme = other.gameObject;
+            if (mori.GetComponent<MoriBody>().down == 0)
+            {
+                mori.GetComponent<MoriBody>().down = 1;
+            }
+            moriblock.transform.position = player.transform.position + Vector3.up * 20;
+            moriblock.GetComponent<MoriCube>().falldist = 20;
+            moriblock.layer = 11;
+            Instantiate(warn, player.transform.position, Quaternion.identity);
             //gameObject.layer = 0;
             //gameObject.tag = "Untagged";
+        }
+        if (other.tag == "AttackMori" && this.gameObject.layer == 8)
+        {
+            mori.GetComponent<MoriBody>().Damaged();
+            mori.GetComponent<MoriBody>().health -= 1;
+            
         }
 
     }

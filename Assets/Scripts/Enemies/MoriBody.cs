@@ -21,6 +21,10 @@ public class MoriBody : MonoBehaviour
     public int health = 3;
     // stat for mori's special threads
     public int Phealth = 3;
+    //for when mori is down, what phase is it in?
+    public int down;
+    //mori's block is part of the battle
+    public GameObject moriblock;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,11 +50,33 @@ public class MoriBody : MonoBehaviour
                 Debug.Log("flap");
             }
         }
-       if (freefeet == 0)
+        if (freefeet == 0)
         {
             head.GetComponent<MoriHead>().sewable = true;
         }
-
-
+    }
+    //taking damage resets a lot of stuff, such as putting the feet back and such.
+    public void Damaged()
+    {
+        head.GetComponent<MoriHead>().sewn = false;
+        freefeet = 2;
+        footR.gameObject.layer = 8;
+        footL.gameObject.layer = 8;
+        //remove all sewn objects;
+        Destroy(footR.GetComponent<Morifeet>().sewme.transform.parent.gameObject);
+        Destroy(footL.GetComponent<Morifeet>().sewme.transform.parent.gameObject);
+        Destroy(head.GetComponent<MoriHead>().sewme.transform.parent.gameObject);
+        foreach( GameObject sewd in GameObject.FindGameObjectsWithTag("HeldDown"))
+        {
+            Destroy(sewd.transform.parent.gameObject);
+        }
+        moriblock.layer = 2;
+        moriblock.GetComponent<MoriCube>().falldist = -20;
+        Instantiate(head.GetComponent<MoriHead>().warn, head.GetComponent<MoriHead>().player.transform.position, Quaternion.identity);
+        //increase the wind attack's power
+        wingR.GetComponent<Moriwing>().windset += 1;
+        wingL.GetComponent<Moriwing>().windset += 1;
+        wingR.GetComponent<Moriwing>().windchance -= 5;
+        wingR.GetComponent<Moriwing>().windchance -= 5;
     }
 }

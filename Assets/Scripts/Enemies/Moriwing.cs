@@ -44,7 +44,7 @@ public class Moriwing : MonoBehaviour
                 }
                 if (Random.Range(0, 7) == 0)
                 {
-                    Instantiate(feather, new Vector3(transform.position.x, 4.5f, transform.position.z), transform.rotation);
+                    Instantiate(feather, new Vector3(transform.position.x, 4.5f, transform.position.z) + transform.right * Random.Range(-3f, 3f), transform.rotation);
                 }
             }
         }
