@@ -66,9 +66,9 @@ public class Blocks : MonoBehaviour
         _detectorExtents = new Vector3[detectorMeshRends.Length];
         for (int i = 0; i < detectorMeshRends.Length; ++i)
         {
-            detectorMeshRends[i].GetComponent<BoxCollider>().enabled = true;
-            _detectorExtents[i] = detectorMeshRends[i].GetComponent<BoxCollider>().bounds.extents;
-            detectorMeshRends[i].GetComponent<BoxCollider>().enabled = false;
+            detectorMeshRends[i].GetComponent<Collider>().enabled = true;
+            _detectorExtents[i] = detectorMeshRends[i].GetComponent<Collider>().bounds.extents;
+            detectorMeshRends[i].GetComponent<Collider>().enabled = false;
         }
     }
 
