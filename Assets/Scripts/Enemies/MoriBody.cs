@@ -43,7 +43,7 @@ public class MoriBody : MonoBehaviour
     {
         if (waiting > 0)
         {
-            waiting -= Time.deltaTime;
+            waiting -= Time.fixedDeltaTime;
         }
         if (Phealth > 0 && health > 0 && canpeck && canflap == 0 && waiting <= 0)
         {
