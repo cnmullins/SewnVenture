@@ -19,6 +19,9 @@ public enum Room
 
 public class LevelSelectManager : MonoBehaviour
 {
+#if UNITY_EDITOR
+    public bool debugMode = false;
+#endif    
     [Header("Customize color of level UI.")]
     public Color levelCompleteColor;
     public Color levelInCompleteColor;
@@ -35,7 +38,9 @@ public class LevelSelectManager : MonoBehaviour
     */
     private IEnumerator Start()
     {
-        curMenu = _roomMenus[0];
+#if UNITY_EDITOR
+        if (debugMode) goto skipLoad;
+#endif
         _nextRoomGO = new List<GameObject>(GameObject.FindGameObjectsWithTag("MoveRoom"));
         yield return new WaitWhile(delegate 
         {
@@ -43,8 +48,11 @@ public class LevelSelectManager : MonoBehaviour
                 return SaveManager.IsSaveFileOpen();
             return false;
         });
-        //TODO: create edit mode that will omit this so that all buttons are shown for testing
         _UpdateRoomValues();
+#if UNITY_EDITOR
+        skipLoad:{}
+#endif
+        curMenu = _roomMenus[0];
     }
 
     /// <summary>
@@ -69,6 +77,9 @@ public class LevelSelectManager : MonoBehaviour
         curMenu.SetActive(false);
         menuGO.SetActive(true);
         curMenu = menuGO;
+#if UNITY_EDITOR        
+        if (debugMode) return;
+#endif
         _UpdateRoomValues();
     }
 

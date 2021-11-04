@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Crow Boss.unity.meta
 guid: 3c83f1b68f6b65f409b807987c317b44
+========
+guid: 6514f17c4eada134986826dd60f62d63
+>>>>>>>> main:Assets/Scenes/Wreck Tutorial.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

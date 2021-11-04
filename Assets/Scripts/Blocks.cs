@@ -7,7 +7,6 @@ public class Blocks : MonoBehaviour
     //for debugging purposes
 #if UNITY_EDITOR
     public bool debugDraw = false;
-    //private RaycastHit[] hits;
 
     private void OnDrawGizmos() 
     {
@@ -32,6 +31,8 @@ public class Blocks : MonoBehaviour
     public List<GameObject> sewnToMe;
     //public List<Material> mats;
     public MeshRenderer[] detectorMeshRends;
+    private Vector3[] _detectorExtents;
+
     
     public GameObject lockthis;
     public int bugs;
@@ -61,6 +62,14 @@ public class Blocks : MonoBehaviour
             children.Add(this.gameObject);
         }
         curMat = detectorMeshRends[0].material;
+
+        _detectorExtents = new Vector3[detectorMeshRends.Length];
+        for (int i = 0; i < detectorMeshRends.Length; ++i)
+        {
+            detectorMeshRends[i].GetComponent<BoxCollider>().enabled = true;
+            _detectorExtents[i] = detectorMeshRends[i].GetComponent<BoxCollider>().bounds.extents;
+            detectorMeshRends[i].GetComponent<BoxCollider>().enabled = false;
+        }
     }
 
     public void Update()
@@ -84,25 +93,43 @@ public class Blocks : MonoBehaviour
     public bool IsPlacementValid()
     {
         bool valid = false;
-        foreach (var mRend in detectorMeshRends)
+        for (int i = 0; i < detectorMeshRends.Length; ++i)
         {
-            Vector3 extents = GetComponent<Collider>().bounds.extents * 0.99f;
+            //var myBC = mRend.GetComponent<Collider>();
+            Vector3 extents = _detectorExtents[i];
             //swap axis if rotated
             if (rotated) extents = new Vector3(extents.z, extents.y, extents.x);
-            print("extents: " + extents);
-            //DebugDrawBox(transform.position, extents);
-            var hits = Physics.BoxCastAll(transform.position, extents, Vector3.down, transform.rotation);
-            for (int i = 0; i < hits.Length; ++i)
+            //print("extents: " + extents);
+            //var hits = Physics.BoxCastAll(detectorMeshRends[i].transform.position, extents, Vector3.down, mRend.transform.rotation);
+            var hits = Physics.OverlapBox(detectorMeshRends[i].transform.position, extents, detectorMeshRends[i].transform.rotation);
+            for (int ii = 0; ii < hits.Length; ++ii)
             {
-                switch (hits[i].transform.gameObject.layer)
+                //print("ferp: " + hits[i].name);
+                switch (hits[ii].transform.gameObject.layer)
                 {
-                    case 14: return false;
-                    case 0: return false;
-                    case 6: valid = true;
+                    
+                    case 6: //Held layer
+                    case 8: valid = true; //Ground layer
+                        continue;
+                    case 14://NoPlace layer
+                        //print("noplace");
+                        //return false;
+                    case 16: //Wreck layer
+                    case 0: //Default layer
+                        //print("default");
+                        if (_IsColliderPenetrated(detectorMeshRends[i].GetComponent<Collider>(), hits[ii]))
+                            valid = true;
+                        else
+                            return false;
                         continue;
                     default: continue;
                 }
-            }    
+            }
+            if (hits.Length == 0) 
+            {
+                //print("I no touchie");
+                valid = true;
+            }
         }
         return valid;
     }
@@ -120,31 +147,6 @@ public class Blocks : MonoBehaviour
         curMat = newMat;
     }
 
-    /// <summary>
-    /// Christian's lame attempt to debug boxcasts
-    /// </summary>
-    /// <param name="center">Position of center of box cast.</param>
-    /// <param name="size"></param>
-    public static void DebugDrawBox()
-    {
-        /*
-        var boxColor = Color.magenta;
-        //top left
-        //top right
-        //bottom left
-        //bottom right
-        for (int x = 0; x < 3; ++x)
-        {
-            for (int y = 0; y < 3; ++y)
-            {
-                float posNegX = (x % 2 == 0) ? 1f : -1f;
-                float posNegY = (y % 2 == 0) ? 1f : -1f;
-                Debug.DrawLine(center + (posNegX * size), center - (posNegY * size), Color.magenta);
-            }
-        }
-        */
-    }
-
     public IEnumerator FeedbackUntilButtonUp(Material feedbackMat)
     {
         foreach (var mRend in detectorMeshRends)
@@ -153,6 +155,16 @@ public class Blocks : MonoBehaviour
         foreach (var mRend in detectorMeshRends)
             mRend.material = curMat;
         //detectorMeshRend.material = curMat;
+    }
+
+    private bool _IsColliderPenetrated(Collider col1, Collider col2)
+    {
+        Physics.ComputePenetration(
+            col1, col1.transform.position, col1.transform.rotation,
+            col2, col2.transform.position, col2.transform.rotation,
+            out var dir, out var distancePenetrated);
+        //print("distacePenetrated: " + distancePenetrated);
+        return distancePenetrated < 1f;
     }
 
 }

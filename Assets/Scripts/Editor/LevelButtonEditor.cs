@@ -25,30 +25,21 @@ public class LevelButtonEditor : Editor
 
     public override void OnInspectorGUI() 
     {
-        
-        /*
-            Create drop down menu of the scene list
-        */
+        bool updated = false;
         if (GUILayout.Button("Update All Buttons"))
         {
-            /*
             foreach (var t in GameObject.FindObjectsOfType<LevelButton>())
             {
-                t.RefreshValues();
-                t.UpdateLevelPath();
+                t.EditorRefresh();
             }
-            */
-            Debug.LogWarning("Umm, this button is broken bud.");
+            updated = true;
         }
 
         base.OnInspectorGUI();
-        /*
-        if (GUI.changed)
+        if (GUI.changed && !updated)
         {
-            //TODO: create new function to replace the parameterless version of RefreshValues()
-            thisInstance.RefreshValues();
+            thisInstance.EditorRefresh();
         }
-        */
         serializedObject.ApplyModifiedProperties();
     }
 }

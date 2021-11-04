@@ -63,6 +63,7 @@ public class Movement : MonoBehaviour
     public Material redTransMat;
     private bool _isDead;
     private MeshRenderer _detectorMeshRend;
+    private GameObject _gridGO;
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +71,8 @@ public class Movement : MonoBehaviour
         deathParticles.SetActive(false);
         currentlayermask = laymask;
         _isDead = false;
+        _gridGO = GameObject.FindGameObjectWithTag("Grid");
+        _gridGO.SetActive(false);
     }
 
     // Update is called once per frame
@@ -136,12 +139,14 @@ public class Movement : MonoBehaviour
                 {
                     sewing = true;
                     overlay.gameObject.SetActive(true);
+                    _gridGO.SetActive(true);
                 }
             }
             else if (Input.GetKeyDown("r") && sewing && !holdblock)
             {
                 sewing = false;
                 overlay.gameObject.SetActive(false);
+                _gridGO.SetActive(false);
                 if (myhit != null)
                 {
                     myhit.GetComponent<MeshRenderer>().material = mat2;
@@ -193,7 +198,7 @@ public class Movement : MonoBehaviour
             if (holdblock)
             {
                 //Set color feedback of projected block
-                print("holding!!!!!!!!");
+                //print("holding!!!!!!!!");
                 Blocks detectBlock = detector.transform.root.GetComponentInChildren<Blocks>();
                 var outMat = (detectBlock.IsPlacementValid()) ? greenTransMat : redTransMat;
                 if (detectBlock.curMat != outMat)
@@ -214,7 +219,6 @@ public class Movement : MonoBehaviour
                         myhit.GetComponent<Blocks>().rotated = false;
                     }
                     
-
                     //myhit.transform.eulerAngles += new Vector3(0, 90, 0);
                     myhit.transform.RotateAround(myhit.transform.position, Vector3.up, 90);
                     myhit.transform.GetChild(0).transform.position = myhit.transform.position - Vector3.up * myhit.GetComponent<Blocks>().displace;
