@@ -21,7 +21,7 @@ public class Moriwing : MonoBehaviour
     //this is the next wind you're going to blow
     public GameObject nextwind;
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //doflap tells the wing to start attacking
         if (doflap)
