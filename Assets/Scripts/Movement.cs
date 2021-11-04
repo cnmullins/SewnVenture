@@ -128,7 +128,7 @@ public class Movement : MonoBehaviour
             }
             if (Input.GetKeyUp("space"))
             {
-                transform.tag = "Untagged";
+                transform.tag = "Player";
             }
             //presing R toggles sewing mode.
             //you can only exit sewing mode if you arent holding any blocks.

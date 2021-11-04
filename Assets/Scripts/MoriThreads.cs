@@ -16,8 +16,9 @@ public class MoriThreads : MonoBehaviour
         {
             transform.parent.GetComponent<Blocks>().sewnToMe.Remove(this.gameObject);
             transform.parent.GetComponent<Blocks>().sewn -= 1;
-            mori.GetComponent<MoriBody>().Damaged();
             mori.GetComponent<MoriBody>().Phealth -= 1;
+            mori.GetComponent<MoriBody>().Damaged();
+            
             Destroy(gameObject);
         }
     }

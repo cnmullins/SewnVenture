@@ -35,7 +35,7 @@ public class MoriWind : MonoBehaviour
         if (other.tag == "Token")
         {
 
-            other.transform.position += (Time.deltaTime * 50) * transform.forward * strength/1.5f;
+            other.transform.position += (Time.deltaTime * 50) * transform.forward * strength/1.2f;
         }
     }
 }

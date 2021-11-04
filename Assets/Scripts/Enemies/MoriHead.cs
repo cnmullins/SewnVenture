@@ -122,8 +122,9 @@ public class MoriHead : MonoBehaviour
         }
         if (other.tag == "AttackMori" && this.gameObject.layer == 8)
         {
-            mori.GetComponent<MoriBody>().Damaged();
             mori.GetComponent<MoriBody>().health -= 1;
+            mori.GetComponent<MoriBody>().Damaged();
+            
             
         }
 

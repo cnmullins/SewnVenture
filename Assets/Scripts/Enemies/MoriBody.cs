@@ -39,7 +39,7 @@ public class MoriBody : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (waiting > 0)
         {
@@ -47,6 +47,8 @@ public class MoriBody : MonoBehaviour
         }
         if (Phealth > 0 && health > 0 && canpeck && canflap == 0 && waiting <= 0)
         {
+            Debug.Log("b" + ((Random.Range(0, peckchance - (peckchance * ((-freefeet * 2 + 4 + ((6 - (health + Phealth)) / 2)) / 10)))) < 1));
+            Debug.Log("a" + (Random.Range(0, flapchance - (flapchance * ((6 - (health + Phealth)) / 10))) < 1));
             if ((Random.Range(0, peckchance - (peckchance * ((-freefeet * 2 + 4 + ((6 - (health + Phealth)) / 2)) / 10)))) < 1)
             {
                 canpeck = false;
@@ -55,6 +57,7 @@ public class MoriBody : MonoBehaviour
             }
             else if (Random.Range(0, flapchance - (flapchance * ((6 - (health + Phealth)) / 10))) < 1)
             {
+                
                 canflap = 2;
                 wingL.GetComponent<Moriwing>().doflap = true;
                 wingR.GetComponent<Moriwing>().doflap = true;
@@ -70,6 +73,7 @@ public class MoriBody : MonoBehaviour
         {
             fly();
         }
+        
     }
     //taking damage resets a lot of stuff, such as putting the feet back and such.
     public void Damaged()
@@ -83,6 +87,8 @@ public class MoriBody : MonoBehaviour
         Destroy(footR.GetComponent<Morifeet>().sewme.transform.parent.gameObject);
         Destroy(footL.GetComponent<Morifeet>().sewme.transform.parent.gameObject);
         Destroy(head.GetComponent<MoriHead>().sewme.transform.parent.gameObject);
+        footR.GetComponent<Morifeet>().sewn = false;
+        footL.GetComponent<Morifeet>().sewn = false;
         foreach (GameObject sewd in GameObject.FindGameObjectsWithTag("HeldDown"))
         {
             Destroy(sewd.transform.parent.gameObject);
@@ -101,6 +107,10 @@ public class MoriBody : MonoBehaviour
         if (health == 0)
         {
             fly();
+        }
+        if (Phealth == 0)
+        {
+            standon.GetComponent<Blocks>().sewn = 0;
         }
     }
     public void fly()

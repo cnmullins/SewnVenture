@@ -94,14 +94,17 @@ public class Silverfish : MonoBehaviour
     {
         if (other.tag == "Ground" || other.tag == "Block")
         {
-            if (transform.parent.transform.parent != null)
+            if (transform.parent != null)
             {
-                if (transform.parent.transform.parent.GetComponent<Blocks>() != null)
+                if (transform.parent.transform.parent != null)
                 {
-                    transform.parent.transform.parent.GetComponent<Blocks>().bugs -= 1;
+                    if (transform.parent.transform.parent.GetComponent<Blocks>() != null)
+                    {
+                        transform.parent.transform.parent.GetComponent<Blocks>().bugs -= 1;
+                    }
                 }
+                Destroy(gameObject);
             }
-            Destroy(gameObject);
         }
     }
     private void OnTriggerStay(Collider other)
