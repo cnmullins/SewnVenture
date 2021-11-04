@@ -51,7 +51,7 @@ public class LevelSelectManager : MonoBehaviour
                 return SaveManager.IsSaveFileOpen();
             return false;
         });
-        _UpdateRoomValues();
+        //_UpdateRoomValues();
 #if UNITY_EDITOR
         skipLoad:{}
 #endif
@@ -88,9 +88,9 @@ public class LevelSelectManager : MonoBehaviour
         curMenu = menuGO;
         _SetBackgroundModel(GetCurrentRoom());
 #if UNITY_EDITOR        
-        //if (debugMode) return;
+        if (debugMode) return;
 #endif
-        _UpdateRoomValues();
+        //_UpdateRoomValues();
     }
 
     /// <summary>
@@ -107,7 +107,7 @@ public class LevelSelectManager : MonoBehaviour
     private void _UpdateRoomValues()
     {
         var roomLevels = GameObject.FindObjectsOfType<LevelButton>(false);
-        print("rrromLev: " + roomLevels.Length);
+        //print("rrromLev: " + roomLevels.Length);
         //construct level paths as LinkedLists (start with "NoNextLevelers")
         var noNextLevels = Array.FindAll(roomLevels, level => level.GetNextLevelButtons().Length == 0);
         var levelPaths = new List<LinkedList<LevelButton>>();
@@ -128,6 +128,8 @@ public class LevelSelectManager : MonoBehaviour
             ++pathCounter;
         }
 
+        //if (Application.isEditor)
+
         Dictionary<int, LevelData> levelHT;
         //check SaveData and refresh "completed" levels
         try
@@ -136,7 +138,7 @@ public class LevelSelectManager : MonoBehaviour
         }
         catch (Exception)
         {
-            return;
+            levelHT = new Dictionary<int, LevelData>();
         }
         var completedLevels = new List<LevelButton>();
         foreach (LevelButton l in roomLevels)

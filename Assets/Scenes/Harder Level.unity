@@ -1302,6 +1302,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8958558325651342962, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8958558325651342962, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8958558325651342962, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
 --- !u!1 &430957920
@@ -2777,7 +2789,10 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  detectorMeshRends: []
+  detectorMeshRends:
+  - {fileID: 342896736}
+  - {fileID: 1604667432}
+  - {fileID: 1595422391}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!65 &1128820108
@@ -5418,7 +5433,11 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  detectorMeshRends: []
+  detectorMeshRends:
+  - {fileID: 1389278309}
+  - {fileID: 1364401300}
+  - {fileID: 1641292663}
+  - {fileID: 352214149}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!65 &2123805140
@@ -5581,7 +5600,10 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  detectorMeshRends: []
+  detectorMeshRends:
+  - {fileID: 8385830618881219759}
+  - {fileID: 1935611510}
+  - {fileID: 278714951}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!23 &80923156758677016
@@ -6358,7 +6380,8 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  detectorMeshRends: []
+  detectorMeshRends:
+  - {fileID: 80923158034429045}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!23 &8505388446661416447

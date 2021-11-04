@@ -1188,7 +1188,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3065453987944386539, guid: 49299b4d400694c9891e1c6d822dd0f0, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3065453987944386539, guid: 49299b4d400694c9891e1c6d822dd0f0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5366,7 +5366,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3889765478810503469, guid: 8d5f433cd4850cb458e38070bb99d143, type: 3}
       propertyPath: m_RootOrder
-      value: 88
+      value: 89
       objectReference: {fileID: 0}
     - target: {fileID: 3889765478810503469, guid: 8d5f433cd4850cb458e38070bb99d143, type: 3}
       propertyPath: m_LocalScale.x
@@ -6520,7 +6520,13 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  detectorMeshRends: []
+  detectorMeshRends:
+  - {fileID: 317315205}
+  - {fileID: 1257820265}
+  - {fileID: 358025345}
+  - {fileID: 1017471771}
+  - {fileID: 1243991509}
+  - {fileID: 1435500929}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!65 &1136243229
@@ -10683,7 +10689,10 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  detectorMeshRends: []
+  detectorMeshRends:
+  - {fileID: 3607540746748568074}
+  - {fileID: 523495221623635368}
+  - {fileID: 1286002876}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!33 &3228595664880989699

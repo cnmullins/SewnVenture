@@ -25,12 +25,14 @@ public class LevelSelectManagerEditor : Editor
     {
         if (GUILayout.Button("Data Path"))
             Debug.Log("SavedData goes to: " + Application.persistentDataPath);
+        /*            
         if (GUILayout.Button("Focus Sewing Room"))
             thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Sewing]);
         if (GUILayout.Button("Focus Living Room"))
             thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Living]);
         if (GUILayout.Button("Focus Outside"))
             thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Outdoor]);
+        */
         base.OnInspectorGUI();
         /*
         if (GUI.changed)
