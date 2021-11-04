@@ -16,10 +16,9 @@ public class MoriFeather : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 5, checkground))
         {
-            
+            //feathers are destroyed by silverfish or the ground.
             if (hit.transform.gameObject.tag == "Enemy")
             {
-                
                 Destroy(this.gameObject);
             }
         }
