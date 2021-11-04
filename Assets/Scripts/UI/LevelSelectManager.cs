@@ -128,8 +128,16 @@ public class LevelSelectManager : MonoBehaviour
             ++pathCounter;
         }
 
+        Dictionary<int, LevelData> levelHT;
         //check SaveData and refresh "completed" levels
-        var levelHT = SaveManager.RetrieveProgress().levelHashTables[(int)GetCurrentRoom()];
+        try
+        {
+            levelHT = SaveManager.RetrieveProgress().levelHashTables[(int)GetCurrentRoom()];
+        }
+        catch (Exception)
+        {
+            return;
+        }
         var completedLevels = new List<LevelButton>();
         foreach (LevelButton l in roomLevels)
         {

@@ -23,6 +23,8 @@ public class LevelSelectManagerEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        if (GUILayout.Button("Data Path"))
+            Debug.Log("SavedData goes to: " + Application.persistentDataPath);
         if (GUILayout.Button("Focus Sewing Room"))
             thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Sewing]);
         if (GUILayout.Button("Focus Living Room"))
