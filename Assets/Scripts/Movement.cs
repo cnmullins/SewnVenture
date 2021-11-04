@@ -68,6 +68,7 @@ public class Movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        deathParticles.SetActive(false);
         currentlayermask = laymask;
         _isDead = false;
         _gridGO = GameObject.FindGameObjectWithTag("Grid");
@@ -571,12 +572,16 @@ public class Movement : MonoBehaviour
         {
             SceneManager.LoadScene(other.GetComponent<NextLevel>().level);
         }
+       
+    }
+    private void OnTriggerStay(Collider other)
+    {
         if (other.tag == "Enemy")
         {
             StartCoroutine(Die());
         }
     }
-    
+
     public IEnumerator Die()
     {
         _isDead = true;

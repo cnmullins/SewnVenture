@@ -47,7 +47,7 @@ public class Silverfish : MonoBehaviour
                 
             
         }
-        if (!Physics.BoxCast(transform.position, new Vector3(0.25f, 0.01f, 0.01f), transform.forward, transform.rotation, Time.deltaTime * speed+0.5f, blockmask) && Physics.Raycast(transform.position + transform.forward * (Time.deltaTime * speed + 0.5f), transform.up*-0.1f, 0.3f, walkmask))
+        if (!Physics.BoxCast(transform.position, new Vector3(0.25f, 0.01f, 0.01f), transform.forward, transform.rotation, Time.deltaTime * speed+0.5f, blockmask) && (Physics.Raycast(transform.position + transform.forward * (Time.deltaTime * speed + 0.5f), transform.up*-0.1f, 0.3f, walkmask)|| (Physics.Raycast(transform.position + transform.forward * (Time.deltaTime * speed + 0.45f), transform.up * -0.1f, 0.3f, walkmask))))
         {
             transform.position += transform.forward * Time.deltaTime * speed;
         }
@@ -102,6 +102,15 @@ public class Silverfish : MonoBehaviour
                 }
             }
             Destroy(gameObject);
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Wind")
+        {
+
+                transform.position += other.transform.forward * other.transform.eulerAngles.z;
+
         }
     }
 }

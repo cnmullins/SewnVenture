@@ -13,8 +13,9 @@ TagManager:
   - Star
   - SewnDown
   - Ground
-  - MoveRoom
-  - Grid
+  - Wind
+  - HeldDown
+  - AttackMori
   layers:
   - Default
   - TransparentFX
@@ -33,7 +34,7 @@ TagManager:
   - NoPlace
   - Swing
   - Wreck
-  - 
+  - Enemy
   - 
   - 
   - 
