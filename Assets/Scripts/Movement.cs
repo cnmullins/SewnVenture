@@ -73,6 +73,8 @@ public class Movement : MonoBehaviour
         _isDead = false;
         _gridGO = GameObject.FindGameObjectWithTag("Grid");
         _gridGO.SetActive(false);
+        sewing = false;
+        swinging = false;
     }
 
     // Update is called once per frame
