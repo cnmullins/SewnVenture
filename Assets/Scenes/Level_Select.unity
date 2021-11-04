@@ -2295,7 +2295,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Disclaimer: There''s a bug where the player gets stuck at the start of
-    the level, restart the level and it''s fixed.
+    the level, restart the level (Esc) and it''s fixed.
 
     (Build only bug)'
 --- !u!222 &1097342983
