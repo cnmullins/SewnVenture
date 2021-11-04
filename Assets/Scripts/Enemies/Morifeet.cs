@@ -17,6 +17,7 @@ public class Morifeet : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        //when someone sews down the feet they can then sew down mori's head
         if (other.tag == "HeldDown" && !sewn)
         {
             Debug.Log("ow");

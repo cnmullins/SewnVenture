@@ -56,10 +56,12 @@ public class MoriHead : MonoBehaviour
                 waittime = 1.5f;
                 waiting = false;
                 returning = true;
-                Instantiate(Spawner, transform.position - Vector3.up, Quaternion.identity);
+                if (gameObject.tag != "Untagged")
+                {
+                    Instantiate(Spawner, transform.position - Vector3.up, Quaternion.identity);
+                }
                 
-                    gameObject.layer = 0;
-                
+                gameObject.layer = 0;
                 gameObject.tag = "Untagged";
             }
         }
@@ -72,13 +74,14 @@ public class MoriHead : MonoBehaviour
 
                 pecking = false;
                 waiting = true;
+                gameObject.tag = "Enemy";
                 if (sewable)
                 {
                     gameObject.layer = 8;
                 }
                 else
                 {
-                    gameObject.tag = "Enemy";
+                    
                 }
             }
         }
@@ -115,7 +118,7 @@ public class MoriHead : MonoBehaviour
             moriblock.layer = 11;
             Instantiate(warn, player.transform.position, Quaternion.identity);
             //gameObject.layer = 0;
-            //gameObject.tag = "Untagged";
+            gameObject.tag = "Untagged";
         }
         if (other.tag == "AttackMori" && this.gameObject.layer == 8)
         {

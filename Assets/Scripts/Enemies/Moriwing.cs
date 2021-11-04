@@ -23,6 +23,7 @@ public class Moriwing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //doflap tells the wing to start attacking
         if (doflap)
         {
             flapping = true;
@@ -31,6 +32,8 @@ public class Moriwing : MonoBehaviour
         }
         if (flapping)
         {
+            //when flapping the wing will create the wind with a chance relative to the windchance int
+            //it will sometimes create feathers too as to allow the player to get the tokens they need.
             if (Random.Range(0,windchance) == 0)
             {
                 nextwind = Instantiate(wind, new Vector3(transform.position.x,3.5f,transform.position.z), transform.rotation);
