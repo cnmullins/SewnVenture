@@ -4,22 +4,6 @@ using UnityEngine;
 
 public class Blocks : MonoBehaviour
 {
-    //for debugging purposes
-#if UNITY_EDITOR
-    public bool debugDraw = false;
-
-    private void OnDrawGizmos() 
-    {
-        if (debugDraw)
-        {
-            foreach (var mRend in detectorMeshRends)
-            {
-                Gizmos.DrawWireCube(mRend.transform.position, mRend.GetComponent<BoxCollider>().bounds.extents);
-            }
-        }
-    }
-#endif
-
     public int sewn = 0;
     public bool stuck;
     public int cost;
@@ -97,6 +81,7 @@ public class Blocks : MonoBehaviour
         {
             //var myBC = mRend.GetComponent<Collider>();
             Vector3 extents = _detectorExtents[i];
+            if (cost != 0) extents *= 1.1f;
             //swap axis if rotated
             if (rotated) extents = new Vector3(extents.z, extents.y, extents.x);
             //print("extents: " + extents);
@@ -104,28 +89,37 @@ public class Blocks : MonoBehaviour
             var hits = Physics.OverlapBox(detectorMeshRends[i].transform.position, extents, detectorMeshRends[i].transform.rotation);
             for (int ii = 0; ii < hits.Length; ++ii)
             {
-                //print("ferp: " + hits[i].name);
+
+                //TODO:
+                    //MAKE SURE FEEDBACK ACCOUNTS FOR SHOP BLOCKS BEING PLACED ON BASE GROUND
                 switch (hits[ii].transform.gameObject.layer)
                 {
                     
                     case 6: //Held layer
-                    case 8: valid = true; //Ground layer
+                    case 8: if (cost == 0) valid = true; //Ground layer
                         continue;
+                    case 11: //Grabbable2 layer
                     case 14://NoPlace layer
-                        //print("noplace");
-                        //return false;
                     case 16: //Wreck layer
                     case 0: //Default layer
-                        //print("default");
-                        if (_IsColliderPenetrated(detectorMeshRends[i].GetComponent<Collider>(), hits[ii]))
+                        
+                        //make sure if this object has a cost that it influences feedback
+                        if (cost != 0)
+                        {
                             valid = true;
+                        }
                         else
-                            return false;
+                        {
+                            if (_IsColliderPenetrated(detectorMeshRends[i].GetComponent<Collider>(), hits[ii]))
+                                valid = true;
+                            else
+                                return false;
+                        }
                         continue;
                     default: continue;
                 }
             }
-            if (hits.Length == 0) 
+            if (hits.Length == 0 && cost == 0)
             {
                 //print("I no touchie");
                 valid = true;

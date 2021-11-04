@@ -9,10 +9,10 @@ BoxCollider:
   m_GameObject: {fileID: 5859649027468820712}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 0.010395865, y: 0.009848511, z: 0.0099514}
-  m_Center: {x: -0.000046948193, y: -5.9604643e-10, z: -0.000051446557}
+  m_Size: {x: 0.010395865, y: 0.010137015, z: 0.0099514}
+  m_Center: {x: -0.000046948193, y: 0.00014425218, z: -0.000051446557}
 --- !u!1 &7477827441313647610
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,7 +126,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7477827442007441943
 Transform:
   m_ObjectHideFlags: 0
@@ -156,7 +156,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7477827442007441939}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -314,7 +314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugDraw: 0
   sewn: 0
   stuck: 0
   cost: 4

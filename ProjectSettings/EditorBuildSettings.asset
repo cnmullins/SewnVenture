@@ -26,4 +26,25 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Shop Tutorial.unity
     guid: b1a9b9ba60b3640bc9fb53259c725d21
+  - enabled: 1
+    path: Assets/Scenes/Crow Boss.unity
+    guid: 3c83f1b68f6b65f409b807987c317b44
+  - enabled: 1
+    path: Assets/Scenes/Harder Level.unity
+    guid: b249f592f21cb4a08b3505f00a41d044
+  - enabled: 1
+    path: Assets/Scenes/Skillgate.unity
+    guid: 30258e02680acb044b6e68151c0c1337
+  - enabled: 1
+    path: Assets/Scenes/Swing tutorial.unity
+    guid: 99550417916e1496384830ae03b8a666
+  - enabled: 1
+    path: Assets/Scenes/TornLevel.unity
+    guid: c50c4237d52e34f6fbe1de49eff138cb
+  - enabled: 1
+    path: Assets/Scenes/TornLevelTwo.unity
+    guid: a75649393f0cf44048f3edcba3bf4469
+  - enabled: 1
+    path: Assets/Scenes/Wreck Tutorial.unity
+    guid: 6514f17c4eada134986826dd60f62d63
   m_configObjects: {}
