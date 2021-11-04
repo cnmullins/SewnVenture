@@ -65,7 +65,7 @@ public class MoriBody : MonoBehaviour
         {
             head.GetComponent<MoriHead>().sewable = true;
         }
-        
+        //this checks if the player has moved the block
         if (Vector3.Distance(blockpos, standon.transform.position) > 1)
         {
             fly();
