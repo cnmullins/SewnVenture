@@ -44,7 +44,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TornLevelTwo.unity
     guid: a75649393f0cf44048f3edcba3bf4469
-  - enabled: 1
-    path: Assets/Scenes/Wreck Tutorial.unity
-    guid: 6514f17c4eada134986826dd60f62d63
   m_configObjects: {}
