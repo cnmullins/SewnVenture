@@ -215,7 +215,8 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  mats: []
+  detectorMeshRends:
+  - {fileID: 5768154201325119049}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!1 &5768154200645415514

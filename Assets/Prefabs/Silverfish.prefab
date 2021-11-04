@@ -121,6 +121,7 @@ MonoBehaviour:
   canturn: 0
   myscale: {x: 0, y: 0, z: 0}
   tempparent: {fileID: 0}
+  bloodGO: {fileID: 8980839892974046322, guid: 95104aba3c7d4a240a82c51e30d1a735, type: 3}
 --- !u!54 &3065453987944386542
 Rigidbody:
   m_ObjectHideFlags: 0

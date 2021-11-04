@@ -541,7 +541,7 @@ MonoBehaviour:
   highlight: {fileID: 0}
   counthighlight: 0
   deathParticles: {fileID: 8054096976676808068}
-  modelTrans: {fileID: 0}
+  modelTrans: {fileID: 3034048912471504141}
   greenTransMat: {fileID: 2100000, guid: 0a2ff98135d4ac449a60639b672c502f, type: 2}
   redTransMat: {fileID: 2100000, guid: 03f5de32aa4de447da1af21a8641e54a, type: 2}
 --- !u!54 &317973703643508706
