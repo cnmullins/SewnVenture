@@ -88,7 +88,7 @@ public class LevelSelectManager : MonoBehaviour
         curMenu = menuGO;
         _SetBackgroundModel(GetCurrentRoom());
 #if UNITY_EDITOR        
-        if (debugMode) return;
+        //if (debugMode) return;
 #endif
         _UpdateRoomValues();
     }
