@@ -4740,7 +4740,7 @@ MonoBehaviour:
     m_Bits: 12289
   sewing: 0
   overlay: {fileID: 317973703829673478}
-  thread: 0
+  thread: 12
   aimpoint: {x: 0, y: 0, z: 0}
   savedeulers: {x: 0, y: 0, z: 0}
   savedup: 
