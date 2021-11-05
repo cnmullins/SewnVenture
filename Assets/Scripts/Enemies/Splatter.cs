@@ -16,8 +16,11 @@ public class Splatter : MonoBehaviour
     public void Splat()
     {
         int rand = Random.Range(0, splatMats.Length);
-        var blockPar = GetComponentInParent<Blocks>().transform;
-        transform.SetParent(blockPar, true);
+        if (transform.parent.transform.parent != null)
+        {
+            var blockPar = transform.parent.transform.parent;
+            transform.SetParent(blockPar, true);
+        }
         GetComponent<MeshRenderer>().material = splatMats[rand];
         var tempMat = GetComponent<MeshRenderer>().material;
         rand = Random.Range(0, colors.Length);
