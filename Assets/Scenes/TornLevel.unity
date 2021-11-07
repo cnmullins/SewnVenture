@@ -216,7 +216,7 @@ Transform:
   m_LocalScale: {x: 5, y: 4, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &75976665
 GameObject:
@@ -341,7 +341,7 @@ Transform:
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &151859976
 GameObject:
@@ -447,7 +447,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3065453987944386539, guid: 49299b4d400694c9891e1c6d822dd0f0, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3065453987944386539, guid: 49299b4d400694c9891e1c6d822dd0f0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -604,6 +604,72 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &343883584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 343883587}
+  - component: {fileID: 343883586}
+  - component: {fileID: 343883585}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &343883585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343883584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &343883586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343883584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &343883587
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343883584}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &375835457
 PrefabInstance:
@@ -1104,7 +1170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugDraw: 0
   sewn: 0
   stuck: 0
   cost: 0
@@ -1114,7 +1179,9 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  detectorMeshRends: []
+  detectorMeshRends:
+  - {fileID: 1652788893}
+  - {fileID: 898949568}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!65 &669643006
@@ -1594,7 +1661,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2798434312665248151, guid: 2c696f64103274a9b8fa65839bd868b6, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2798434312665248151, guid: 2c696f64103274a9b8fa65839bd868b6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1670,7 +1737,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugDraw: 0
   sewn: 0
   stuck: 0
   cost: 0
@@ -1680,7 +1746,8 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  detectorMeshRends: []
+  detectorMeshRends:
+  - {fileID: 873592047}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!65 &976166177
@@ -2044,7 +2111,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &1227448590
 GameObject:
@@ -2781,7 +2848,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8840967193732427295, guid: 4909bee2c748543ebb31d96e8c1c4d47, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8840967193732427295, guid: 4909bee2c748543ebb31d96e8c1c4d47, type: 3}
       propertyPath: m_LocalScale.x
@@ -3393,7 +3460,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3533761296363961001, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
       propertyPath: m_RootOrder
-      value: 19
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3533761296363961001, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3870,7 +3937,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76ef7a724af0437b96254e0766e6015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugDraw: 0
   sewn: 0
   stuck: 0
   cost: 0
@@ -3880,7 +3946,8 @@ MonoBehaviour:
   displace: 0
   children: []
   sewnToMe: []
-  detectorMeshRends: []
+  detectorMeshRends:
+  - {fileID: 516283145}
   lockthis: {fileID: 0}
   bugs: 0
 --- !u!65 &2137280096

@@ -14,7 +14,7 @@ using UnityEngine.UI;
 
 public enum Room
 {
-    NULL = -1, Sewing, Living, Porch, Kitchen, Outdoor
+    NULL = -1, Sewing, Living, Outdoor, Kitchen
 }
 
 public class LevelSelectManager : MonoBehaviour
@@ -29,6 +29,9 @@ public class LevelSelectManager : MonoBehaviour
     [Tooltip("Menu order:\n-SewingRoom\n-LivingRoom\n-Porch\n-Kitchen\n-Outdoor")]
     [SerializeField]
     private GameObject[] _roomMenus;
+    public GameObject[] roomMenus => _roomMenus;
+    [SerializeField]
+    private GameObject[] _backgroundModels;
     public GameObject curMenu { get; private set; }
 
     private List<GameObject> _nextRoomGO;
@@ -48,7 +51,7 @@ public class LevelSelectManager : MonoBehaviour
                 return SaveManager.IsSaveFileOpen();
             return false;
         });
-        _UpdateRoomValues();
+        //_UpdateRoomValues();
 #if UNITY_EDITOR
         skipLoad:{}
 #endif
@@ -73,14 +76,21 @@ public class LevelSelectManager : MonoBehaviour
     /// <param name="menuGO">Root empty GO that holds a menu.</param>
     public void FocusMenu(GameObject menuGO)
     {
+        if (curMenu == null)
+        {
+            foreach (var menu in _roomMenus)
+                if (menu.activeInHierarchy)
+                    curMenu = menu;
+        }
         if (curMenu.Equals(menuGO)) return;
         curMenu.SetActive(false);
         menuGO.SetActive(true);
         curMenu = menuGO;
+        _SetBackgroundModel(GetCurrentRoom());
 #if UNITY_EDITOR        
         if (debugMode) return;
 #endif
-        _UpdateRoomValues();
+        //_UpdateRoomValues();
     }
 
     /// <summary>
@@ -97,7 +107,7 @@ public class LevelSelectManager : MonoBehaviour
     private void _UpdateRoomValues()
     {
         var roomLevels = GameObject.FindObjectsOfType<LevelButton>(false);
-        print("rrromLev: " + roomLevels.Length);
+        //print("rrromLev: " + roomLevels.Length);
         //construct level paths as LinkedLists (start with "NoNextLevelers")
         var noNextLevels = Array.FindAll(roomLevels, level => level.GetNextLevelButtons().Length == 0);
         var levelPaths = new List<LinkedList<LevelButton>>();
@@ -118,8 +128,18 @@ public class LevelSelectManager : MonoBehaviour
             ++pathCounter;
         }
 
+        //if (Application.isEditor)
+
+        Dictionary<int, LevelData> levelHT;
         //check SaveData and refresh "completed" levels
-        var levelHT = SaveManager.RetrieveProgress().levelHashTables[(int)GetCurrentRoom()];
+        try
+        {
+            levelHT = SaveManager.RetrieveProgress().levelHashTables[(int)GetCurrentRoom()];
+        }
+        catch (Exception)
+        {
+            levelHT = new Dictionary<int, LevelData>();
+        }
         var completedLevels = new List<LevelButton>();
         foreach (LevelButton l in roomLevels)
         {
@@ -168,4 +188,18 @@ public class LevelSelectManager : MonoBehaviour
             }
         }
     }//end _UpdateRoomValues()
+
+    private bool _SetBackgroundModel(Room roomNum)
+    {
+        for (int i = 0; i < _backgroundModels.Length; ++i)
+        {
+            if (_backgroundModels[i].activeInHierarchy)
+                _backgroundModels[i].SetActive(false);
+        }
+        if (roomNum != Room.NULL && (int)roomNum < _backgroundModels.Length)
+        {
+            _backgroundModels[(int)roomNum].SetActive(true);
+        }
+        return false;
+    }
 }

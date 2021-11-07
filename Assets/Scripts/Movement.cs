@@ -73,6 +73,8 @@ public class Movement : MonoBehaviour
         _isDead = false;
         _gridGO = GameObject.FindGameObjectWithTag("Grid");
         _gridGO.SetActive(false);
+        sewing = false;
+        swinging = false;
     }
 
     // Update is called once per frame
@@ -570,7 +572,15 @@ public class Movement : MonoBehaviour
         }
         if (other.tag == "Finish")
         {
-            SceneManager.LoadScene(other.GetComponent<NextLevel>().level);
+            other.tag = "Untagged"; //froce functions to be called once
+            DontDestroyOnLoad(DataObserver.instance.gameObject);
+            SceneManager.LoadSceneAsync("Level_Select", LoadSceneMode.Additive).completed += delegate
+            {
+                SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name).completed += delegate
+                {
+                    DataObserver.instance.SetCompletion(true);
+                };
+            };
         }
        
     }

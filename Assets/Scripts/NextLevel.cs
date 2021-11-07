@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class NextLevel : MonoBehaviour
 {
-    public string level;
+    [HideInInspector]
+    public string level = "Level_Select";
 }

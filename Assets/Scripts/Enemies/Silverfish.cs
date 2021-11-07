@@ -94,7 +94,7 @@ public class Silverfish : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Ground" || other.tag == "Block")
+        if ((other.tag == "Ground" || other.tag == "Block") && transform.parent != null)
         {
             if (transform.parent.transform.parent != null)
             {
