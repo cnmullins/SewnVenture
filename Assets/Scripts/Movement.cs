@@ -33,6 +33,7 @@ public class Movement : MonoBehaviour
 
     public Vector3 savedeulers;
     public string savedup;
+    public bool savedrotated;
     //used for casting 
 
     public bool canfall;
@@ -65,6 +66,9 @@ public class Movement : MonoBehaviour
     private MeshRenderer _detectorMeshRend;
     private GameObject _gridGO;
 
+    //timer that fixes things
+    public float fixdelay = 60;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -80,6 +84,8 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //a random timer to fix things i think
+        fixdelay -= 300*Time.deltaTime;
         //don't execute Update if dead
         if (_isDead) return;
         if (!swinging)
@@ -165,8 +171,9 @@ public class Movement : MonoBehaviour
         {
             RaycastHit Sew;
             Physics.Raycast(ray, out Sew, Mathf.Infinity);
-            if (Sew.transform != null && Input.GetMouseButtonDown(0))
+            if (Sew.transform != null && Input.GetMouseButtonDown(0) && fixdelay >= 0)
             {
+                fixdelay = 60;
                 if (Sew.transform.gameObject.layer == 15 && Vector3.Distance(transform.position,new Vector3(Sew.transform.position.x,transform.position.y,Sew.transform.position.z)) < 10)
                 {
                     swinging = true;
@@ -195,7 +202,7 @@ public class Movement : MonoBehaviour
             }
         }
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, currentlayermask) && sewing)
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, currentlayermask) && sewing && fixdelay <= 0)
         {
             if (holdblock)
             {
@@ -211,6 +218,7 @@ public class Movement : MonoBehaviour
 
                 if (Input.GetKeyDown("q"))
                 {
+                    fixdelay = 60;
                     if (myhit.GetComponent<Blocks>().rotated == false)
                     {
                         myhit.GetComponent<Blocks>().rotated = true;
@@ -231,6 +239,7 @@ public class Movement : MonoBehaviour
                 //with all of this it works correctly.
                 if (Input.GetKeyDown("e"))
                 {
+                    fixdelay = 60;
                     if (myhit.GetComponent<Blocks>().Upwards == "x")
                     {
                         //myhit.GetComponent<Blocks>().Upwards = "y";
@@ -326,8 +335,9 @@ public class Movement : MonoBehaviour
                             myhit.GetComponent<MeshRenderer>().material = mat;
                         }
                     }*/
-                    if (Input.GetMouseButtonDown(0) && myhit.tag == "Moveable")
+                    if (Input.GetMouseButtonDown(0) && myhit.tag == "Moveable" && fixdelay <= 0)
                     {
+                        fixdelay = 60;
                         //when you click on a movable object in sewing mode
                         //the game will change it to being moved
                         //it resets the material, change the layer
@@ -359,6 +369,8 @@ public class Movement : MonoBehaviour
                             myhit.GetComponent<MeshRenderer>().material = mat2;
                             savedpos = myhit.transform.position;
                             savedup = myhit.GetComponent<Blocks>().Upwards;
+                            savedrotated = myhit.GetComponent<Blocks>().rotated;
+
                             myhit.layer = 6;
                             holdblock = true;
                             myhit.transform.position += (myhit.transform.position - detector.transform.position);
@@ -386,9 +398,9 @@ public class Movement : MonoBehaviour
                     //it resets the material, change the layer
                     //and moves the object to the mouses position.
                     //it then changes the layermask for easier movement.
-                    if ((Input.GetMouseButtonDown(0) && myhit.tag == "ShopItem") && thread >= myhit.GetComponent<ShopItem>().cost)
+                    if ((Input.GetMouseButtonDown(0) && myhit.tag == "ShopItem") && thread >= myhit.GetComponent<ShopItem>().cost && fixdelay <= 0)
                     {
-
+                        fixdelay = 60;
                         thread -= myhit.GetComponent<ShopItem>().cost;
                         myhit.GetComponent<MeshRenderer>().material = mat2;
                         myhit = Instantiate(myhit.GetComponent<ShopItem>().Purchase, transform.position, transform.rotation);
@@ -433,8 +445,9 @@ public class Movement : MonoBehaviour
                     }*/
 
                     myhit.transform.position = new Vector3(aimpoint.x, (aimpoint.y) + (vertdisplace / 2), aimpoint.z)  + (myhit.transform.position-detector.transform.position); 
-                    if (Input.GetMouseButtonDown(0))
+                    if (Input.GetMouseButtonDown(0) && fixdelay <= 0)
                     {
+                        fixdelay = 60;
                         canfall = true;
                         if (myhit.GetComponent<Blocks>().cost != 0)
                         {
@@ -519,13 +532,16 @@ public class Movement : MonoBehaviour
         //right clicking will do one of two things.
         //if its a shop item, it will be sold back to the shop.
         //if its a non-shop item it will be put back where it used to be.
-        if (Input.GetMouseButtonDown(1) && myhit != null && holdblock)
+        if (Input.GetMouseButtonDown(1) && myhit != null && holdblock && fixdelay <= 0)
         {
+            fixdelay = 60;
             if (myhit.GetComponent<Blocks>().cost == 0 || myhit.GetComponent<Blocks>().bugs != 0)
             {
                 myhit.transform.position = savedpos;
                 myhit.transform.eulerAngles = savedeulers;
+                //myhit.GetComponent<Blocks>().Upwards = 
                 myhit.GetComponent<Blocks>().Upwards = savedup;
+                myhit.GetComponent<Blocks>().rotated = savedrotated;
                 myhit.transform.GetChild(0).transform.position = myhit.transform.position - Vector3.up * myhit.GetComponent<Blocks>().displace;
                 detector = null;
                 if (myhit.GetComponent<Blocks>().grab2 == false)
