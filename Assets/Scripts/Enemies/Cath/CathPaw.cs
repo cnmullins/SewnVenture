@@ -28,14 +28,14 @@ public class CathPaw : MonoBehaviour
         {
             if (right)
             {
-                if (Sewy.transform.position.x > -4)
+                if (Sewy.transform.position.x > -5)
                 {
                     holder.transform.position = new Vector3(Sewy.transform.position.x, holder.transform.position.y, holder.transform.position.z);
                 }
             }
             if (!right)
             {
-                if (Sewy.transform.position.z < -2)
+                if (Sewy.transform.position.z < -1)
                 {
                     holder.transform.position = new Vector3(holder.transform.position.x, holder.transform.position.y, Sewy.transform.position.z);
                 }
