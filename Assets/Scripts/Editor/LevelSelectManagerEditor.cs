@@ -14,32 +14,42 @@ public class LevelSelectManagerEditor : Editor
 {
     LevelSelectManager thisInstance;
     SerializedObject targetObj;
+    string progStr;
 
     private void OnEnable() 
     {
         thisInstance = (LevelSelectManager)target;
         targetObj = new SerializedObject(thisInstance);
+        progStr = SaveManager.RetrieveProgress().progressToString;
     }
 
     public override void OnInspectorGUI()
     {
-        if (GUILayout.Button("Data Path"))
-            Debug.Log("SavedData goes to: " + Application.persistentDataPath);
-        /*            
-        if (GUILayout.Button("Focus Sewing Room"))
-            thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Sewing]);
-        if (GUILayout.Button("Focus Living Room"))
-            thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Living]);
-        if (GUILayout.Button("Focus Outside"))
-            thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Outdoor]);
-        */
+        //update progress string
+        if (!thisInstance.debugMode)
+        {
+            //output progress
+            GUILayout.Label("Level Progress:\n\t" + progStr);
+            GUILayout.Space(10f);
+            if (GUILayout.Button("Clear Save Data"))
+                SaveManager.ClearSaveData();
+        }
+        
+        if (SaveManager.doesSaveFileExist)
+        {
+            if (GUILayout.Button("Focus Sewing Room"))
+                thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Sewing]);
+            if (GUILayout.Button("Focus Living Room"))
+                thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Living]);
+            if (GUILayout.Button("Focus Outside"))
+                thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Outdoor]);
+        }
+        GUILayout.Space(10f);
         base.OnInspectorGUI();
-        /*
         if (GUI.changed)
         {
-
+            progStr = SaveManager.RetrieveProgress().progressToString;
         }
-        */
         serializedObject.ApplyModifiedProperties();
     }
 }
