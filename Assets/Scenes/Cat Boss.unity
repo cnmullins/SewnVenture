@@ -2815,9 +2815,10 @@ GameObject:
   - component: {fileID: 1576410133}
   - component: {fileID: 1576410132}
   - component: {fileID: 1576410131}
+  - component: {fileID: 1576410136}
   m_Layer: 0
   m_Name: Cath
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2837,7 +2838,7 @@ MonoBehaviour:
   tail: {fileID: 1196109459}
   pawR: {fileID: 684991224}
   pawL: {fileID: 384791468}
-  Toy: {fileID: 2529760770607146617, guid: 39f102f28bbf34e9dbc9fdb08ff8dc1c, type: 3}
+  Toy: {fileID: 4393934916742413339, guid: 80cbaffa9361ab542be87b956f9caa5c, type: 3}
   player: {fileID: 849287383}
   target: {fileID: 0}
   targetblock: 0
@@ -2847,6 +2848,11 @@ MonoBehaviour:
   updist: 0
   bitedist: 0
   canattack: 0
+  anger: 0
+  mytoy: {fileID: 4393934916742413339, guid: 80cbaffa9361ab542be87b956f9caa5c, type: 3}
+  toyattack: 0
+  toywait: 0
+  toyupdist: 0
 --- !u!135 &1576410132
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2855,7 +2861,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1576410130}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -2924,6 +2930,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1576410136
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576410130}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1707643816
 GameObject:
   m_ObjectHideFlags: 0
