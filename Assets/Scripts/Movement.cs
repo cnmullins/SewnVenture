@@ -171,7 +171,7 @@ public class Movement : MonoBehaviour
         {
             RaycastHit Sew;
             Physics.Raycast(ray, out Sew, Mathf.Infinity);
-            if (Sew.transform != null && Input.GetMouseButtonDown(0) && fixdelay >= 0)
+            if (Sew.transform != null && Input.GetMouseButtonDown(0))
             {
                 fixdelay = 60;
                 if (Sew.transform.gameObject.layer == 15 && Vector3.Distance(transform.position,new Vector3(Sew.transform.position.x,transform.position.y,Sew.transform.position.z)) < 10)
