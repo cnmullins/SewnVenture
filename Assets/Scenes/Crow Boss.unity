@@ -2994,7 +2994,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3533761296363961001, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
       propertyPath: m_RootOrder
-      value: 19
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 3533761296363961001, guid: 52bb13120e6cf2a4781993bd9155fab6, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4168,7 +4168,7 @@ Transform:
   m_LocalScale: {x: 20, y: 1, z: 20}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2087554134
 GameObject:
@@ -4744,6 +4744,7 @@ MonoBehaviour:
   aimpoint: {x: 0, y: 0, z: 0}
   savedeulers: {x: 0, y: 0, z: 0}
   savedup: 
+  savedrotated: 0
   canfall: 0
   canconnect: 0
   vertdisplace: 0
@@ -4759,6 +4760,7 @@ MonoBehaviour:
   modelTrans: {fileID: 1596228913}
   greenTransMat: {fileID: 2100000, guid: 0a2ff98135d4ac449a60639b672c502f, type: 2}
   redTransMat: {fileID: 2100000, guid: 03f5de32aa4de447da1af21a8641e54a, type: 2}
+  fixdelay: 60
 --- !u!54 &317973705128061469
 Rigidbody:
   m_ObjectHideFlags: 0

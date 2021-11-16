@@ -106,19 +106,19 @@ public class Movement : MonoBehaviour
                 //basic movement, it checks if you can move and also checks if you will fall off.
                 //if you wont then you move.
                 var outDir = Vector3.zero;
-                if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.9f, walkmask))
+                if (Input.GetKey("w") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.forward, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.forward * 0.4f, Vector3.down, 1.5f, walkmask))
                 {
                     outDir += Vector3.forward;
                 }
-                if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.9f, walkmask))
+                if (Input.GetKey("s") && !Physics.BoxCast(transform.position, new Vector3(0.5f, 0, 0), Vector3.back, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.back * 0.4f, Vector3.down, 1.5f, walkmask))
                 {
                     outDir += Vector3.back;
                 }
-                if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.9f, walkmask))
+                if (Input.GetKey("a") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.left, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.left * 0.4f, Vector3.down, 1.5f, walkmask))
                 {
                     outDir += Vector3.left;
                 }
-                if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.9f, walkmask))
+                if (Input.GetKey("d") && !Physics.BoxCast(transform.position, new Vector3(0, 0, 0.5f), Vector3.right, transform.rotation, 0.6f, blockmask) && Physics.Raycast(transform.position + Vector3.right * 0.4f, Vector3.down, 1.5f, walkmask))
                 {
                     outDir += Vector3.right;
                 }
@@ -171,7 +171,7 @@ public class Movement : MonoBehaviour
         {
             RaycastHit Sew;
             Physics.Raycast(ray, out Sew, Mathf.Infinity);
-            if (Sew.transform != null && Input.GetMouseButtonDown(0) && fixdelay >= 0)
+            if (Sew.transform != null && Input.GetMouseButtonDown(0))
             {
                 fixdelay = 60;
                 if (Sew.transform.gameObject.layer == 15 && Vector3.Distance(transform.position,new Vector3(Sew.transform.position.x,transform.position.y,Sew.transform.position.z)) < 10)
