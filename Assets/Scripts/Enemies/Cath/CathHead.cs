@@ -29,6 +29,11 @@ public class CathHead : MonoBehaviour
     public bool toyattack;
     public bool toywait;
     public float toyupdist;
+    //health is for phase transition
+    public int health;
+    public GameObject mover;
+    //longblock is for phase transition
+    public int longblock;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +43,11 @@ public class CathHead : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (health <= 0)
+        {
+            mover.transform.position = player.transform.position;
+            health = 100;
+        }
         if (!hastoy && !canattack)
         {
 

@@ -215,7 +215,18 @@ public class CathTail : MonoBehaviour
                 
             }
         }
+        
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Block" && other.gameObject.layer != 6)
+        {
+
+            Cath.GetComponent<CathHead>().health -= 1;
+            other.tag = "Untagged";
+            Destroy(other.transform.parent.gameObject);
+        }
     }
+}
 
 
