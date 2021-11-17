@@ -231,4 +231,3 @@ public class LevelData
         completed = false;
     }
 }
-
