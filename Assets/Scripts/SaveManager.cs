@@ -148,7 +148,6 @@ public class SaveData
     }
 
     public string progressToString { get {
-        //Debug.Log("progressToString called");
         int maxRoom, levelsComplete;
         try
         {

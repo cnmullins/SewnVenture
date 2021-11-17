@@ -118,7 +118,6 @@ public class Blocks : MonoBehaviour
             }
             if (hits.Length == 0 && cost == 0)
             {
-                //print("I no touchie");
                 valid = true;
             }
         }

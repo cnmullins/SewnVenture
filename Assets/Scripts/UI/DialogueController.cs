@@ -21,7 +21,7 @@ public class DialogueController : MonoBehaviour
     public GameObject hintGO => _hintGO;
     public bool isTriggered { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
         isTriggered = false;

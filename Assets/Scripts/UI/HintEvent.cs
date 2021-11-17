@@ -45,6 +45,7 @@ public class HintEvent : MonoBehaviour
         if (other.tag.Equals("Player"))
         {
             _controller.hintGO.SetActive(true);
+            print("ferp");
         }
     }
 

@@ -136,7 +136,7 @@ public class Movement : MonoBehaviour
             }
             if (Input.GetKeyUp("space"))
             {
-                transform.tag = "Untagged";
+                transform.tag = "Player";
             }
             //presing R toggles sewing mode.
             //you can only exit sewing mode if you arent holding any blocks.
@@ -407,7 +407,7 @@ public class Movement : MonoBehaviour
                         myhit.GetComponent<Blocks>().Upwards = "y"; //this specific line is for rotation
                         detector = myhit.transform.GetChild(0).gameObject;
                         _detectorMeshRend = detector.GetComponent<MeshRenderer>();
-                        //myhit.GetComponent<MeshRenderer>().material = mat2;
+                        //myhit.GetComponent<MeshRenderer>().material = mat2; //commented bug out
                         savedpos = myhit.transform.position;
                         myhit.layer = 6;
                         vertdisplace = myhit.transform.localScale.y;
