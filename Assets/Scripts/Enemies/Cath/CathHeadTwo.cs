@@ -32,6 +32,7 @@ public class CathHeadTwo : MonoBehaviour
     
     //this is for phase transition
     public bool canattack2;
+    public GameObject ender;
     // Start is called before the first frame update
     void Start()
     {
@@ -76,10 +77,7 @@ public class CathHeadTwo : MonoBehaviour
         if (bite)
         {
             canattack = false;
-            biting = true;
-            bite = false;
-                target = player;
-                    targetblock = false;
+
                 
             
             if (target.transform.position.x > 32)
@@ -88,6 +86,10 @@ public class CathHeadTwo : MonoBehaviour
                 bitedist = 5;
                 updist = 5;
                 otherbite = 1;
+                biting = true;
+                bite = false;
+                target = player;
+                targetblock = false;
             }
             else if (target.transform.position.x < 22)
             {
@@ -95,6 +97,10 @@ public class CathHeadTwo : MonoBehaviour
                 bitedist = 5;
                 updist = 5;
                 otherbite = -1;
+                biting = true;
+                bite = false;
+                target = player;
+                targetblock = false;
             }
             else
             {
@@ -145,11 +151,16 @@ public class CathHeadTwo : MonoBehaviour
     //when hit with a block the fight will end
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Moveable")
+        if (other.tag == "AttackMori")
         {
-            //end fight here
-            Destroy(other.gameObject);
-            
+            if (other.gameObject.transform.parent.gameObject.layer != 6)
+            {
+                //end fight here
+                Destroy(other.transform.parent.gameObject);
+                transform.position -= Vector3.up * 100;
+                ender.gameObject.SetActive(true);
+                canattack2 = false;
+            }
         }
     }
 }

@@ -18,7 +18,9 @@ public class CathTailTwo : MonoBehaviour
     public float sweepdist2;
     public int sweepdistmax = 20;
     public float waitdist;
+    public GameObject token;
     // Start is called before the first frame update
+    public bool evil;
     void Start()
     {
 
@@ -104,6 +106,10 @@ public class CathTailTwo : MonoBehaviour
                     transform.position -= transform.right * 10 * Time.fixedDeltaTime;
                 }
                 sweepdist -= 10 * Time.fixedDeltaTime;
+                if (Random.Range(0,30) == 1 && evil)
+                {
+                    Instantiate(token, transform.position, transform.rotation);
+                }
 
             }
             else if (waitdist > -10)
@@ -118,7 +124,8 @@ public class CathTailTwo : MonoBehaviour
             }
         }
 
-
+        //when a block is dropped on the tail, cath will take damage.
+        //this is for the evil route.
     }
     private void OnTriggerEnter(Collider other)
     {

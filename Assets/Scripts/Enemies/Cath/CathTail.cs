@@ -18,6 +18,7 @@ public class CathTail : MonoBehaviour
     public float sweepdist2;
     public int sweepdistmax = 20;
     public float waitdist;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -215,7 +216,8 @@ public class CathTail : MonoBehaviour
                 
             }
         }
-        
+        //when a block is dropped on the tail, cath will take damage.
+        //this is for the evil route.
     }
     private void OnTriggerEnter(Collider other)
     {
