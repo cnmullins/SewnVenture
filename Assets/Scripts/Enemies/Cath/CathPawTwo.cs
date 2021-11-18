@@ -84,7 +84,7 @@ public class CathPawTwo : MonoBehaviour
             }
             if (attacktime < 0)
             {
-                holder.transform.position -= transform.up * 10;
+                holder.transform.position -= Vector3.up * 10;
                 attacking = false;
                 Head.GetComponent<CathHeadTwo>().canattack = true;
             }
