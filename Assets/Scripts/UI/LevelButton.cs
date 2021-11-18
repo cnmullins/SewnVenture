@@ -154,7 +154,8 @@ public class LevelButton : MonoBehaviour
             if (i % 2 == 1)
             {
                 //if this "nextLevel" is just a button to the next room skip drawing it
-                var nextButton = levelStack.Peek().GetComponentInChildren<Button>();
+                var nextButton = levelStack.Peek().GetComponentInChildren<Button>(true);
+
                 if (!nextButton.onClick.GetPersistentMethodName(0).Equals("LoadLevel") 
                 && !nextButton.onClick.GetPersistentMethodName(0).Equals("FocusMenu"))
                     ++i;
@@ -174,9 +175,12 @@ public class LevelButton : MonoBehaviour
     public LevelButton[] GetNextLevelButtons()
     {
         var nlButtons = new List<LevelButton>();
+        if (nextLevels == null)
+            return null;
         foreach (var l in nextLevels)
         {
-            var lButton = l.GetComponentInChildren<Button>();
+            if (l == null) continue;
+            var lButton = l.GetComponentInChildren<Button>(true);
             if (lButton.onClick.GetPersistentMethodName(0).Equals("LoadLevel"))
                 nlButtons.Add(l.GetComponent<LevelButton>());
         }

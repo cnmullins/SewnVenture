@@ -31,10 +31,14 @@ public class LevelSelectManagerEditor : Editor
             //output progress
             GUILayout.Label("Level Progress:\n\t" + progStr);
             GUILayout.Space(10f);
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("Clear Save Data"))
                 SaveManager.ClearSaveData();
+            if (GUILayout.Button("Set Complete Data"))
+                SaveManager.SaveProgress(_GetCompleteData());
+            GUILayout.EndHorizontal();
         }
-        
+       /* 
         if (SaveManager.doesSaveFileExist)
         {
             if (GUILayout.Button("Focus Sewing Room"))
@@ -44,6 +48,7 @@ public class LevelSelectManagerEditor : Editor
             if (GUILayout.Button("Focus Outside"))
                 thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Outdoor]);
         }
+        */
         GUILayout.Space(10f);
         base.OnInspectorGUI();
         if (GUI.changed)
@@ -51,5 +56,24 @@ public class LevelSelectManagerEditor : Editor
             progStr = SaveManager.RetrieveProgress().progressToString;
         }
         serializedObject.ApplyModifiedProperties();
+    }
+
+    private SaveData _GetCompleteData()
+    {
+        var newData = new SaveData();
+        for (int i = 0; i < thisInstance.roomMenus.Length; ++i)
+        {
+            var levels = thisInstance.roomMenus[i].GetComponentsInChildren<LevelButton>(true);
+            for (int ii = 0; ii < levels.Length; ++ii)
+            {
+                var ld = levels[ii].GetLevelData();
+                if (!newData.levelHashTables[i].ContainsKey(ld.levelHash))
+                {
+                    ld.completed = true;
+                    newData.levelHashTables[i].Add(ld.levelHash, ld);
+                }
+            }
+        }
+        return newData;
     }
 }
