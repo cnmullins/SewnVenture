@@ -243,6 +243,9 @@ public class CathHead : MonoBehaviour
             }
         }
     }
+
+    //when cath's head hits a block, the block will be destroyed to emulate the cat tearing it up
+    //this cannot happen to blocks being held.
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Moveable" && other.gameObject.layer != 6 && !toywait)

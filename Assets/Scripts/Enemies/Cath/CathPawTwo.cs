@@ -17,10 +17,17 @@ public class CathPawTwo : MonoBehaviour
     public float waittime;
     //used for animation of the attack.
     public Animator myanim;
-
+    public bool evil;
+    //these two detect how close you are to the pacifist ending.
+    public int sewn;
+    public bool cut;
+    public GameObject thread1;
+    public GameObject thread2;
+    public GameObject thread3;
     private void Start()
     {
         Sewy = GameObject.FindWithTag("Player");
+        holder.transform.position -= Vector3.up * 10;
     }
     // Update is called once per frame
     void Update()
@@ -46,16 +53,18 @@ public class CathPawTwo : MonoBehaviour
         {
             if (Sewy.transform.position.x > 31)
             {
+                cut = false;
                 attack = false;
             attacking = true;
             attacktime = 11;
             waittime = 1.5f;
-            
-                
-                    holder.transform.position = new Vector3(holder.transform.position.x, holder.transform.position.y, Sewy.transform.position.z);
+                holder.transform.position += Vector3.up * 10;
+
+                holder.transform.position = new Vector3(holder.transform.position.x, holder.transform.position.y, Sewy.transform.position.z);
                 }
             else
             {
+                attack = false;
                 attacking = false;
                 Head.GetComponent<CathHeadTwo>().canattack = true;
             }
@@ -82,12 +91,32 @@ public class CathPawTwo : MonoBehaviour
                 attacktime = 1.5f;
                 myanim.SetTrigger("Slap");
             }
-            if (attacktime < 0)
+            if (attacktime < 0 && (evil || cut))
             {
                 holder.transform.position -= Vector3.up * 10;
                 attacking = false;
                 Head.GetComponent<CathHeadTwo>().canattack = true;
+                if (cut && sewn == 0)
+                {
+                    Head.GetComponent<CathHeadTwo>().canattack2 = false;
+                }
             }
+            if (attacktime < 0 && (!evil && !cut))
+            {
+                if (thread1 != null)
+                {
+                    thread1.SetActive(true);
+                }
+                if (thread2 != null)
+                {
+                    thread2.SetActive(true);
+                }
+                if (thread3 != null)
+                {
+                    thread3.SetActive(true);
+                }
+            }
+
 
         }
     }

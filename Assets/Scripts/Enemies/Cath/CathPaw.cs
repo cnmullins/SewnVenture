@@ -21,6 +21,7 @@ public class CathPaw : MonoBehaviour
     private void Start()
     {
         Sewy = GameObject.FindWithTag("Player");
+        holder.transform.position -= Vector3.up * 10;
     }
     // Update is called once per frame
     void Update()
@@ -44,6 +45,7 @@ public class CathPaw : MonoBehaviour
         }*/
         if (attack)
         {
+            holder.transform.position += Vector3.up * 10;
             attack = false;
             attacking = true;
             attacktime = 11;
