@@ -8,6 +8,7 @@ public class CathMove : MonoBehaviour
     public GameObject player;
     public Vector3 movethisdist;
     public int timesmoved = 0;
+    public float debugtimer = 5;
     private void Start()
     {
         player = GameObject.FindWithTag("Player");
@@ -15,21 +16,40 @@ public class CathMove : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
         if (Vector3.Distance(transform.position, player.transform.position) < 10)
         {
-            if (timesmoved == -100)
+
+            player.transform.position = transform.position;
+            debugtimer -= Time.fixedDeltaTime;
+            if (debugtimer <= 0)
             {
                 timesmoved = 0;
-                movethisdist = (center.transform.position- transform.position);
+                movethisdist = (center.transform.position - transform.position);
             }
-            player.transform.position = transform.position;
-            transform.position += movethisdist/20f;
-            timesmoved += 1;
-            if (timesmoved == 20)
+        }
+            if (timesmoved > -1)
+        {
+            debugtimer = 999;
+            if (Vector3.Distance(transform.position, player.transform.position) < 10)
             {
-                Destroy(this.gameObject);
+
+                player.transform.position = transform.position;
+                transform.position += movethisdist / 20f;
+                timesmoved += 1;
+                if (timesmoved == 20)
+                {
+                    center.GetComponent<DestroyBlock>().evil = true;
+                    Destroy(this.gameObject);
+                }
             }
+        }
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "HeldDown")
+        {
+            timesmoved = 0;
+            movethisdist = (center.transform.position - transform.position);
         }
     }
 }

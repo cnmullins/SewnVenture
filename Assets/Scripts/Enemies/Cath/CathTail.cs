@@ -25,7 +25,7 @@ public class CathTail : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //sweep will set up the first sweep attack
         //it chooses a random direction and side of the block, using that it will move the tail
@@ -86,26 +86,26 @@ public class CathTail : MonoBehaviour
         {
             if (waitdist > 0)
             {
-                transform.position += transform.up * 10 * Time.deltaTime;
-                waitdist -= 10 * Time.deltaTime;
+                transform.position += transform.up * 10 * Time.fixedDeltaTime;
+                waitdist -= 10 * Time.fixedDeltaTime;
             }
             else if (sweepdist > 0)
             {
                 if ((away && sweepright) || (!away && !sweepright))
                 {
-                    transform.position += transform.right * 10 * Time.deltaTime;
+                    transform.position += transform.right * 10 * Time.fixedDeltaTime;
                 }
                 else
                 {
-                    transform.position -= transform.right * 10 * Time.deltaTime;
+                    transform.position -= transform.right * 10 * Time.fixedDeltaTime;
                 }
-                sweepdist -= 10 * Time.deltaTime;
+                sweepdist -= 10 * Time.fixedDeltaTime;
 
             }
             else if (waitdist > -10)
             {
-                transform.position -= transform.up * 10 * Time.deltaTime;
-                waitdist -= 10 * Time.deltaTime;
+                transform.position -= transform.up * 10 * Time.fixedDeltaTime;
+                waitdist -= 10 * Time.fixedDeltaTime;
             }
             else
             {

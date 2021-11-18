@@ -16,6 +16,8 @@ public class CathHead : MonoBehaviour
     public bool targetblock;
     //if cath has a toy cath cannot attack.
     public bool hastoy;
+    //for cath to choose an attack
+    public int chosenattack;
     //bite attack and relevent movement distances required for it
     public bool bite;
     public bool biting;
@@ -32,8 +34,8 @@ public class CathHead : MonoBehaviour
     //health is for phase transition
     public int health;
     public GameObject mover;
-    //longblock is for phase transition
-    public int longblock;
+    //this is for phase transition
+    public bool canattack2;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,19 +43,78 @@ public class CathHead : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        //cath will hit the player to the center and start phase 2 if they are attacked.
         if (health <= 0)
         {
             mover.transform.position = player.transform.position;
             health = 100;
+            pawL.GetComponent<CathPaw>().attack2 = true;
+            pawR.GetComponent<CathPaw>().attack2 = true;
         }
-        if (!hastoy && !canattack)
+        if (canattack && canattack2)
         {
-
+            if (Random.Range(0,100-10*anger) <= 1)
+            {
+                chosenattack = (Random.Range(0, 5));
+                if (chosenattack == 1)
+                {
+                    bite = true;
+                    canattack = false;
+                }
+                if (chosenattack == 2)
+                {
+                    if (Random.Range(0, 2 + anger) == 1)
+                    {
+                        toyattack = true;
+                        canattack = false;
+                    }
+                }
+                if (chosenattack == 3)
+                {
+                    if (Random.Range(0, 10 - anger) > 2)
+                    {
+                        tail.GetComponent<CathTail>().sweep = true;
+                        canattack = false;
+                    }
+                    if (Random.Range(0, 10 - anger) <= 2)
+                    {
+                        tail.GetComponent<CathTail>().sweep2 = true;
+                        canattack = false;
+                    }
+                }
+                if (chosenattack == 4)
+                {
+                    if (Random.Range(0, 10 - anger) < 2)
+                    {
+                        pawL.GetComponent<CathPaw>().attack = true;
+                        pawR.GetComponent<CathPaw>().attack = true;
+                    }
+                    if (player.transform.position.x < -2)
+                    {
+                        canattack = false;
+                        pawL.GetComponent<CathPaw>().attack = true;
+                    }
+                    else if (player.transform.position.z > -4)
+                    {
+                        canattack = false;
+                        pawR.GetComponent<CathPaw>().attack = true;
+                    }
+                    else
+                    {
+                        canattack = true;
+                    }
+                    
+                    
+                }
+            }
+           
         }
+        //toyattack is less an attack and more a way to give the player thread tokens
         if (toyattack)
         {
+            canattack = false;
             toyattack = false;
             toywait = true;
             transform.position = new Vector3(-9, -6, 3);
@@ -62,12 +123,13 @@ public class CathHead : MonoBehaviour
             mytoy.transform.parent = this.transform;
             mytoy.transform.position += new Vector3(1.2f, -1.2f, -1.2f);
         }
+        //toywait is when cath will wait until the toy is taken, this lets the player do so with ease.
         if (toywait)
         {
             if (toyupdist > 0)
             {
-                transform.position += Vector3.up * Time.deltaTime * 8f;
-                toyupdist -= Time.deltaTime * 8f;
+                transform.position += Vector3.up * Time.fixedDeltaTime * 8f;
+                toyupdist -= Time.fixedDeltaTime * 8f;
                 if (toyupdist <= 0)
                 {
                     mytoy = mytoy.transform.GetChild(0).gameObject;
@@ -89,16 +151,17 @@ public class CathHead : MonoBehaviour
             }
             else if (toyupdist < -4 && toyupdist > -16)
             {
-                transform.position -= Vector3.up * Time.deltaTime * 8f;
-                toyupdist -= Time.deltaTime * 8f;
+                transform.position -= Vector3.up * Time.fixedDeltaTime * 8f;
+                toyupdist -= Time.fixedDeltaTime * 8f;
             }
             else if (toyupdist <= -16)
             {
-                canattack = true;
+                //canattack = true;
                 toyattack = false;
                 toywait = false;
                 toyupdist = 0;
                 anger += 1;
+                canattack = true;
             }
         }
         if (bite)
@@ -145,32 +208,32 @@ public class CathHead : MonoBehaviour
         {
             if (updist > 0)
             {
-                transform.position += Vector3.up * Time.deltaTime * 6f;
-                updist -= Time.deltaTime*3f;
+                transform.position += Vector3.up * Time.fixedDeltaTime * 6f * (1 + anger / 10);
+                updist -= Time.fixedDeltaTime *3f * (1 + anger / 10);
             }
             else if (updist <= 0 && updist > -1)
             {
-                updist -= Time.deltaTime;
+                updist -= Time.fixedDeltaTime * (1 + anger / 10);
             }
             else if (bitedist > 0)
             {
-                transform.position += (Vector3.right + Vector3.back + (Vector3.down * 0.75f)) * Time.deltaTime * 6f;
-                bitedist -= Time.deltaTime * 6;
+                transform.position += (Vector3.right + Vector3.back + (Vector3.down * 0.75f)) * Time.fixedDeltaTime * 6f * (1 + anger / 10);
+                bitedist -= Time.fixedDeltaTime * 6 * (1 + anger / 10);
             }
             else if (bitedist <= 0 && bitedist > -2)
             {
                 
-                bitedist -= Time.deltaTime * 4;
+                bitedist -= Time.fixedDeltaTime * 4 * (1 + anger / 10);
             }
             else if (bitedist <= -2 && bitedist > -6)
             {
-                transform.position -= (Vector3.right + Vector3.back + (Vector3.down * 0.75f)) * Time.deltaTime * 6f;
-                bitedist -= Time.deltaTime * 6f;
+                transform.position -= (Vector3.right + Vector3.back + (Vector3.down * 0.75f)) * Time.fixedDeltaTime * 6f*(1+anger/10);
+                bitedist -= Time.fixedDeltaTime * 6f * (1 + anger / 10);
             }
             else if (updist <= -1 && updist > -8)
             {
-                transform.position -= Vector3.up * Time.deltaTime * 6f;
-                updist -= Time.deltaTime * 3f;
+                transform.position -= Vector3.up * Time.fixedDeltaTime * 6f * (1 + anger / 10);
+                updist -= Time.fixedDeltaTime * 3f * (1 + anger / 10);
             }
             else if (updist <= -8)
             {
