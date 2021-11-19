@@ -26,13 +26,15 @@ public class CathHeadTwo : MonoBehaviour
     public int otherbite = 1;
     //a bool for when cath can do an attack
     public bool canattack;
-    
-    //health is for phase transition
-    
+
+    //delay for attacks
+    public float delay = 4;
     
     //this is for phase transition
     public bool canattack2;
     public GameObject ender;
+    public bool defeated;
+    public float defeatup;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,9 +44,30 @@ public class CathHeadTwo : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (canattack2 && delay >= 0)
+        {
+            delay -= Time.deltaTime;
+        }
+        //when the boss is defeated it moves.
+        if (tag == "Moveable" && !defeated)
+        {
+            defeated = true;
+            transform.position = new Vector3(27,-5,-36);
+            defeatup = 10;
+            ender.SetActive(true);
+        }
+        if (defeated)
+        {
+            if (defeatup > 0)
+            {
+                transform.position += Vector3.up* 5f * Time.deltaTime;
+                defeatup -= 5f * Time.deltaTime;
+            }
+        }
+
         //cath will hit the player to the center and start phase 2 if they are attacked.
-        
-        if (canattack && canattack2)
+
+        if (canattack && canattack2 && delay < 0)
         {
             if (Random.Range(0,100) <= 1)
             {
