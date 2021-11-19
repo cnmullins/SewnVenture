@@ -130,10 +130,14 @@ public class CathHead : MonoBehaviour
             {
                 transform.position += Vector3.up * Time.fixedDeltaTime * 8f;
                 toyupdist -= Time.fixedDeltaTime * 8f;
-                if (toyupdist <= 0)
+                if (toyupdist <= 0 && mytoy.transform.childCount != 0)
                 {
                     mytoy = mytoy.transform.GetChild(0).gameObject;
                     mytoy.transform.parent = null;
+                }
+                else
+                {
+                    mytoy = null;
                 }
             }
             
