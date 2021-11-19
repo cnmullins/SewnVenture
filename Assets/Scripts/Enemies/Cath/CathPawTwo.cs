@@ -24,6 +24,7 @@ public class CathPawTwo : MonoBehaviour
     public GameObject thread1;
     public GameObject thread2;
     public GameObject thread3;
+    public GameObject winopen;
     private void Start()
     {
         Sewy = GameObject.FindWithTag("Player");
@@ -99,7 +100,12 @@ public class CathPawTwo : MonoBehaviour
                 if (cut && sewn == 0)
                 {
                     Head.GetComponent<CathHeadTwo>().canattack2 = false;
+                    Head.GetComponent<Blocks>().sewn = 0;
+                    Head.tag = "Moveable";
+                    Head.layer = 11;
+                    winopen.SetActive(true);
                 }
+
             }
             if (attacktime < 0 && (!evil && !cut))
             {
