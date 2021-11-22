@@ -135,7 +135,7 @@ public class CathHead : MonoBehaviour
                     mytoy = mytoy.transform.GetChild(0).gameObject;
                     mytoy.transform.parent = null;
                 }
-                else
+                if (toyupdist <= 0 && mytoy.transform.childCount == 0)
                 {
                     mytoy = null;
                 }

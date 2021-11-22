@@ -113,6 +113,7 @@ public class CathHeadTwo : MonoBehaviour
                 bite = false;
                 target = player;
                 targetblock = false;
+                transform.eulerAngles = new Vector3(0, 90, 0);
             }
             else if (target.transform.position.x < 22)
             {
@@ -124,6 +125,7 @@ public class CathHeadTwo : MonoBehaviour
                 bite = false;
                 target = player;
                 targetblock = false;
+                transform.eulerAngles = new Vector3 (0,270,0);
             }
             else
             {
