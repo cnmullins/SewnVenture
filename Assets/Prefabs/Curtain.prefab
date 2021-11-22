@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3984436422654258348}
   - component: {fileID: 3984436422654258351}
   - component: {fileID: 3984436422654258350}
+  - component: {fileID: 2102951034063615390}
   m_Layer: 15
   m_Name: Curtain
   m_TagString: Untagged
@@ -95,3 +96,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2102951034063615390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3984436422654258337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e31c28a8c9c0a6448f1936308907f7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
