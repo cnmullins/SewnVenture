@@ -42,7 +42,7 @@ public class LevelSelectManager : MonoBehaviour
     private IEnumerator Start()
     {
 #if UNITY_EDITOR
-        if (debugMode) yield break;//goto skipLoad;
+        if (debugMode) yield break;
 #endif
         _nextRoomGO = new List<GameObject>(GameObject.FindGameObjectsWithTag("MoveRoom"));
         yield return new WaitWhile(delegate 
@@ -108,7 +108,7 @@ public class LevelSelectManager : MonoBehaviour
     /// </summary>
     private void _UpdateRoomValues()
     {
-        var roomLevels = GameObject.FindObjectsOfType<LevelButton>(false);
+        var roomLevels = GameObject.FindObjectsOfType<LevelButton>(true);
         //construct level paths as LinkedLists (start with "NoNextLevelers")
         var noNextLevels = Array.FindAll(roomLevels, level => level.GetNextLevelButtons().Length == 0);
         var levelPaths = new List<LinkedList<LevelButton>>();
@@ -131,14 +131,7 @@ public class LevelSelectManager : MonoBehaviour
 
         Dictionary<int, LevelData> levelHT;
         //check SaveData and refresh "completed" levels
-        try
-        {
-            levelHT = SaveManager.RetrieveProgress().levelHashTables[(int)GetCurrentRoom()];
-        }
-        catch (Exception)
-        {
-            levelHT = new Dictionary<int, LevelData>();
-        }
+        levelHT = SaveManager.RetrieveProgress().levelHashTables[(int)GetCurrentRoom()];
         
         var completedLevels = new List<LevelButton>();
         foreach (LevelButton l in roomLevels)
@@ -148,7 +141,7 @@ public class LevelSelectManager : MonoBehaviour
                 completedLevels.Add(l);
         }
 
-        bool roomStarted = false;
+        //bool roomStarted = false;
         //construct a list of completed and next levels and refresh all values
             //else if level is NOT in list, SetActive(false)/deactivate them from reach
         foreach (LevelButton level in roomLevels)
@@ -173,19 +166,16 @@ public class LevelSelectManager : MonoBehaviour
             if (!level.isCompleted)
             {
                 foreach (var nLevel in level.nextLevels)
+                {
                     if (nLevel.CompareTag("MoveRoom"))
                         nLevel.gameObject.SetActive(false);
+                }
             }
-            else 
-                roomStarted = true;
         }
         //completely new to room reactivate new level if necessary
-        if (!roomStarted)
+        foreach (var path in levelPaths)
         {
-            foreach (var path in levelPaths)
-            {
-                path.First.Value.gameObject.SetActive(true);
-            }
+            path.First.Value.gameObject.SetActive(true);
         }
     }//end _UpdateRoomValues()
 

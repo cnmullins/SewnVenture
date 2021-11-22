@@ -10,6 +10,7 @@ public class CathPaw : MonoBehaviour
     public GameObject Sewy;
     public GameObject holder;
     //used for determining when to attack
+    public bool attack2;
     public bool attack;
     public bool attacking;
     public float attacktime;
@@ -20,11 +21,12 @@ public class CathPaw : MonoBehaviour
     private void Start()
     {
         Sewy = GameObject.FindWithTag("Player");
+        holder.transform.position -= Vector3.up * 10;
     }
     // Update is called once per frame
     void Update()
     {
-        if (!attacking && !attack)
+       /* if (!attacking && !attack)
         {
             if (right)
             {
@@ -40,13 +42,50 @@ public class CathPaw : MonoBehaviour
                     holder.transform.position = new Vector3(holder.transform.position.x, holder.transform.position.y, Sewy.transform.position.z);
                 }
             }
-        }
+        }*/
         if (attack)
         {
+            holder.transform.position += Vector3.up * 10;
             attack = false;
             attacking = true;
             attacktime = 11;
             waittime = 1.5f;
+            if (right)
+            {
+                if (Sewy.transform.position.x > -5)
+                {
+                    holder.transform.position = new Vector3(Sewy.transform.position.x, holder.transform.position.y, holder.transform.position.z);
+                }
+            }
+            if (!right)
+            {
+                if (Sewy.transform.position.z < -1)
+                {
+                    holder.transform.position = new Vector3(holder.transform.position.x, holder.transform.position.y, Sewy.transform.position.z);
+                }
+            }
+        }
+        if (attack2)
+        {
+            attack2 = false;
+            attacking = true;
+            attacktime = 11;
+            waittime = 0f;
+            transform.tag = "HeldDown";
+            if (right)
+            {
+                if (Sewy.transform.position.x > -5)
+                {
+                    holder.transform.position = new Vector3(Sewy.transform.position.x, holder.transform.position.y, holder.transform.position.z);
+                }
+            }
+            if (!right)
+            {
+                if (Sewy.transform.position.z < -1)
+                {
+                    holder.transform.position = new Vector3(holder.transform.position.x, holder.transform.position.y, Sewy.transform.position.z);
+                }
+            }
         }
         //the cat will slap once and then not anymore
         //it will wait a specific amount of time
@@ -69,7 +108,9 @@ public class CathPaw : MonoBehaviour
             }
             if (attacktime < 0)
             {
+                holder.transform.position -= Vector3.up * 10;
                 attacking = false;
+                Head.GetComponent<CathHead>().canattack = true;
             }
 
         }
