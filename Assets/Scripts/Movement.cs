@@ -582,24 +582,36 @@ public class Movement : MonoBehaviour
         }
         if (other.tag == "Star")
         {
-            //star
             Destroy(other.gameObject);
             DataObserver.instance.IncrementStar();
         }
+        //player is moving to the next portion of the level in the next scene
+        if (other.tag == "Next")
+        {
+            other.tag = "Untagged"; //force action to be called once
+            DontDestroyOnLoad(DataObserver.instance.gameObject);
+            SceneManager.LoadScene(other.GetComponent<NextLevel>().level);
+        }
+        //player has finished the level
         if (other.tag == "Finish")
         {
-            other.tag = "Untagged"; //froce functions to be called once
+            other.tag = "Untagged"; //force action to be called once
             DontDestroyOnLoad(DataObserver.instance.gameObject);
+            //StartCoroutine(UIListener.FadeScreen());
             SceneManager.LoadSceneAsync("Level_Select", LoadSceneMode.Additive).completed += delegate
             {
+                //Set scene to appropriate room when migrating back to level select
+                var myRoom = DataObserver.instance.currentPlayData.levelRoom;
+                FindObjectOfType<LevelSelectManager>().FocusRoom(myRoom);
+                //TODO: Create load screen?
                 SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name).completed += delegate
                 {
                     DataObserver.instance.SetCompletion(true);
                 };
             };
-        }
-       
+        }   
     }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Enemy")
@@ -608,6 +620,9 @@ public class Movement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Function to execute necessary values for player death.
+    /// </summary>
     public IEnumerator Die()
     {
         _isDead = true;

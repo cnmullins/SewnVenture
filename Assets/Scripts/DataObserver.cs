@@ -17,7 +17,7 @@ public class DataObserver : MonoBehaviour
     public LevelData currentPlayData { get; private set; }
     public LevelData savedLevelData { get; private set; }
     public int curLevelHash { get; private set; }
-    private GameObject _playerGO;
+    //private GameObject _playerGO; //unused
 
     private void Start()
     {
@@ -28,7 +28,7 @@ public class DataObserver : MonoBehaviour
             //initialize save data
             currentPlayData = null;
             savedLevelData = null;
-            _playerGO = null;
+            //_playerGO = null;
             curLevelHash = -1;
         }
         else
@@ -67,7 +67,7 @@ public class DataObserver : MonoBehaviour
 
     public void RefreshLevelSession()
     {
-        _playerGO = GameObject.FindGameObjectWithTag("Player");
+        //_playerGO = GameObject.FindGameObjectWithTag("Player");
         currentPlayData.ClearCollectedValues();
     }
 
@@ -78,12 +78,16 @@ public class DataObserver : MonoBehaviour
             SubmitOverwriteData();
     }
 
+    /// <summary>
+    /// Initializes values for the DataObserver.
+    /// </summary>
+    /// <param name="levelData">Data to initialize with.</param>
     public void MigrateToLevel(LevelData levelData)
     {
         //check for new save data
         //throw yield warning if scene is not found in PlayerPrefs
             //then create new save version
-        _playerGO = GameObject.FindGameObjectWithTag("Player");
+        //_playerGO = GameObject.FindGameObjectWithTag("Player");
         savedLevelData = levelData;
         currentPlayData = levelData;
         curLevelHash = levelData.levelHash;
@@ -97,7 +101,6 @@ public class DataObserver : MonoBehaviour
     public void SubmitOverwriteData()
     {
         LevelData overwriteData = currentPlayData;
-        //overwriteData.ClearCollectedValues();
         overwriteData.starsCollected[0] = Math.Max(currentPlayData.starsCollected[0], savedLevelData.starsCollected[0]);
         overwriteData.redThreadCollected[0] = Math.Max(currentPlayData.redThreadCollected[0], savedLevelData.redThreadCollected[0]);
         overwriteData.completed = true;

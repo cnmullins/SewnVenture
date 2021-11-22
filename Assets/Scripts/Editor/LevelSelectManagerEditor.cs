@@ -38,17 +38,19 @@ public class LevelSelectManagerEditor : Editor
                 SaveManager.SaveProgress(_GetCompleteData());
             GUILayout.EndHorizontal();
         }
-       /* 
         if (SaveManager.doesSaveFileExist)
         {
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("Focus Sewing Room"))
                 thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Sewing]);
             if (GUILayout.Button("Focus Living Room"))
                 thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Living]);
             if (GUILayout.Button("Focus Outside"))
                 thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Outdoor]);
+            if (GUILayout.Button("Focus Kitchen"))
+                thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Kitchen]);
+            GUILayout.EndHorizontal();
         }
-        */
         GUILayout.Space(10f);
         base.OnInspectorGUI();
         if (GUI.changed)
@@ -58,10 +60,13 @@ public class LevelSelectManagerEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 
+    //TODO:
+        //Make this adjustable with a parameter for room completion
     private SaveData _GetCompleteData()
     {
         var newData = new SaveData();
-        for (int i = 0; i < thisInstance.roomMenus.Length; ++i)
+        int levelCompletion = 3;//thisInstance.roomMenus.Length;
+        for (int i = 0; i < levelCompletion; ++i)
         {
             var levels = thisInstance.roomMenus[i].GetComponentsInChildren<LevelButton>(true);
             for (int ii = 0; ii < levels.Length; ++ii)
