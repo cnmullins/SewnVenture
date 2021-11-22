@@ -17,7 +17,12 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private Dropdown _aspectRatioDD;
     [SerializeField]
-    private Text _windowButtonText;
+    private RawImage _windowButton;
+    [SerializeField]
+    private Texture _windowedImage;
+    [SerializeField]
+    private Texture _fullscreenImage;
+
 
     private GameObject _curMenu;
 
@@ -40,7 +45,8 @@ public class MenuManager : MonoBehaviour
         
         if (_curMenu.name.StartsWith("Options"))
         {
-            _windowButtonText.text = (Screen.fullScreen) ? "Window" : "Fullscreen";
+            //_windowButtonText.text = (Screen.fullScreen) ? "Window" : "Fullscreen";
+            _windowButton.texture = (Screen.fullScreen) ? _windowedImage : _fullscreenImage;
             _SetAspectRatioDropDown();
         }
     }
@@ -114,7 +120,8 @@ public class MenuManager : MonoBehaviour
     {
         Screen.fullScreen = !Screen.fullScreen;
         //change font text
-        _windowButtonText.text = (Screen.fullScreen) ? "Window" : "Fullscreen";
+        //_windowButtonText.text = (Screen.fullScreen) ? "Window" : "Fullscreen";
+        _windowButton.texture = (Screen.fullScreen) ? _windowedImage : _fullscreenImage;
     }
 
     /// <summary>
