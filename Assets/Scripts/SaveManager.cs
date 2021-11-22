@@ -31,15 +31,16 @@ public static class SaveManager
         return File.Exists(_savePath);
     } }
     
-    private const string _saveKey = "SaveData";
     private const string _saveFile = "SaveData";
     private static string _savePath { get { 
         return Application.persistentDataPath + "/savedata.json";
     } }
+
     private static string _debugPath(in string fileType=".txt") 
     {
         return Application.persistentDataPath + "/debug" + fileType;
     }
+
     /// <summary>
     /// Save progress to PlayerPrefs as Json.
     /// </summary>
@@ -56,20 +57,28 @@ public static class SaveManager
     /// <returns>SavedData class with saved progress.</returns>
     public static SaveData RetrieveProgress()
     {
-        //string progress = PlayerPrefs.GetString(_saveKey, JsonUtility.ToJson(new SaveData()));
-        //return JsonUtility.FromJson<SaveData>(progress);
-
         if (File.Exists(_savePath))
         {
-            //Debug.Log("ferp: " + Application.persistentDataPath);
-            
-            //return JsonUtility.FromJson<SaveData>(File.ReadAllText(_savePath));
-            //Debug.Log("File found!");
             return JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(_savePath));
         }
         return new SaveData();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public static void ClearSaveData()
+    {
+        if (File.Exists(_savePath))
+        {
+            File.Delete(_savePath);
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public static bool IsSaveFileOpen()
     {
         try
@@ -96,6 +105,11 @@ public static class SaveManager
         return RetrieveProgress().levelHashTables[(int)room];
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="hash"></param>
+    /// <param name="levelData"></param>
     public static void SubmitLevelData(int hash, LevelData levelData)
     {
         var curProg = RetrieveProgress();
@@ -103,12 +117,12 @@ public static class SaveManager
         if (curProg.levelHashTables[roomIndex].ContainsKey(hash))
         {
             curProg.levelHashTables[roomIndex][hash] = levelData;
-            Debug.Log("overwritting level data at: " + hash);
+            //Debug.Log("overwritting level data at: " + hash);
         }
         else
         {
             curProg.levelHashTables[roomIndex].Add(hash, levelData);
-            Debug.Log("creating new save data at: " + hash);
+            //Debug.Log("creating new save data at: " + hash);
         }
         SaveProgress(curProg);
     }
@@ -127,10 +141,29 @@ public class SaveData
         {//input corresponds to InputAction enum
             "w", "s", "d", "a", "space", "r", "q", "up", "down"
         };
-        var numOfRooms = 5;
+        int numOfRooms = 4;
         levelHashTables = new Dictionary<int, LevelData>[numOfRooms];
         for(int i = 0; i < numOfRooms; ++i)
             levelHashTables[i] = new Dictionary<int, LevelData>();
+    }
+
+    public string progressToString { get {
+        int maxRoom, levelsComplete;
+        try
+        {
+            maxRoom = Array.IndexOf(levelHashTables, levelHashTables.Last(ht => ht.Count > 0));
+        }
+        catch (Exception)
+        {
+            return "Empty Save Data";
+        }
+        levelsComplete = levelHashTables[maxRoom].Count;
+        return "Room: " + maxRoom + ", Completed: " + levelsComplete;
+    } }
+
+    public bool IsLevelStarted(int levelIndex)
+    {
+        return (levelHashTables[levelIndex].Count > 0);
     }
 }
 
@@ -160,8 +193,8 @@ public class LevelData
         levelRoom = Room.NULL;
         name = String.Empty;
         completed = false;
-        starsCollected = new int[2] { 0, 3 };
-        redThreadCollected = new int[2] { 0, 5 };
+        starsCollected = new int[2] { 0, 1 };
+        redThreadCollected = new int[2] { 0, 1 };
         goldThreadCollected = new bool[2] { false, false };
     }
 
@@ -171,8 +204,8 @@ public class LevelData
         levelRoom = room;
         name = String.Empty;
         completed = false;
-        starsCollected = new int[2] { 0, 3 };
-        redThreadCollected = new int[2] { 0, 5 };
+        starsCollected = new int[2] { 0, 1 };
+        redThreadCollected = new int[2] { 0, 1 };
         goldThreadCollected = new bool[2] { false, false };
     }
 
@@ -197,4 +230,3 @@ public class LevelData
         completed = false;
     }
 }
-

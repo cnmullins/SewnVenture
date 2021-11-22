@@ -26,7 +26,7 @@ public class LevelSelectManager : MonoBehaviour
     public Color levelCompleteColor;
     public Color levelInCompleteColor;
     [Header("Assign GameObjects to List")]
-    [Tooltip("Menu order:\n-SewingRoom\n-LivingRoom\n-Porch\n-Kitchen\n-Outdoor")]
+    [Tooltip("Menu order:\n-SewingRoom\n-LivingRoom\n-Outdoor\n-Kitchen")]
     [SerializeField]
     private GameObject[] _roomMenus;
     public GameObject[] roomMenus => _roomMenus;
@@ -42,7 +42,7 @@ public class LevelSelectManager : MonoBehaviour
     private IEnumerator Start()
     {
 #if UNITY_EDITOR
-        if (debugMode) goto skipLoad;
+        if (debugMode) yield break;
 #endif
         _nextRoomGO = new List<GameObject>(GameObject.FindGameObjectsWithTag("MoveRoom"));
         yield return new WaitWhile(delegate 
@@ -51,11 +51,11 @@ public class LevelSelectManager : MonoBehaviour
                 return SaveManager.IsSaveFileOpen();
             return false;
         });
-        //_UpdateRoomValues();
-#if UNITY_EDITOR
-        skipLoad:{}
-#endif
         curMenu = _roomMenus[0];
+//#if UNITY_EDITOR
+        //skipLoad:{}
+//#endif
+        _UpdateRoomValues();
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public class LevelSelectManager : MonoBehaviour
     public Room GetCurrentRoom()
     {
         for (int i = 0; i < _roomMenus.Length; ++i) 
-            if (_roomMenus[i] == curMenu)
+            if (_roomMenus[i].Equals(curMenu))
                 return (Room)i;
         return Room.NULL;
     }
@@ -87,10 +87,12 @@ public class LevelSelectManager : MonoBehaviour
         menuGO.SetActive(true);
         curMenu = menuGO;
         _SetBackgroundModel(GetCurrentRoom());
-#if UNITY_EDITOR        
-        if (debugMode) return;
+#if UNITY_EDITOR
+        runInEditMode = false;
+        if (debugMode || runInEditMode) return;
+        runInEditMode = true;
 #endif
-        //_UpdateRoomValues();
+        _UpdateRoomValues();
     }
 
     /// <summary>
@@ -106,8 +108,7 @@ public class LevelSelectManager : MonoBehaviour
     /// </summary>
     private void _UpdateRoomValues()
     {
-        var roomLevels = GameObject.FindObjectsOfType<LevelButton>(false);
-        //print("rrromLev: " + roomLevels.Length);
+        var roomLevels = GameObject.FindObjectsOfType<LevelButton>(true);
         //construct level paths as LinkedLists (start with "NoNextLevelers")
         var noNextLevels = Array.FindAll(roomLevels, level => level.GetNextLevelButtons().Length == 0);
         var levelPaths = new List<LinkedList<LevelButton>>();
@@ -128,18 +129,10 @@ public class LevelSelectManager : MonoBehaviour
             ++pathCounter;
         }
 
-        //if (Application.isEditor)
-
         Dictionary<int, LevelData> levelHT;
         //check SaveData and refresh "completed" levels
-        try
-        {
-            levelHT = SaveManager.RetrieveProgress().levelHashTables[(int)GetCurrentRoom()];
-        }
-        catch (Exception)
-        {
-            levelHT = new Dictionary<int, LevelData>();
-        }
+        levelHT = SaveManager.RetrieveProgress().levelHashTables[(int)GetCurrentRoom()];
+        
         var completedLevels = new List<LevelButton>();
         foreach (LevelButton l in roomLevels)
         {
@@ -148,7 +141,7 @@ public class LevelSelectManager : MonoBehaviour
                 completedLevels.Add(l);
         }
 
-        bool roomStarted = false;
+        //bool roomStarted = false;
         //construct a list of completed and next levels and refresh all values
             //else if level is NOT in list, SetActive(false)/deactivate them from reach
         foreach (LevelButton level in roomLevels)
@@ -173,19 +166,16 @@ public class LevelSelectManager : MonoBehaviour
             if (!level.isCompleted)
             {
                 foreach (var nLevel in level.nextLevels)
+                {
                     if (nLevel.CompareTag("MoveRoom"))
                         nLevel.gameObject.SetActive(false);
+                }
             }
-            else 
-                roomStarted = true;
         }
         //completely new to room reactivate new level if necessary
-        if (!roomStarted)
+        foreach (var path in levelPaths)
         {
-            foreach (var path in levelPaths)
-            {
-                path.First.Value.gameObject.SetActive(true);
-            }
+            path.First.Value.gameObject.SetActive(true);
         }
     }//end _UpdateRoomValues()
 

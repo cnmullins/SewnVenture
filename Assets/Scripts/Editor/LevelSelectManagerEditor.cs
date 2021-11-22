@@ -14,32 +14,66 @@ public class LevelSelectManagerEditor : Editor
 {
     LevelSelectManager thisInstance;
     SerializedObject targetObj;
+    string progStr;
 
     private void OnEnable() 
     {
         thisInstance = (LevelSelectManager)target;
         targetObj = new SerializedObject(thisInstance);
+        progStr = SaveManager.RetrieveProgress().progressToString;
     }
 
     public override void OnInspectorGUI()
     {
-        if (GUILayout.Button("Data Path"))
-            Debug.Log("SavedData goes to: " + Application.persistentDataPath);
-        /*            
-        if (GUILayout.Button("Focus Sewing Room"))
-            thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Sewing]);
-        if (GUILayout.Button("Focus Living Room"))
-            thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Living]);
-        if (GUILayout.Button("Focus Outside"))
-            thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Outdoor]);
-        */
-        base.OnInspectorGUI();
-        /*
-        if (GUI.changed)
+        //update progress string
+        if (!thisInstance.debugMode)
         {
-
+            //output progress
+            GUILayout.Label("Level Progress:\n\t" + progStr);
+            GUILayout.Space(10f);
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Clear Save Data"))
+                SaveManager.ClearSaveData();
+            if (GUILayout.Button("Set Complete Data"))
+                SaveManager.SaveProgress(_GetCompleteData());
+            GUILayout.EndHorizontal();
+        }
+       /* 
+        if (SaveManager.doesSaveFileExist)
+        {
+            if (GUILayout.Button("Focus Sewing Room"))
+                thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Sewing]);
+            if (GUILayout.Button("Focus Living Room"))
+                thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Living]);
+            if (GUILayout.Button("Focus Outside"))
+                thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Outdoor]);
         }
         */
+        GUILayout.Space(10f);
+        base.OnInspectorGUI();
+        if (GUI.changed)
+        {
+            progStr = SaveManager.RetrieveProgress().progressToString;
+        }
         serializedObject.ApplyModifiedProperties();
+    }
+
+    private SaveData _GetCompleteData()
+    {
+        var newData = new SaveData();
+        for (int i = 0; i < thisInstance.roomMenus.Length; ++i)
+        {
+            var levels = thisInstance.roomMenus[i].GetComponentsInChildren<LevelButton>(true);
+            for (int ii = 0; ii < levels.Length; ++ii)
+            {
+                var ld = levels[ii].GetLevelData();
+                if (!newData.levelHashTables[i].ContainsKey(ld.levelHash))
+                {
+                    ld.completed = true;
+                    newData.levelHashTables[i].Add(ld.levelHash, ld);
+                }
+            }
+        }
+        return newData;
     }
 }

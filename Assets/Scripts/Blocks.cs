@@ -89,9 +89,6 @@ public class Blocks : MonoBehaviour
             var hits = Physics.OverlapBox(detectorMeshRends[i].transform.position, extents, detectorMeshRends[i].transform.rotation);
             for (int ii = 0; ii < hits.Length; ++ii)
             {
-
-                //TODO:
-                    //MAKE SURE FEEDBACK ACCOUNTS FOR SHOP BLOCKS BEING PLACED ON BASE GROUND
                 switch (hits[ii].transform.gameObject.layer)
                 {
                     
@@ -121,7 +118,6 @@ public class Blocks : MonoBehaviour
             }
             if (hits.Length == 0 && cost == 0)
             {
-                //print("I no touchie");
                 valid = true;
             }
         }
@@ -141,6 +137,8 @@ public class Blocks : MonoBehaviour
         curMat = newMat;
     }
 
+    //not implemented
+    [System.Obsolete]
     public IEnumerator FeedbackUntilButtonUp(Material feedbackMat)
     {
         foreach (var mRend in detectorMeshRends)
