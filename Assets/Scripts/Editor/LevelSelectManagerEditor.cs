@@ -38,17 +38,19 @@ public class LevelSelectManagerEditor : Editor
                 SaveManager.SaveProgress(_GetCompleteData());
             GUILayout.EndHorizontal();
         }
-       /* 
         if (SaveManager.doesSaveFileExist)
         {
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("Focus Sewing Room"))
                 thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Sewing]);
             if (GUILayout.Button("Focus Living Room"))
                 thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Living]);
             if (GUILayout.Button("Focus Outside"))
                 thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Outdoor]);
+            if (GUILayout.Button("Focus Kitchen"))
+                thisInstance.FocusMenu(thisInstance.roomMenus[(int)Room.Kitchen]);
+            GUILayout.EndHorizontal();
         }
-        */
         GUILayout.Space(10f);
         base.OnInspectorGUI();
         if (GUI.changed)

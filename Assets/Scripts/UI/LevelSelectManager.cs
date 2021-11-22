@@ -51,7 +51,8 @@ public class LevelSelectManager : MonoBehaviour
                 return SaveManager.IsSaveFileOpen();
             return false;
         });
-        curMenu = _roomMenus[0];
+        //assign IF null still
+        curMenu ??= _roomMenus[0];
 //#if UNITY_EDITOR
         //skipLoad:{}
 //#endif
@@ -68,6 +69,11 @@ public class LevelSelectManager : MonoBehaviour
             if (_roomMenus[i].Equals(curMenu))
                 return (Room)i;
         return Room.NULL;
+    }
+
+    public void FocusRoom(in Room room)
+    {
+        FocusMenu(_roomMenus[(int)room]);
     }
 
     /// <summary>
@@ -87,12 +93,26 @@ public class LevelSelectManager : MonoBehaviour
         menuGO.SetActive(true);
         curMenu = menuGO;
         _SetBackgroundModel(GetCurrentRoom());
-#if UNITY_EDITOR
-        runInEditMode = false;
-        if (debugMode || runInEditMode) return;
-        runInEditMode = true;
-#endif
-        _UpdateRoomValues();
+        //editor
+        if (!Application.isPlaying)
+        {
+            //print("ferp");
+            var menuTrans = menuGO.transform;
+            for (int i = 0; i < menuTrans.childCount; ++i)
+            {
+                menuTrans.GetChild(i).gameObject.SetActive(true);
+                if (menuTrans.GetChild(i).TryGetComponent<LevelButton>(out var lb))
+                {
+                    lb.RefreshValues(new LevelData());
+                }
+            }
+        }
+        //in-game
+        else
+        {
+            //print("ferpanerp");
+            _UpdateRoomValues();
+        }
     }
 
     /// <summary>
@@ -141,7 +161,6 @@ public class LevelSelectManager : MonoBehaviour
                 completedLevels.Add(l);
         }
 
-        //bool roomStarted = false;
         //construct a list of completed and next levels and refresh all values
             //else if level is NOT in list, SetActive(false)/deactivate them from reach
         foreach (LevelButton level in roomLevels)
@@ -154,12 +173,13 @@ public class LevelSelectManager : MonoBehaviour
                 {
                     if (level.nextLevels[i].TryGetComponent<LevelButton>(out var lb))
                         lb.RefreshValues(new LevelData());
-                    else if (level.nextLevels[i].TryGetComponent<LevelButton>(out var b))
-                        b.gameObject.SetActive(false);
+                    else if (level.nextLevels[i].TryGetComponent<Button>(out var b))
+                        b.gameObject.SetActive(true);
                 }
             }
             else if (!completedLevels.Find(l => l.nextLevels.Contains(level.GetComponent<RectTransform>())))
             {
+                
                 level.gameObject.SetActive(false);
             }
             //hide access to new rooms if appropriate

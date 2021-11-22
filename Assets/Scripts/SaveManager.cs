@@ -65,7 +65,7 @@ public static class SaveManager
     }
 
     /// <summary>
-    /// 
+    /// Simply deletes current save data.
     /// </summary>
     public static void ClearSaveData()
     {
@@ -76,9 +76,9 @@ public static class SaveManager
     }
 
     /// <summary>
-    /// 
+    /// Checks if another save instance is open and returns the results.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>If save file is being accessed or not.</returns>
     public static bool IsSaveFileOpen()
     {
         try
@@ -126,6 +126,23 @@ public static class SaveManager
         }
         SaveProgress(curProg);
     }
+
+    public static bool WasSwingLearned()
+    {
+        var levelHT = RetrieveProgress().levelHashTables[(int)Room.Outdoor];
+        //check hash table for if the player has beaten the crow level
+        foreach (var level in levelHT.Values)
+        {
+            if (level.name.Contains("Mori"))
+                return true;
+        }
+        //check if current level teaches swinging
+        if (SceneManager.GetActiveScene().name.Contains("Crow"))
+            return true;
+    
+        return false;
+    }
+
 }
 
 //to be turned into a JSON file
