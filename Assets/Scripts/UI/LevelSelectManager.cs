@@ -53,6 +53,7 @@ public class LevelSelectManager : MonoBehaviour
         });
         //assign IF null still
         curMenu ??= _roomMenus[0];
+        FocusMenu(curMenu);
 //#if UNITY_EDITOR
         //skipLoad:{}
 //#endif
@@ -96,7 +97,7 @@ public class LevelSelectManager : MonoBehaviour
         //editor
         if (!Application.isPlaying)
         {
-            //print("ferp");
+            //print("in editor");
             var menuTrans = menuGO.transform;
             for (int i = 0; i < menuTrans.childCount; ++i)
             {
@@ -110,7 +111,7 @@ public class LevelSelectManager : MonoBehaviour
         //in-game
         else
         {
-            //print("ferpanerp");
+            //print("playing");
             _UpdateRoomValues();
         }
     }
@@ -128,9 +129,14 @@ public class LevelSelectManager : MonoBehaviour
     /// </summary>
     private void _UpdateRoomValues()
     {
-        var roomLevels = GameObject.FindObjectsOfType<LevelButton>(true);
+        //if (Application.isPlaying)
+        var roomLevels = new List<LevelButton>();
+        if (Application.isPlaying) 
+            roomLevels = _roomMenus[(int)GetCurrentRoom()].GetComponentsInChildren<LevelButton>(true).ToList();
+        else
+            roomLevels = GameObject.FindObjectsOfType<LevelButton>(true).ToList();
         //construct level paths as LinkedLists (start with "NoNextLevelers")
-        var noNextLevels = Array.FindAll(roomLevels, level => level.GetNextLevelButtons().Length == 0);
+        var noNextLevels = roomLevels.FindAll(level => level.GetNextLevelButtons().Length == 0);
         var levelPaths = new List<LinkedList<LevelButton>>();
         int pathCounter = 0;
         foreach (LevelButton nnl in noNextLevels)
@@ -142,8 +148,7 @@ public class LevelSelectManager : MonoBehaviour
             while (prevLevel != null)
             {
                 levelPaths[pathCounter].AddFirst(prevLevel);
-                prevLevel = Array.Find(
-                    roomLevels, level => Array.Find(
+                prevLevel = roomLevels.Find(level => Array.Find(
                         level.GetNextLevelButtons(), l => l.Equals(prevLevel)));
             }
             ++pathCounter;
@@ -179,8 +184,9 @@ public class LevelSelectManager : MonoBehaviour
             }
             else if (!completedLevels.Find(l => l.nextLevels.Contains(level.GetComponent<RectTransform>())))
             {
-                
-                level.gameObject.SetActive(false);
+                //print("level: " + level.name);
+                if (Application.isPlaying)
+                    level.gameObject.SetActive(false);
             }
             //hide access to new rooms if appropriate
             if (!level.isCompleted)
