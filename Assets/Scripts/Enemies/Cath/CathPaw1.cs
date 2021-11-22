@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CathPawTwo : MonoBehaviour
+public class CathPaw1 : MonoBehaviour
 {
     public GameObject Head;
     //is it the leftmost paw or the rightmost paw?
