@@ -60,10 +60,13 @@ public class LevelSelectManagerEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 
+    //TODO:
+        //Make this adjustable with a parameter for room completion
     private SaveData _GetCompleteData()
     {
         var newData = new SaveData();
-        for (int i = 0; i < thisInstance.roomMenus.Length; ++i)
+        int levelCompletion = 3;//thisInstance.roomMenus.Length;
+        for (int i = 0; i < levelCompletion; ++i)
         {
             var levels = thisInstance.roomMenus[i].GetComponentsInChildren<LevelButton>(true);
             for (int ii = 0; ii < levels.Length; ++ii)

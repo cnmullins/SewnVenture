@@ -47,4 +47,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Wreck Tutorial.unity
     guid: 6514f17c4eada134986826dd60f62d63
+  - enabled: 1
+    path: Assets/Scenes/Cat Boss.unity
+    guid: 4904dac05eb6c4848b9259c2714d6d66
+  - enabled: 1
+    path: Assets/Scenes/Mori Prelude.unity
+    guid: c0655df5af0e2da4596bd6d7cf163813
   m_configObjects: {}
