@@ -15,17 +15,19 @@ public class Blocks : MonoBehaviour
     public List<GameObject> sewnToMe;
     //public List<Material> mats;
     public MeshRenderer[] detectorMeshRends;
-    private Vector3[] _detectorExtents;
-
     
     public GameObject lockthis;
     public int bugs;
 
     public Material curMat { get; private set; }
-
+    private LayerMask _noGroundLayers;
+    private LayerMask _blockLayer;
 
     public void Start()
     {
+        _noGroundLayers = LayerMask.GetMask("Default", "TransparentFX", "Water", "UI", 
+            "Held", "Grabbable", "Unstable", "Unstable2", "NoPlace", "Wreck");
+        _blockLayer = LayerMask.GetMask("Default", "Player", "Unstable", "Unstable2", "Wreck");
         if (detectorMeshRends.Length == 0)
             Debug.LogError("DetectorMeshRend was not assigned for " + name);
 
@@ -46,14 +48,6 @@ public class Blocks : MonoBehaviour
             children.Add(this.gameObject);
         }
         curMat = detectorMeshRends[0].material;
-
-        _detectorExtents = new Vector3[detectorMeshRends.Length];
-        for (int i = 0; i < detectorMeshRends.Length; ++i)
-        {
-            detectorMeshRends[i].GetComponent<BoxCollider>().enabled = true;
-            _detectorExtents[i] = detectorMeshRends[i].GetComponent<BoxCollider>().bounds.extents;
-            detectorMeshRends[i].GetComponent<BoxCollider>().enabled = false;
-        }
     }
 
     public void Update()
@@ -76,47 +70,21 @@ public class Blocks : MonoBehaviour
     /// <returns>Validity of placement.</returns>
     public bool IsPlacementValid()
     {
-        bool valid = false;
-        for (int i = 0; i < detectorMeshRends.Length; ++i)
+        bool valid = true;
+        foreach (var c in children)
         {
-            //var myBC = mRend.GetComponent<Collider>();
-            Vector3 extents = _detectorExtents[i];
-            if (cost != 0) extents *= 1.1f;
-            //swap axis if rotated
-            if (rotated) extents = new Vector3(extents.z, extents.y, extents.x);
-            //print("extents: " + extents);
-            //var hits = Physics.BoxCastAll(detectorMeshRends[i].transform.position, extents, Vector3.down, mRend.transform.rotation);
-            var hits = Physics.OverlapBox(detectorMeshRends[i].transform.position, extents, detectorMeshRends[i].transform.rotation);
-            for (int ii = 0; ii < hits.Length; ++ii)
+            if (Physics.BoxCast(c.transform.position - (Vector3.up * 3),
+                                c.transform.lossyScale / 2.1f,
+                                Vector3.down, c.transform.rotation,
+                                displace - 3f,
+                                _noGroundLayers))
             {
-                switch (hits[ii].transform.gameObject.layer)
-                {
-                    
-                    case 6: //Held layer
-                    case 8: if (cost == 0) valid = true; //Ground layer
-                        continue;
-                    case 11: //Grabbable2 layer
-                    case 14://NoPlace layer
-                    case 16: //Wreck layer
-                    case 0: //Default layer
-                        
-                        //make sure if this object has a cost that it influences feedback
-                        if (cost != 0)
-                        {
-                            valid = true;
-                        }
-                        else
-                        {
-                            if (_IsColliderPenetrated(detectorMeshRends[i].GetComponent<Collider>(), hits[ii]))
-                                valid = true;
-                            else
-                                return false;
-                        }
-                        continue;
-                    default: continue;
-                }
+                valid = false;
             }
-            if (hits.Length == 0 && cost == 0)
+            if (cost != 0 && Physics.BoxCast(c.transform.position,
+                                c.transform.lossyScale / 1.9f,
+                                Vector3.down, c.transform.rotation,
+                                20f, _blockLayer))
             {
                 valid = true;
             }
@@ -136,27 +104,4 @@ public class Blocks : MonoBehaviour
         }
         curMat = newMat;
     }
-
-    //not implemented
-    [System.Obsolete]
-    public IEnumerator FeedbackUntilButtonUp(Material feedbackMat)
-    {
-        foreach (var mRend in detectorMeshRends)
-            mRend.material = feedbackMat;
-        yield return new WaitUntil(delegate { return !Input.GetMouseButton(0); });
-        foreach (var mRend in detectorMeshRends)
-            mRend.material = curMat;
-        //detectorMeshRend.material = curMat;
-    }
-
-    private bool _IsColliderPenetrated(Collider col1, Collider col2)
-    {
-        Physics.ComputePenetration(
-            col1, col1.transform.position, col1.transform.rotation,
-            col2, col2.transform.position, col2.transform.rotation,
-            out var dir, out var distancePenetrated);
-        //print("distacePenetrated: " + distancePenetrated);
-        return distancePenetrated < 1f;
-    }
-
 }
