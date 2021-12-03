@@ -53,4 +53,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mori Prelude.unity
     guid: c0655df5af0e2da4596bd6d7cf163813
+  - enabled: 1
+    path: Assets/Scenes/Level Split.unity
+    guid: bb5d49e6afb244997ac323a678cbe3f2
+  - enabled: 1
+    path: Assets/Scenes/Level Outside.unity
+    guid: 712040073f301411d911b9064dd159a6
   m_configObjects: {}
