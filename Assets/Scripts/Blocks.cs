@@ -63,6 +63,7 @@ public class Blocks : MonoBehaviour
             gameObject.tag = "SewnDown";
         }
     }
+    
 
     /// <summary>
     /// Uses detector's positioning to see if this place is valid to place this block.
