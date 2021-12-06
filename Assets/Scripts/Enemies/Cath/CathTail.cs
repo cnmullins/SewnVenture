@@ -221,7 +221,7 @@ public class CathTail : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Block" && other.gameObject.layer != 6)
+        if (other.tag == "Block" && other.gameObject.layer != 6 && other.transform.parent != null)
         {
 
             Cath.GetComponent<CathHead>().health -= 1;
