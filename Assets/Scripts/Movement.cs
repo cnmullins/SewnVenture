@@ -335,9 +335,9 @@ public class Movement : MonoBehaviour
                             myhit.GetComponent<MeshRenderer>().material = mat;
                         }
                     }*/
-                    if (Input.GetMouseButtonDown(0) && myhit.tag == "Moveable" && fixdelay <= 0)
+                    if (Input.GetMouseButtonDown(0) && myhit.tag == "Moveable")
                     {
-                        fixdelay = 60;
+                        fixdelay = 0;
                         //when you click on a movable object in sewing mode
                         //the game will change it to being moved
                         //it resets the material, change the layer
@@ -445,9 +445,9 @@ public class Movement : MonoBehaviour
                     }*/
 
                     myhit.transform.position = new Vector3(aimpoint.x, (aimpoint.y) + (vertdisplace / 2), aimpoint.z)  + (myhit.transform.position-detector.transform.position); 
-                    if (Input.GetMouseButtonDown(0) && fixdelay <= 0)
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        fixdelay = 60;
+                        fixdelay = 0;
                         canfall = true;
                         if (myhit.GetComponent<Blocks>().cost != 0)
                         {
@@ -494,6 +494,7 @@ public class Movement : MonoBehaviour
                                                 hit2.transform.GetComponent<Blocks>().sewnToMe.Add(myhit.gameObject);
                                                 hit2.transform.GetComponent<Blocks>().sewn += 1;
                                                 myhit.GetComponent<Blocks>().lockthis = hit2.transform.gameObject;
+                                                
                                             }
                                         }
                                         hassew = false;
@@ -518,6 +519,7 @@ public class Movement : MonoBehaviour
                             }
                             holdblock = false;
                             myhit.transform.position = detector.transform.position;
+                            //myhit.transform.position += Vector3.zero;
                             detector = null;
                             currentlayermask = laymask;
                             myhit = null;
