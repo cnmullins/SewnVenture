@@ -65,7 +65,7 @@ public class CathHead : MonoBehaviour
                 }
                 if (chosenattack == 2)
                 {
-                    if (Random.Range(0, 2 + anger) == 1)
+                    if (Random.Range(0, 6 + anger) <= 5)
                     {
                         toyattack = true;
                         canattack = false;
