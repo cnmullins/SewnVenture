@@ -4048,6 +4048,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2102951034063615390, guid: bd9a39ee411945d4f833836d124beb84, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3984436422654258337, guid: bd9a39ee411945d4f833836d124beb84, type: 3}
       propertyPath: m_Name
       value: Curtain
