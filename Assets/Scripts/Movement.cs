@@ -337,7 +337,7 @@ public class Movement : MonoBehaviour
                     }*/
                     if (Input.GetMouseButtonDown(0) && myhit.tag == "Moveable")
                     {
-
+                        fixdelay = 0;
                         //when you click on a movable object in sewing mode
                         //the game will change it to being moved
                         //it resets the material, change the layer
@@ -398,9 +398,9 @@ public class Movement : MonoBehaviour
                     //it resets the material, change the layer
                     //and moves the object to the mouses position.
                     //it then changes the layermask for easier movement.
-                    if ((Input.GetMouseButtonDown(0) && myhit.tag == "ShopItem") && thread >= myhit.GetComponent<ShopItem>().cost)
+                    if ((Input.GetMouseButtonDown(0) && myhit.tag == "ShopItem") && thread >= myhit.GetComponent<ShopItem>().cost && fixdelay <= 0)
                     {
-
+                        fixdelay = 60;
                         thread -= myhit.GetComponent<ShopItem>().cost;
                         myhit.GetComponent<MeshRenderer>().material = mat2;
                         myhit = Instantiate(myhit.GetComponent<ShopItem>().Purchase, transform.position, transform.rotation);
@@ -447,7 +447,7 @@ public class Movement : MonoBehaviour
                     myhit.transform.position = new Vector3(aimpoint.x, (aimpoint.y) + (vertdisplace / 2), aimpoint.z)  + (myhit.transform.position-detector.transform.position); 
                     if (Input.GetMouseButtonDown(0))
                     {
-
+                        fixdelay = 0;
                         canfall = true;
                         if (myhit.GetComponent<Blocks>().cost != 0)
                         {
@@ -494,6 +494,7 @@ public class Movement : MonoBehaviour
                                                 hit2.transform.GetComponent<Blocks>().sewnToMe.Add(myhit.gameObject);
                                                 hit2.transform.GetComponent<Blocks>().sewn += 1;
                                                 myhit.GetComponent<Blocks>().lockthis = hit2.transform.gameObject;
+                                                
                                             }
                                         }
                                         hassew = false;
@@ -516,11 +517,9 @@ public class Movement : MonoBehaviour
                             {
                                 myhit.layer = 11;
                             }
-
-                            myhit.transform.position = detector.transform.position+Vector3.up;
-                            myhit.transform.position -= Vector3.up;
-                            //detector.transform.position += Vector3.zero;
                             holdblock = false;
+                            myhit.transform.position = detector.transform.position;
+                            //myhit.transform.position += Vector3.zero;
                             detector = null;
                             currentlayermask = laymask;
                             myhit = null;
@@ -535,7 +534,7 @@ public class Movement : MonoBehaviour
         //right clicking will do one of two things.
         //if its a shop item, it will be sold back to the shop.
         //if its a non-shop item it will be put back where it used to be.
-        if (Input.GetMouseButtonDown(1) && myhit != null && holdblock)
+        if (Input.GetMouseButtonDown(1) && myhit != null && holdblock && fixdelay <= 0)
         {
             fixdelay = 60;
             if (myhit.GetComponent<Blocks>().cost == 0 || myhit.GetComponent<Blocks>().bugs != 0)
