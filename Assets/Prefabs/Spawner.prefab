@@ -111,8 +111,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifetime: 10
   spawnChance: 100
-  maxspawns: 3
+  maxspawns: 2
   silverfish: {fileID: 3065453987944386540, guid: 49299b4d400694c9891e1c6d822dd0f0, type: 3}
+  lastSilverfish: {fileID: 0}
 --- !u!65 &804820939409801934
 BoxCollider:
   m_ObjectHideFlags: 0
