@@ -127,16 +127,7 @@ public class CathTailTwo : MonoBehaviour
         //when a block is dropped on the tail, cath will take damage.
         //this is for the evil route.
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Block" && other.gameObject.layer != 6)
-        {
-
-            Cath.GetComponent<CathHead>().health -= 1;
-            other.tag = "Untagged";
-            Destroy(other.transform.parent.gameObject);
-        }
-    }
+   
 }
 
 
