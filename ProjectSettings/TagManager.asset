@@ -16,6 +16,9 @@ TagManager:
   - Wind
   - HeldDown
   - AttackMori
+  - Grid
+  - MoveRoom
+  - Next
   layers:
   - Default
   - TransparentFX
