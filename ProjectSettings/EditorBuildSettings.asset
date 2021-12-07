@@ -24,7 +24,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Level 3.unity
     guid: 6048be70353a9fe4fb09af684476323e
   - enabled: 1
-    path: Assets/Scenes/Shop Tutorial.unity
+    path: Assets/Scenes/Test/Shop Tutorial1.unity
     guid: b1a9b9ba60b3640bc9fb53259c725d21
   - enabled: 1
     path: Assets/Scenes/Crow Boss.unity
