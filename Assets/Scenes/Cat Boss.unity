@@ -4088,6 +4088,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2102951034063615390, guid: bd9a39ee411945d4f833836d124beb84, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3984436422654258337, guid: bd9a39ee411945d4f833836d124beb84, type: 3}
       propertyPath: m_Name
       value: Curtain
@@ -6429,6 +6433,10 @@ PrefabInstance:
       propertyPath: m_ReceiveShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8449996119470504636, guid: 63d9c170e681b7140a77c7a5a3ffb8ad, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 960eb0df4d7f07940b6eb16defc32343, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63d9c170e681b7140a77c7a5a3ffb8ad, type: 3}
 --- !u!1 &175072605687815478
